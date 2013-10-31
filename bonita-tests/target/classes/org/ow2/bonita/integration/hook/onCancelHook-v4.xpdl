@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0
+  http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="onCancelHook"
+  Name="on cancel hook test">
+
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>01 February 2008 12:22:21</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC"
+      Name="onCancelHook" Id="onCancelHook">
+      <ProcessHeader />
+      <Activities>
+        <Activity Id="uniqueActivity" Name="uniqueActivity">
+          <Implementation>
+            <No />
+          </Implementation>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>task:onCancel</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

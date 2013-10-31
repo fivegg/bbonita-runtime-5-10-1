@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="multiInstantiation_package" Name="multiInstantiation_packager">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>24 January 2008 09:58:55</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="transitionCondition" Id="transitionCondition">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+		   <DataField Id="conditionVar" Name="conditionVar">
+		     <DataType>
+		       <BasicType Type="STRING" />
+		     </DataType>
+		     <InitialValue>empty</InitialValue>
+		     <ExtendedAttributes>
+		       <ExtendedAttribute Name="PropertyActivity" />
+		     </ExtendedAttributes>
+		   </DataField>
+		  </DataFields>
+      <Participants />
+      <Activities>
+        <Activity Id="act1_joinNumberConditionPass" Name="act1_joinNumberConditionPass">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Split Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="191" />
+            <ExtendedAttribute Name="YOffset" Value="136" />
+            <ExtendedAttribute Name="MultiInstantiation">
+              <Variable>conditionVar</Variable>
+              <MultiInstantiator>org.ow2.bonita.activity.instantiation.instantiator.JoinNumberConditionPass</MultiInstantiator>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="conditionVar">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="act2_joinNumberConditionPass" Name="act2_joinNumberConditionPass">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Split Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="191" />
+            <ExtendedAttribute Name="YOffset" Value="136" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="act1_act2_joinNumberConditionPass" Name="act1_act2_joinNumberConditionPass" From="act1_joinNumberConditionPass" To="act2_joinNumberConditionPass">
+          <Condition Type="CONDITION">conditionVar.equals("true")</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

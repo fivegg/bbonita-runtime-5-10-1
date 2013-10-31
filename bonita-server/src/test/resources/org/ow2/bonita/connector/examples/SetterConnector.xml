@@ -1,0 +1,53 @@
+<connector>
+  <connectorId>SimpleRequiredInputFieldsConnector</connectorId>
+  <inputs>
+    <setter>
+    </setter>
+    <setter>
+      <setterName></setterName>
+    </setter>
+    <setter>
+      <setterName>setName</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>isMale</setterName>
+    </setter>
+    <setter>
+      <setterName>setAddress</setterName>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setA</setterName>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setB</setterName>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setAge</setterName>
+      <required>name &amp; surname</required>
+      <forbidden>name &amp; surname</forbidden>
+      <parameters>
+        <int>10</int>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setAddress</setterName>
+      <required>name &amp;</required>
+      <forbidden>&amp; surname</forbidden>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

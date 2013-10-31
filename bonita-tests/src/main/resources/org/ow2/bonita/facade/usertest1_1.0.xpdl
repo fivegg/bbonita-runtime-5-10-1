@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="usertest1" Name="usertest1">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-01-26T12:11:23.941+0100</Created>
+    <Description>XPDL project for the UserTest Junit class</Description>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="usertest1" Id="usertest1">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="str1" Name="str1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="1106" />
+            <ExtendedAttribute Name="YOffset" Value="139" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="split" Name="split">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="355" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="371" />
+            <ExtendedAttribute Name="YOffset" Value="128" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="d" Name="d">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="273" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="248" />
+            <ExtendedAttribute Name="XOffset" Value="625" />
+            <ExtendedAttribute Name="YOffset" Value="230" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a" Name="a">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="191" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="216" />
+            <ExtendedAttribute Name="XOffset" Value="183" />
+            <ExtendedAttribute Name="YOffset" Value="107" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="c" Name="c">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="109" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="184" />
+            <ExtendedAttribute Name="XOffset" Value="625" />
+            <ExtendedAttribute Name="YOffset" Value="55" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="join" Name="join">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="878" />
+            <ExtendedAttribute Name="YOffset" Value="143" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="c_e" Name="c_e" From="c" To="join" />
+        <Transition Id="e_End" Name="e_End" From="join" To="BonitaEnd" />
+        <Transition Id="b_d" Name="b_d" From="split" To="d" />
+        <Transition Id="d_e" Name="d_e" From="d" To="join" />
+        <Transition Id="a_split" Name="a_split" From="a" To="split" />
+        <Transition Id="b_c" Name="b_c" From="split" To="c" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="doneList" Name="doneList">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008-11-19 11:50:20</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="doneList" Id="doneList">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <Participants>
+        <Participant Id="instanceInitiator" Name="instanceInitiator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaStart" Name="BonitaStart">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="63" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="41" />
+            <ExtendedAttribute Name="YOffset" Value="166" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="40" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="621" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="563" />
+            <ExtendedAttribute Name="YOffset" Value="166" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="40" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="task3" Name="task3">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>instanceInitiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="387" />
+            <ExtendedAttribute Name="YOffset" Value="171" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="task2" Name="task2">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>instanceInitiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="261" />
+            <ExtendedAttribute Name="YOffset" Value="173" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="task1" Name="task1">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>instanceInitiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="151" />
+            <ExtendedAttribute Name="YOffset" Value="175" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="task3_End" Name="task3_End" From="task3" To="BonitaEnd" />
+        <Transition Id="task2_task3" Name="task2_task3" From="task2" To="task3" />
+        <Transition Id="task1_task2" Name="task1_task2" From="task1" To="task2" />
+        <Transition Id="Start_task1" Name="Start_task1" From="BonitaStart" To="task1" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

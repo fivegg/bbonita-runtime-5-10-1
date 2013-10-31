@@ -1,0 +1,77 @@
+<connector>
+  <connectorId>Email</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setA</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setB</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setC</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <pages>
+    <page>
+      <pageId>As</pageId>
+      <widgets>
+        <group>
+        </group>
+        <group>
+          <labelId></labelId>
+        </group>
+        <group>
+          <labelId>test</labelId>
+        </group>
+        <group>
+          <optional>true</optional>
+          <widgets>
+            <text>
+              <size>20</size>
+              <maxChar>40</maxChar>
+              <setter reference="/connector/inputs/setter"/>
+              <labelId>a</labelId>
+            </text>
+          </widgets>
+          <labelId>labelA</labelId>
+        </group>
+
+        <group>
+          <optional>true</optional>
+          <widgets>
+            <text>
+              <size>20</size>
+              <maxChar>40</maxChar>
+              <setter reference="/connector/inputs/setter[2]"/>
+              <labelId>b</labelId>
+            </text>
+          </widgets>
+          <labelId>labelB</labelId>
+        </group>
+        
+        <group>
+          <optional>true</optional>
+          <widgets>
+            <text>
+              <size>20</size>
+              <maxChar>40</maxChar>
+              <setter reference="/connector/inputs/setter[3]"/>
+              <labelId>c</labelId>
+            </text>
+          </widgets>
+          <labelId>labelB</labelId>
+        </group>
+
+      </widgets>
+    </page>
+  </pages>
+</connector>

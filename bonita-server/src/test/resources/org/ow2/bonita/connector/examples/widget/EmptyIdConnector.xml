@@ -1,0 +1,11 @@
+<connector>
+  <connectorId></connectorId>
+  <inputs>
+    <setter>
+      <setterName>setInteger</setterName>
+      <parameters>
+        <long>23</long>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="simpleCycle_Project" Name="simpleCycle">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/05/16 16:43:50</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="testVariablesWithCycle" Id="testVariablesWithCycle">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="cont" Name="cont">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>un</InitialValue>
+        </DataField>
+        <DataField Id="string_act_var1" Name="string_act_var1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial1</InitialValue>
+          <Description>activity var1 with string type</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="string_act_var2" Name="string_act_var2">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial2</InitialValue>
+          <Description>activity var2 with string type</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="a2" Name="a2">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="109" />
+            <ExtendedAttribute Name="YOffset" Value="306" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="Iteration" Value="cont.equals(&quot;un&quot;)">
+              <To>a1</To>
+              <ExtendedAttributes>
+                <ExtendedAttribute Name="BreakPoint" Value="149.0-321.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="262.0-250.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="148.0-192.0" />
+              </ExtendedAttributes>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="init" Name="init">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="106" />
+            <ExtendedAttribute Name="YOffset" Value="89" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="130" />
+            <ExtendedAttribute Name="YOffset" Value="364" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a1" Name="a1">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="108" />
+            <ExtendedAttribute Name="YOffset" Value="177" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a4" Name="a4">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="111" />
+            <ExtendedAttribute Name="YOffset" Value="243" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="property" Value="string_act_var1" />
+            <ExtendedAttribute Name="property" Value="string_act_var2" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="init_a1" Name="init_a1" From="init" To="a1" />
+        <Transition Id="a2_Final" Name="a2_Final" From="a2" To="BonitaEnd">
+          <Condition Type="CONDITION">!cont.equals("un")</Condition>
+        </Transition>
+        <Transition Id="a4_a2" Name="a4_a2" From="a4" To="a2" />
+        <Transition Id="a1_a4" Name="a1_a4" From="a1" To="a4" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

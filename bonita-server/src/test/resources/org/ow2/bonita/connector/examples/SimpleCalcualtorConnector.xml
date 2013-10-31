@@ -1,0 +1,59 @@
+<connector>
+    <category>
+      <name>Test</name>
+      <icon>there</icon>
+    </category>
+  <inputs>
+   <setter>
+      <setterName>setFirstOperand</setterName>
+      <required></required>
+      <parameters>
+        <double>0.0</double>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setSecondOperand</setterName>
+      <required></required>
+      <parameters>
+        <double>0.0</double>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setPlus</setterName>
+      <required>!(minus | times | dividedBy)</required>
+      <forbidden>minus | times | dividedBy</forbidden>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setMinus</setterName>
+      <required>!(plus | times | dividedBy)</required>
+      <forbidden>plus | times | dividedBy</forbidden>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setTimes</setterName>
+      <required>!(minus | plus | dividedBy)</required>
+      <forbidden>minus | plus | dividedBy</forbidden>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setDividedBy</setterName>
+      <required>!(minus | times | plus)</required>
+      <forbidden>minus | times | plus</forbidden>
+      <parameters>
+        <boolean>false</boolean>
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs>
+    <getter>
+      <name>result</name>
+    </getter>
+  </outputs>
+</connector>

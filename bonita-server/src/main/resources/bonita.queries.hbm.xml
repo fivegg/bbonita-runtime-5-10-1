@@ -1,0 +1,4046 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false">
+
+  <query name="getInstanceIdsFromMetadata">
+    SELECT metadata.value
+    FROM org.ow2.bonita.facade.def.element.impl.MetaDataImpl AS metadata
+    WHERE metadata.key LIKE '%*****instance-nb*****%'
+    ORDER BY metadata.key
+  </query>
+
+  <query name="findInstanceExecutionPointingOnNode">
+    SELECT exec
+    FROM org.ow2.bonita.runtime.model.Execution AS exec
+    WHERE exec.activityInstance.uuid.value = :activityUUID
+    AND size(exec.executions) = 0
+  </query>
+
+  <query name="getExecutionWithEventUUID">
+    SELECT exec
+    FROM org.ow2.bonita.runtime.model.Execution AS exec
+    WHERE exec.eventUUID = :eventUUID
+  </query>
+
+  <query name="getInstanceExecutions">
+    SELECT exec
+    FROM org.ow2.bonita.runtime.model.Execution AS exec
+    WHERE exec.instance.instanceUUID.value = :instanceUUID
+  </query>
+
+  <query name="getUserInstanceTasksWithState">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true
+    AND activity.instanceUUID.value = :instanceUUID
+    AND activity.state = :state 
+    AND ((activity.userId = :userId) OR (activity.userId IS NULL AND :userId IN elements(activity.candidates)))
+  </query>
+
+  <query name="getUserTasksWithStates">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true
+    AND activity.state IN (:states)
+    AND
+      (activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN elements(activity.candidates)
+         )
+      )
+  </query>
+
+  <query name="getActivityInstancesFromRoot">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.rootInstanceUUID.value = :rootInstanceUUID
+    ORDER BY activity.lastUpdate DESC
+  </query>
+
+  <query name="getMatchingActivityInstancesFromRoot">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.rootInstanceUUID.value IN (:rootInstanceUUIDs)
+    ORDER BY activity.lastUpdate DESC, activity.name ASC
+  </query>
+
+  <query name="getMatchingHumanTaskInstancesFromRoot">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.rootInstanceUUID.value IN (:rootInstanceUUIDs)
+    AND activity.human = true
+    ORDER BY activity.lastUpdate DESC, activity.name ASC
+  </query>
+
+  <query name="getMatchingActivityInstancesWithStateFromRoot">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.rootInstanceUUID.value IN (:rootInstanceUUIDs)
+    AND activity.state = :state 
+    ORDER BY activity.lastUpdate DESC, activity.name ASC
+  </query>
+
+  <query name="getOneTask">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true 
+    AND activity.state = :state
+    AND  
+      (activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN elements(activity.candidates)
+         )
+      )
+    ORDER BY activity.readyDate, activity.label ASC
+  </query>
+
+  <query name="getOneTaskOfProcess">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true 
+    AND activity.state = :state
+    AND activity.processUUID.value = :processUUID
+    AND  
+      (activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN elements(activity.candidates)
+         )
+      )
+    ORDER BY activity.readyDate, activity.label ASC
+  </query>
+
+  <query name="getOneTaskOfInstance">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true 
+    AND activity.state = :state
+    AND activity.instanceUUID.value = :instanceUUID  
+    AND
+      (activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN elements(activity.candidates)
+         )
+      )
+    ORDER BY activity.readyDate, activity.label ASC
+  </query>
+
+  <query name="getUserInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+  </query>
+
+  <query name="getParentUserInstancesPage">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate DESC
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.startedDate
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.endedDate
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.nb
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.instanceUUID
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate DESC
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.startedDate DESC
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.endedDate DESC
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.nb DESC
+  </query>
+
+  <query name="getParentUserInstancesPageOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.instanceUUID DESC
+  </query>
+
+  <query name="getUserInstancesAfterDate">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.startedDate &gt;= :minStartDate
+  </query>
+
+  <query name="getUserParentInstancesAfterDate">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.startedDate &gt;= :minStartDate
+  </query>
+
+  <query name="getUserInstancesExcept">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND NOT (instance.instanceUUID.value IN (:uuids))
+  </query>
+
+  <query name="findActivityInstance">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID and
+    activity.name = :activityId and
+    activity.iterationId = :iterationId
+  </query>
+  
+  <query name="findActivityInstances">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+  </query>
+  
+  <query name="findActivityInstancesOrderByLastUpdateAsc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.lastUpdate
+  </query>
+  
+  <query name="findActivityInstancesOrderByStartedDateAsc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.startedDate
+  </query>
+  
+  <query name="findActivityInstancesOrderByEndedDateAsc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.endedDate
+  </query>
+  
+  <query name="findActivityInstancesOrderByNameAsc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.name
+  </query>
+  
+  <query name="findActivityInstancesOrderByPriorityAsc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.priority DESC
+  </query>
+  
+  <query name="findActivityInstancesOrderByLastUpdateDesc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.lastUpdate DESC
+  </query>
+  
+  <query name="findActivityInstancesOrderByStartedDateDesc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.startedDate DESC
+  </query>
+  
+  <query name="findActivityInstancesOrderByEndedDateDesc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.endedDate DESC
+  </query>
+  
+  <query name="findActivityInstancesOrderByNameDesc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.name DESC
+  </query>
+  
+  <query name="findActivityInstancesOrderByPriorityDesc">
+    select activity
+    from org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    where activity.instanceUUID.value = :instanceUUID
+    ORDER BY activity.priority
+  </query>
+
+  <query name="getActivityInstancesWithName">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.instanceUUID.value = :instanceUUID
+    AND activity.name = :name
+  </query>
+
+  <query name="findProcessInstance">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.instanceUUID.value = :instanceUUID
+  </query>
+
+  <query name="getParentInstancesOfProcessDefinition">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value = :definitionUUID
+    ORDER BY instance.lastUpdate DESC
+  </query>
+
+  <query name="getParentInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentInstancesFromProcessUUIDsOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND instance.processUUID.value IN (:processUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentInstancesExceptOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+    AND NOT (instance.processUUID.value IN (:processUUIDs))
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentInstancesUUIDs">
+    SELECT instance.instanceUUID
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID is null
+  </query>
+  
+  <query name="getLastProcessInstanceNb">
+    SELECT max(instance.nb)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.processUUID.value = :processUUID
+  </query>
+  
+  <query name="findAllProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="findAllProcessInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getMostRecentProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+   <query name="getMostRecentProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getMostRecentProcessInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getMostRecentParentProcessInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.parentInstanceUUID is null
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getMostRecentMatchingProcessInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+ <query name="getMostRecentProcessesProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getMostRecentProcessesProcessInstancesOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.lastUpdate &gt;= :time
+    AND   instance.processUUID.value in (:processUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="findMatchingProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByIntanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="findMatchingProcessInstancesOrderByIntanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.instanceUUID.value in (:instanceUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getLabelsCaseUUIDs">
+    SELECT webcase.uuid
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl as webcase
+    WHERE webcase.ownerName = :ownerName
+    AND   webcase.labelName in (:labelNames)
+    ORDER BY webcase.lastUpdate DESC
+  </query>
+
+  <query name="findActivityInstancesWithTaskState">
+    SELECT activity.instanceUUID.value
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.state in (:activityStates)
+  </query>
+  
+  <query name="findProcessInstancesWithInstanceStates">
+    SELECT instance.instanceUUID.value
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.state in (:instanceStates)
+  </query>
+  
+  <query name="findProcessInstances">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.processUUID.value = :processUUID
+  </query>
+  
+  <query name="findProcessInstancesWithState">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.processUUID.value = :processUUID
+    AND instance.state = :state
+  </query>
+  
+  <query name="findTaskInstance">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.uuid = :taskUUID
+  </query>
+  
+  <query name="findTaskInstances">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.instanceUUID.value = :instanceUUID
+    AND activity.human = true
+  </query>
+
+  <query name="getTasksFromNames">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.instanceUUID.value = :instanceUUID
+    AND activity.human = true
+    AND activity.name IN (:taskNames)
+  </query>
+
+  <query name="getAllProcesses">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.labelOrName
+  </query>
+
+  <query name="getAllProcessesOrderByNameAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.name
+  </query>
+
+  <query name="getAllProcessesOrderByLabelAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.label
+  </query>
+
+  <query name="getAllProcessesOrderByVersionAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.version
+  </query>
+
+  <query name="getAllProcessesOrderByStateAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.state
+  </query>
+
+  <query name="getAllProcessesOrderByNameDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.name DESC
+  </query>
+
+  <query name="getAllProcessesOrderByLabelDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.label DESC
+  </query>
+
+  <query name="getAllProcessesOrderByVersionDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.version DESC
+  </query>
+
+  <query name="getAllProcessesOrderByStateDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    ORDER BY process.state DESC
+  </query>
+  
+  <query name="getProcesses2">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.name = :processId
+  </query>
+  
+  <query name="getProcess">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    where process.uuid.value = :processUUID
+  </query>
+  
+  <query name="getProcessesFromState">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.state = :state
+  </query>
+
+  <query name="getProcessesFromProcessIdAndState">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.name = :processId AND process.state = :state
+  </query>
+    
+  <query name="getProcessFromIdAndVersion">
+    select process
+    from org.ow2.bonita.facade.def.InternalProcessDefinition as process
+    where process.name = :processId AND process.version = :version
+  </query>
+  
+  <query name="getLastProcessVersion">
+    select max(process.version)
+    from org.ow2.bonita.facade.def.InternalProcessDefinition as process
+    where process.name = :name
+  </query>
+  
+  <query name="getLastProcessFromProcessIdAndState">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.name = :processId AND process.state = :state
+    ORDER BY process.deployedDate DESC
+  </query>
+  
+  <query name="getActivityInstance">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.instanceUUID.value = :instanceUUID
+    AND activity.name = :activityId
+    AND activity.iterationId = :iterationId
+    AND activity.activityInstanceId = :activityInstanceId
+    AND activity.loopId = :loopId
+  </query>
+
+  <query name="getActivityInstances">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.instanceUUID.value = :instanceUUID
+    AND activity.name = :activityName
+    AND activity.iterationId = :iterationId
+  </query>
+
+  <query name="getActivityInstanceFromUUID">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.uuid.value = :activityUUID
+  </query>
+  
+  <query name="getActivityInstanceStateFromUUID">
+    SELECT activity.state
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.uuid.value = :activityUUID
+  </query>
+  
+  <query name="getActivityDefinition">
+    SELECT activity
+    FROM org.ow2.bonita.facade.def.InternalActivityDefinition AS activity
+    WHERE activity.uuid.value = :activityUUID
+  </query>
+  
+  <query name="getMetaData">
+    SELECT metadata
+    FROM org.ow2.bonita.facade.def.element.impl.MetaDataImpl AS metadata
+    WHERE metadata.key = :key
+  </query>
+ 
+  <!-- IDENTITY -->
+  <query name="findRoleByName">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    WHERE role.name = :roleName
+  </query>
+
+  <query name="findUserByUsername">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    WHERE user.username = :username
+  </query>
+
+  <query name="findProfileMetadataByName">
+    SELECT metadata
+    FROM org.ow2.bonita.facade.identity.impl.ProfileMetadataImpl as metadata
+    WHERE metadata.name = :metadataName
+  </query>
+
+  <query name="findGroupsByName">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.name = :groupName
+  </query>
+
+  <query name="getAllUsers">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.username
+  </query>
+
+  <query name="getAllUsersOderByFirstNameAsc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.firstName
+  </query>
+
+  <query name="getAllUsersOderByLastNameAsc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.lastName
+  </query>
+
+  <query name="getAllUsersOderByUserNameAsc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.username
+  </query>
+
+  <query name="getAllUsersOderByFirtNameDesc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.firstName DESC
+  </query>
+
+  <query name="getAllUsersOderByLastNameDesc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.lastName DESC
+  </query>
+
+  <query name="getAllUsersOderByUserNameDesc">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    ORDER BY user.username DESC
+  </query>
+
+  <query name="getUsers">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+	WHERE user.uuid IN (:userUUIDs)
+    ORDER BY user.username
+  </query>
+
+  <query name="getAllRoles">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    ORDER BY role.name
+  </query>
+
+  <query name="getAllRolesOrderByNameAsc">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    ORDER BY role.name
+  </query>
+
+  <query name="getAllRolesOrderByLabelAsc">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    ORDER BY role.label
+  </query>
+
+  <query name="getAllRolesOrderByNameDesc">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    ORDER BY role.name DESC
+  </query>
+
+  <query name="getAllRolesOrderByLabelDesc">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    ORDER BY role.label DESC
+  </query>
+
+  <query name="getRoles">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    WHERE role.uuid IN (:roleUUIDs)
+    ORDER BY role.name
+  </query>
+
+  <query name="getAllGroups">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    ORDER BY group_.name
+  </query>
+
+  <query name="getAllGroupsOrderByNameAsc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    ORDER BY group_.name
+  </query>
+
+  <query name="getAllGroupsOrderByLabelAsc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    ORDER BY group_.label
+  </query>
+
+  <query name="getAllGroupsOrderByNameDesc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    ORDER BY group_.name DESC
+  </query>
+
+  <query name="getAllGroupsOrderByLabelDesc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    ORDER BY group_.label DESC
+  </query>
+
+  <query name="getGroups">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.uuid IN (:groupUUIDs)
+    ORDER BY group_.name
+  </query>
+
+  <query name="getAllMemberships">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    ORDER BY membership.group.name, membership.role.name
+  </query>
+
+  <query name="getMemberships">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    WHERE membership.uuid IN (:membershipUUIDs)
+    ORDER BY membership.group.name, membership.role.name
+  </query>
+
+  <query name="getProfileMetadata">
+    SELECT profileMetadata
+    FROM org.ow2.bonita.facade.identity.impl.ProfileMetadataImpl as profileMetadata
+    ORDER BY profileMetadata.name
+  </query>
+
+  <query name="getRole">
+    SELECT role
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+    WHERE role.uuid = :roleUUID
+  </query>
+  
+  <query name="getUser">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    WHERE user.uuid = :userUUID
+  </query>
+  
+  <query name="getGroup">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.uuid = :groupUUID
+  </query>
+  
+  <query name="getMembership">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    WHERE membership.uuid = :membershipUUID
+  </query>
+  
+  <query name="getProfileMetadataByUUID">
+    SELECT profileMetadata
+    FROM org.ow2.bonita.facade.identity.impl.ProfileMetadataImpl as profileMetadata
+    WHERE profileMetadata.uuid = :profileMetadataUUID
+  </query>
+  
+  <query name="getGroupChildren">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+    ORDER BY group_.name
+  </query>
+  
+  <query name="getGroupChildrenOrderByNameAsc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+    ORDER BY group_.name
+  </query>
+  
+  <query name="getGroupChildrenOrderByLabelAsc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+    ORDER BY group_.label
+  </query>
+  
+  <query name="getGroupChildrenOrderByNameDesc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+    ORDER BY group_.name DESC
+  </query>
+  
+  <query name="getGroupChildrenOrderByLabelDesc">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+    ORDER BY group_.label DESC
+  </query>
+  
+  <query name="getRootGroups">
+    SELECT group_
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup IS NULL
+    ORDER BY group_.name
+  </query>
+
+  <query name="findMembershipByRoleAndGroup">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    WHERE membership.group.uuid = :groupUUID
+    AND membership.role.uuid = :roleUUID
+  </query>
+  
+  <query name="getMembershipsByGroup">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY membership.role.name
+  </query>
+  
+  <query name="getMembershipsByRole">
+    SELECT membership
+    FROM org.ow2.bonita.facade.identity.impl.MembershipImpl as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY membership.group.name
+  </query>
+  
+  <query name="getUsersByGroup">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.username
+  </query>
+  
+  <query name="getUsersByGroupOrderByFirstNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.firstName
+  </query>
+  
+  <query name="getUsersByGroupOrderByLastNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.lastName
+  </query>
+  
+  <query name="getUsersByGroupOrderByUserNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.username
+  </query>
+  
+  <query name="getUsersByGroupOrderByFirstNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.firstName DESC
+  </query>
+  
+  <query name="getUsersByGroupOrderByLastNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.lastName DESC
+  </query>
+  
+  <query name="getUsersByGroupOrderByUserNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+    ORDER BY user.username DESC
+  </query>
+  
+  <query name="getUsersByMembership">
+    SELECT DISTINCT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl AS user
+    INNER JOIN user.memberships as membership
+    WHERE membership.uuid = :membershipUUID
+    ORDER BY user.username
+  </query>
+  
+  <query name="getUsersByRole">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.username
+  </query>
+  
+  <query name="getUsersByRoleOrderByFirstNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.firstName
+  </query>
+  
+  <query name="getUsersByRoleOrderByLastNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.lastName
+  </query>
+  
+  <query name="getUsersByRoleOrderByUserNameAsc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.username
+  </query>
+  
+  <query name="getUsersByRoleOrderByFirstNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.firstName DESC
+  </query>
+  
+  <query name="getUsersByRoleOrderByLastNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.lastName DESC
+  </query>
+  
+  <query name="getUsersByRoleOrderByUserNameDesc">
+    SELECT distinct user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN FETCH user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+    ORDER BY user.username DESC
+  </query>
+  
+  <query name="getUsersByManager">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    WHERE user.manager = :managerUUID
+    ORDER BY user.username
+  </query>
+
+  <query name="getUsersByDelegee">
+    SELECT user
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    WHERE user.delegee = :delegeeUUID
+    ORDER BY user.username
+  </query>
+
+  <query name="getNumberOfUsers">
+    SELECT COUNT(user)
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+  </query>
+    
+  <query name="getNumberOfRoles">
+    SELECT COUNT(role)
+    FROM org.ow2.bonita.facade.identity.impl.RoleImpl as role
+  </query>
+  
+  <query name="getNumberOfGroups">
+    SELECT COUNT(group_)
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+  </query>
+
+  <query name="getNumberOfUsersByGroup">
+    SELECT COUNT(user)
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN user.memberships as membership
+    WHERE membership.group.uuid = :groupUUID
+  </query>
+
+  <query name="getNumberOfUsersByRole">
+    SELECT COUNT(user)
+    FROM org.ow2.bonita.facade.identity.impl.UserImpl as user
+    INNER JOIN user.memberships as membership
+    WHERE membership.role.uuid = :roleUUID
+  </query>
+  
+  <query name="getNumberOfProfileMetadata">
+    SELECT COUNT(profileMetadata)
+    FROM org.ow2.bonita.facade.identity.impl.ProfileMetadataImpl as profileMetadata
+  </query>
+
+  <query name="getNumberOfGroupChildren">
+    SELECT COUNT(group_)
+    FROM org.ow2.bonita.facade.identity.impl.GroupImpl as group_
+    WHERE group_.parentGroup.uuid = :parentGroupUUID
+  </query>
+
+  <!-- BAM Queries -->
+
+  <query name="getNumberOfExecutingCases">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.ProcessInstanceImpl AS instance
+    WHERE instance.endedDate = 0
+    AND instance.startedDate &lt; :date
+  </query>
+
+  <query name="getNumberOfFinishedCases">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.ProcessInstanceImpl AS instance
+    WHERE instance.endedDate &gt;= :beginningOfTheDay
+    AND instance.endedDate &lt; :nextBeginningOfTheDay
+  </query>
+
+  <query name="getNumberOfUserOpenSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))
+  </query>
+
+  <query name="getNumberOfUserOverdueSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))
+    AND activity.human = true
+    AND activity.expectedEndDate &lt; :currentDate
+    AND activity.expectedEndDate != 0
+  </query>
+
+  <query name="getNumberOfUserStepsAtRisk">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))
+    AND activity.expectedEndDate &lt; :atRisk
+    AND activity.expectedEndDate &gt; :currentDate
+  </query>
+
+  <query name="getNumberOfOpenSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+  </query>
+  
+  <query name="getNumberOfOpenSteps2">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE (activity.endedDate = 0 OR activity.endedDate &gt; :date)
+    AND activity.human = true
+    AND activity.readyDate &lt; :date
+  </query>
+
+  <query name="getNumberOfOverdueSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &lt; :currentDate
+    AND activity.expectedEndDate != 0
+  </query>
+
+  <query name="getNumberOfStepsAtRisk">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &lt; :atRisk
+    AND activity.expectedEndDate &gt; :currentDate
+  </query>
+
+  <query name="getNumberOfFinishedSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate &gt; :since
+    AND activity.priority = :priority
+    AND activity.human = true
+  </query>
+
+  <query name="getNumberOfPriorityOpenSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.priority = :priority
+  </query>
+
+  <query name="getNumberOfUserFinishedSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate &gt; :since
+    AND activity.human = true
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))
+    AND activity.priority = :priority
+  </query>
+
+  <query name="getNumberOfPriorityUserOpenSteps">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))
+    AND activity.priority = :priority
+  </query>
+
+  <query name="getNumberOfParentProcessInstances">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID IS NULL
+  </query>
+
+  <query name="getNumberOfProcessInstances">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+  </query>
+
+  <query name="getNumberOfProcesses">
+    SELECT COUNT(process)
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+  </query>
+
+  <query name="getProcessesList">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+  </query>
+
+  <query name="getProcessesListByState">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    AND process.state = :state
+  </query>
+
+  <query name="getAllProcessesList">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.labelOrName
+  </query>
+
+  <query name="getAllProcessesListOrderByNameAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.name
+  </query>
+
+  <query name="getAllProcessesListOrderByLabelAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.label
+  </query>
+
+  <query name="getAllProcessesListOrderByVersionAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.version
+  </query>
+
+  <query name="getAllProcessesListOrderByStateAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.state
+  </query>
+
+  <query name="getAllProcessesListOrderByNameDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.name DESC
+  </query>
+
+  <query name="getAllProcessesListOrderByLabelDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.label DESC
+  </query>
+
+  <query name="getAllProcessesListOrderByVersionDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.version DESC
+  </query>
+
+  <query name="getAllProcessesListOrderByStateDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    ORDER BY process.state DESC
+  </query>
+
+  <query name="getLastProcessFromProcessSetAndState">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE process.uuid.value IN (:definitionsUUIDs)
+    AND process.state = :state
+    ORDER BY process.deployedDate DESC
+  </query>
+
+  <query name="getProcessInstancesFromDefinitionUUIDs">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+
+  <query name="getUserInstancesFromDefinitionUUIDs">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDs">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentUserInstancesPageFromDefinitionUUIDsOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUser">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByLastUpdateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByStartedDateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByEndedDateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByInstanceNumberAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByInstanceUUIDAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByLastUpdateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByStartedDateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByEndedDateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByInstanceNumberDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserOrderByInstanceUUIDDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDs">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByLastUpdateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByStartedDateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByEndedDateAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByInstanceNumberAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByInstanceUUIDAsc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByLastUpdateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByStartedDateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByEndedDateDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByInstanceNumberDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserFromDefinitionUUIDsOrderByInstanceUUIDDesc">
+    SELECT distinct instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUser">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers) 
+    AND instance.parentInstanceUUID IS NULL
+    ORDER BY instance.instanceUUID DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDs">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+    
+  <query name="getParentProcessInstancesWithInvolvedUserFromDefinitionUUIDsOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithInvolvedUserFromDefinitionUUIDs">
+    SELECT count(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE :userId IN ELEMENTS (instance.involvedUsers)
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithInvolvedUser">
+    SELECT count(instance)
+    from org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    where instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithStartedBy">
+    SELECT count(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithStartedByFromDefinitionUUIDs">
+    SELECT count(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedBy = :userId
+    AND instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithActiveUser">
+    SELECT count(distinct instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithActiveUserFromDefinitionUUIDs">
+    SELECT count(distinct instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance, org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.rootInstanceUUID = instance.instanceUUID 
+    AND instance.parentInstanceUUID IS NULL
+    AND activity.state IN ('READY', 'SUSPENDED')
+    AND instance.isArchived = false
+    AND (
+        activity.userId = :userId
+      OR (
+        activity.userId IS NULL AND :userId IN ELEMENTS(activity.candidates)
+      ) 
+    )
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+  
+  <query name="getNumberOfProcessInstancesFromDefinitionUUIDs">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+
+  <query name="getNumberOfParentProcessInstancesFromDefinitionUUIDs">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.parentInstanceUUID IS NULL
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+
+  <query name="findActivityInstancesWithTaskStateAndDefinitionsUUIDs">
+    SELECT activity.instanceUUID.value
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true 
+    AND activity.state in (:activityStates)
+    AND activity.processUUID.value IN (:definitionsUUIDs)
+  </query>
+  
+  <query name="ProcessInstancesWithInstanceStatesAndDefinitionsUUIDs">
+    SELECT instance.instanceUUID.value
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance as instance
+    WHERE instance.state in (:instanceStates)
+    AND instance.processUUID.value IN (:definitionsUUIDs)
+  </query>
+
+  <query name="getOneTaskOfProcessFromDefinitionUUIDs">
+    SELECT activity
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.human = true 
+    AND activity.state = :state
+    AND activity.processUUID.value IN (:definitionsUUIDs)
+    AND (activity.userId = :userId
+      OR (activity.userId is null AND :userId IN ELEMENTS(activity.candidates))
+      )
+    ORDER BY activity.readyDate, activity.label ASC
+  </query>
+
+  <query name="getProcessInstancesWithDefinitionUUIDs">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByLastUpdateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByStartedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByEndedDateAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByInstanceNumberAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByInstanceUUIDAsc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByLastUpdateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.lastUpdate DESC
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByStartedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.startedDate DESC
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByEndedDateDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.endedDate DESC
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByInstanceNumberDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.nb DESC
+  </query>
+  
+  <query name="getProcessInstancesWithDefinitionUUIDsOrderByInstanceUUIDDesc">
+    SELECT instance
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.processUUID.value IN (:definitionsUUIDs)
+    ORDER BY instance.instanceUUID DESC
+  </query>
+  
+  <!-- PRIVILEGE -->
+  
+   <query name="getRule">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.uuid = :ruleUUID
+  </query>
+  
+  <query name="getRuleByName">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.name = :name
+  </query>
+
+  <query name="getAllRules">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    ORDER BY rule.name
+  </query>
+  
+  <query name="getRuleTypePolicy">
+    SELECT ruleTypePolicy
+    FROM org.ow2.bonita.facade.privilege.impl.RuleTypePolicyImpl AS ruleTypePolicy
+    WHERE ruleTypePolicy.ruleType = :type
+  </query>
+    
+  <query name="getRules">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.uuid IN (:uuids)
+    ORDER BY rule.name
+  </query>
+  
+  <query name="findRulesByNames">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.name IN (:names)
+    ORDER BY rule.name
+  </query>
+  
+  <query name="getRuleListByType">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type IN (:types)
+    ORDER BY rule.name
+  </query>
+  
+  <query name="getRuleListByEntity">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE :entity IN ELEMENTS (rule.entities)
+  </query>
+  
+  <query name="getRuleListByEntityAndType">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruletype
+    AND :entity IN ELEMENTS (rule.entities)
+  </query>
+  
+  <query name="getRuleListByExactType">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruletype
+    ORDER BY rule.name
+  </query>
+  
+  <query name="getExceptionListByEntityAndRuleType">
+    SELECT ELEMENTS(rule.exceptions)
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruletype
+    AND :entity IN ELEMENTS(rule.entities)
+  </query>
+  
+  <query name="getNumberOfRulesForType">
+    SELECT count(rule)
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruletype
+  </query>
+
+  <query name="getAllProcessesListExcept">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.labelOrName
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByNameAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.name
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByLabelAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.label
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByVersionAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.version
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByStateAsc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.state
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByNameDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.name DESC
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByLabelDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.label DESC
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByVersionDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.version DESC
+  </query>
+
+  <query name="getAllProcessesListExceptOrderByStateDesc">
+    SELECT process
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+    ORDER BY process.state DESC
+  </query>
+  
+  <query name="getApplicableRulesForUser">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruleType
+    AND :userUUID IN ELEMENTS(rule.users)
+  </query>
+  
+  <query name="getApplicableRulesForEntity">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE rule.type = :ruleType
+    AND :entityID IN ELEMENTS(rule.entities)
+  </query>
+  
+  <query name="getApplicableRulesForMemberships">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.MembershipImpl AS membership
+    WHERE rule.type = :ruleType
+    AND membership.uuid IN (:membershipUUIDs)
+    AND membership.uuid IN ELEMENTS(rule.memberships)
+  </query>
+
+  <query name="getApplicableRulesForGroups">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.GroupImpl AS group_
+    WHERE rule.type = :ruleType
+    AND group_.uuid IN (:groupUUIDs) 
+    AND group_.uuid IN ELEMENTS(rule.groups)
+  </query>
+  
+  <query name="getApplicableRulesForRoles">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.RoleImpl AS role
+    WHERE rule.type = :ruleType
+    AND role.uuid IN (:roleUUIDs) 
+    AND role.uuid IN ELEMENTS(rule.roles)
+  </query>
+  
+  <query name="getAllApplicableRulesForUser">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE :userUUID IN ELEMENTS(rule.users)
+  </query>
+  
+  <query name="getAllApplicableRulesForEntity">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule
+    WHERE :entityID IN ELEMENTS(rule.entities)
+  </query>
+  
+  <query name="getAllApplicableRulesForMemberships">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.MembershipImpl AS membership
+    WHERE membership.uuid IN (:membershipUUIDs)
+    AND membership.uuid IN ELEMENTS(rule.memberships)
+  </query>
+
+  <query name="getAllApplicableRulesForGroups">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.GroupImpl AS group_
+    WHERE group_.uuid IN (:groupUUIDs) 
+    AND group_.uuid IN ELEMENTS(rule.groups)
+  </query>
+  
+  <query name="getAllApplicableRulesForRoles">
+    SELECT rule
+    FROM org.ow2.bonita.facade.privilege.impl.RuleImpl AS rule,
+    org.ow2.bonita.facade.identity.impl.RoleImpl AS role
+    WHERE role.uuid IN (:roleUUIDs) 
+    AND role.uuid IN ELEMENTS(rule.roles)
+  </query>
+
+  <!-- Comments -->
+  <query name="getAllComments">
+    SELECT comment
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.instanceUUID = :instanceUUID
+    ORDER BY comment.date ASC
+  </query>
+  
+  <query name="getNumberOfAllComments">
+    SELECT count (comment)
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.instanceUUID = :instanceUUID
+  </query>
+  
+  <query name="getInstanceComments">
+    SELECT comment
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.instanceUUID = :instanceUUID
+    AND comment.activityUUID IS NULL
+    ORDER BY comment.date ASC
+  </query>
+
+  <query name="getNumberOfInstanceComments">
+    SELECT count (comment)
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.instanceUUID = :instanceUUID
+    AND comment.activityUUID IS NULL
+  </query>
+
+  <query name="getActivityComments">
+    SELECT comment
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.activityUUID = :activityUUID
+    ORDER BY comment.date ASC
+  </query>
+
+  <query name="getNumberOfActivityComments">
+    SELECT count (comment)
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.activityUUID = :activityUUID
+  </query>
+
+  <query name="getActivitiesComments">
+    SELECT comment
+    FROM org.ow2.bonita.facade.runtime.impl.CommentImpl AS comment
+    WHERE comment.activityUUID.value IN (:uuids)
+  </query>
+
+  <query name="getAllProcessDefinitionUUIDs">
+   	SELECT process.uuid
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+  </query>
+
+  <query name="getAllProcessDefinitionUUIDsExcept">
+    SELECT process.uuid
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE NOT (process.uuid.value IN (:definitionsUUIDs))
+  </query>
+  
+  <query name="getCategoryByUUID">
+    SELECT category
+    FROM org.ow2.bonita.facade.runtime.impl.CategoryImpl AS category
+    WHERE category.uuid = :uuid
+  </query>
+
+  <query name="getCategoriesByName">
+    SELECT category
+    FROM org.ow2.bonita.facade.runtime.impl.CategoryImpl AS category
+    WHERE category.ownerName IS NULL
+    AND (category.name IN (:names))
+  </query>
+  
+  <query name="getCategoriesByUUID">
+    SELECT category
+    FROM org.ow2.bonita.facade.runtime.impl.CategoryImpl AS category
+    WHERE (category.uuid IN (:uuids))
+  </query>
+
+  <query name="getAllCategories">
+    SELECT category
+    FROM org.ow2.bonita.facade.runtime.impl.CategoryImpl AS category
+    WHERE category.ownerName IS NULL
+  </query>
+  
+   <query name="getAllCategoriesExcept">
+    SELECT category
+    FROM org.ow2.bonita.facade.runtime.impl.CategoryImpl AS category
+    WHERE category.ownerName IS NULL
+    AND NOT (category.uuid IN (:uuids))
+  </query>
+  
+  <query name="getProcessUUIDsFromCategory">
+    SELECT process.uuid
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS process
+    WHERE :category IN ELEMENTS (process.categories)
+  </query>
+
+
+  <query name="getParentProcessInstancesWithActiveUserAndActivityInstanceExpectedEndDate">
+    SELECT DISTINCT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; :currentDate
+    AND activity.expectedEndDate &lt; :atRisk
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query>
+  
+  <query name="getParentProcessInstancesWithActiveUserAndActivityInstanceExpectedEndDateFromDefinitionUUIDs">
+    SELECT DISTINCT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.processUUID.value IN (:definitionsUUIDs) 
+    AND activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; :currentDate
+    AND activity.expectedEndDate &lt; :atRisk
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query> 
+
+  <query name="getNumberOfParentProcessInstancesWithActiveUserAndActivityInstanceExpectedEndDate">
+    SELECT COUNT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; :currentDate
+    AND activity.expectedEndDate &lt; :atRisk
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithActiveUserAndActivityInstanceExpectedEndDateFromDefinitionUUIDs">
+    SELECT COUNT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.processUUID.value IN (:definitionsUUIDs) 
+    AND activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; :currentDate
+    AND activity.expectedEndDate &lt; :atRisk
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query> 
+
+  <query name="getParentProcessInstancesWithOverdueTasks">
+    SELECT DISTINCT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; 0
+    AND activity.expectedEndDate &lt; :currentDate
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query>
+  
+  <query name="getParentProcessInstancesWithOverdueTasksFromDefinitionUUIDs">
+    SELECT DISTINCT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.processUUID.value IN (:definitionsUUIDs) 
+    AND activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; 0
+    AND activity.expectedEndDate &lt; :currentDate
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query> 
+
+  <query name="getNumberOfParentProcessInstancesWithOverdueTasks">
+    SELECT COUNT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; 0
+    AND activity.expectedEndDate &lt; :currentDate
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query>
+  
+  <query name="getNumberOfParentProcessInstancesWithOverdueTasksFromDefinitionUUIDs">
+    SELECT COUNT(activity.rootInstanceUUID)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance AS activity
+    WHERE activity.processUUID.value IN (:definitionsUUIDs) 
+    AND activity.endedDate = 0
+    AND activity.human = true
+    AND activity.expectedEndDate &gt; 0
+    AND activity.expectedEndDate &lt; :currentDate
+    AND (activity.userId = :userId OR :userId IN elements(activity.candidates))   
+  </query> 
+
+  <query name="processExists">
+    SELECT COUNT(definition)
+    FROM org.ow2.bonita.facade.def.InternalProcessDefinition AS definition
+    WHERE definition.uuid = :uuid
+  </query>
+  
+  <query name="getProcessTaskUUIDs">
+    SELECT activity.uuid
+    FROM org.ow2.bonita.facade.def.InternalActivityDefinition AS activity
+    WHERE activity.processDefinitionUUID = :uuid
+    AND activity.type = 'Human'
+  </query>
+
+  <query name="getProcessInstancesDuration">
+    SELECT instance.endedDate - instance.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.endedDate &gt;= :since
+    AND instance.endedDate &lt;= :until    
+    ORDER BY instance.endedDate - instance.startedDate
+  </query>
+
+  <query name="getProcessInstancesDurationFromDefinitionUUID">
+    SELECT instance.endedDate - instance.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.endedDate &gt;= :since
+    AND instance.endedDate &lt;= :until 
+    AND instance.processUUID.value = :processUUID   
+    ORDER BY instance.endedDate - instance.startedDate
+  </query>
+  
+  <query name="getProcessInstancesDurationFromDefinitionUUIDs">
+    SELECT instance.endedDate - instance.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.endedDate &gt;= :since
+    AND instance.endedDate &lt;= :until 
+    AND instance.processUUID.value IN (:processUUIDs)   
+    ORDER BY instance.endedDate - instance.startedDate
+  </query>
+
+  <query name="getActivityInstancesExecutionTime">
+    SELECT activity.endedDate - activity.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    ORDER BY activity.endedDate - activity.startedDate
+  </query>
+
+  <query name="getActivityInstancesExecutionTimeFromProcessDefinitionUUID">
+    SELECT activity.endedDate - activity.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value = :processUUID
+    ORDER BY activity.endedDate - activity.startedDate
+  </query>
+
+  <query name="getActivityInstancesExecutionTimeFromProcessDefinitionUUIDs">
+    SELECT activity.endedDate - activity.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value IN (:processUUIDs)
+    ORDER BY activity.endedDate - activity.startedDate
+  </query>
+
+  <query name="getActivityInstancesExecutionTimeFromActivityDefinitionUUID">
+    SELECT activity.endedDate - activity.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value = :activityUUID
+    ORDER BY activity.endedDate - activity.startedDate
+  </query>
+
+  <query name="getActivityInstancesExecutionTimeFromActivityDefinitionUUIDs">
+    SELECT activity.endedDate - activity.startedDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value IN (:activityUUIDs)
+    ORDER BY activity.endedDate - activity.startedDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTime">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeFromProcessDefinitionUUID">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value = :processUUID
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeFromProcessDefinitionUUIDs">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value IN (:processUUIDs)
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeFromActivityDefinitionUUID">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value = :activityUUID
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeFromActivityDefinitionUUIDs">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value IN (:activityUUIDs)
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeOfUser">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.userId = :userId
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeOfUserFromProcessDefinitionUUID">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value = :processUUID
+    AND activity.userId = :userId
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeOfUserFromProcessDefinitionUUIDs">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.userId = :userId
+    AND activity.processUUID.value IN (:processUUIDs)
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeOfUserFromActivityDefinitionUUID">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value = :activityUUID
+    AND activity.userId = :userId
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getTaskInstancesWaitingTimeOfUserFromActivityDefinitionUUIDs">
+    SELECT activity.startedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+    WHERE activity.human = true 
+    AND activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.userId = :userId
+    AND activity.activityDefinitionUUID.value IN (:activityUUIDs)
+    ORDER BY activity.startedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDuration">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationFromProcessDefinitionUUID">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value = :processUUID
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationFromProcessDefinitionUUIDs">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value IN (:processUUIDs)
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationFromActivityDefinitionUUID">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value = :activityUUID
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationFromActivityDefinitionUUIDs">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.activityDefinitionUUID.value IN (:activityUUIDs)
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationByActivityType">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.type = :activityType
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationByActivityTypeFromProcessDefinitionUUID">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.processUUID.value = :processUUID
+    AND activity.type = :activityType
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+
+  <query name="getActivityInstancesDurationByActivityTypeFromProcessDefinitionUUIDs">
+    SELECT activity.endedDate - activity.readyDate
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.endedDate &gt;= :since
+    AND activity.endedDate &lt;= :until 
+    AND activity.type = :activityType
+    AND activity.processUUID.value IN (:processUUIDs)
+    ORDER BY activity.endedDate - activity.readyDate
+  </query>
+  
+  <query name="getNumberOfCreatedProcessInstances">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedDate &gt;= :since
+    AND instance.startedDate &lt;= :until
+  </query>
+  
+  <query name="getNumberOfCreatedProcessInstancesFromProcessUUID">
+    SELECT COUNT(instance)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalProcessInstance AS instance
+    WHERE instance.startedDate &gt;= :since
+    AND instance.startedDate &lt;= :until
+    AND instance.processUUID.value = :processUUID
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstances">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesFromProcessUUID">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.processUUID.value = :processUUID
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesFromProcessUUIDs">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.processUUID.value IN (:processUUIDs)
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesFromActivityDefUUID">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.activityDefinitionUUID.value = :activityUUID
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesFromActivityDefUUIDs">
+    SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.activityDefinitionUUID.value IN (:activityUUIDs)
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesByActivityType">
+  	SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.type = :activityType
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesByActivityTypeFromProcessUUID">
+  	SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.type = :activityType
+    AND activity.processUUID.value = :processUUID
+  </query>
+
+  <query name="getNumberOfCreatedActivityInstancesByActivityTypeFromProcessUUIDs">
+  	SELECT COUNT(activity)
+    FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity    
+    WHERE activity.readyDate &gt;= :since
+    AND activity.readyDate &lt;= :until
+    AND activity.type = :activityType
+    AND activity.processUUID.value IN (:processUUIDs)
+  </query>
+
+  <query name="getNumberOfOtherActiveActivities">
+  	SELECT COUNT(activity)
+  	FROM org.ow2.bonita.facade.runtime.impl.InternalActivityInstance as activity
+  	WHERE activity.instanceUUID = :instanceUUID
+    AND activity.uuid != :activityUUID
+    AND activity.state IN (:states)
+  </query>
+
+  <query name="getDocumentVersion">
+  	SELECT dv
+  	FROM org.ow2.bonita.services.impl.DocumentVersionImpl as dv
+  	WHERE dv.dbid = :versionId
+  </query>
+
+  <query name="getDocumentDescriptor">
+  	SELECT dd
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd
+  	WHERE dd.dbid = :documentDescriptorId
+  </query>
+
+  <query name="getDocumentDescriptorMappings">
+  	SELECT dm
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm
+  	WHERE dm.documentDescriptorId = :documentDescriptorId
+  </query>
+  
+  <query name="getDocumentContent">
+  	SELECT dc
+  	FROM org.ow2.bonita.services.impl.DocumentContentImpl as dc
+  	WHERE dc.dbid = :contentStorageId
+  </query>
+
+  <query name="getDocumentDescriptors">
+  	SELECT dd
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd
+  	ORDER BY dd.dbid
+  </query>
+
+  <query name="getDocumentDescriptorsOfProcessDefinition">
+  	SELECT dd
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd
+  	WHERE dd.processDefinitionUUID.value = :processDefinitionUUID
+  	ORDER BY dd.name, dd.dbid
+  </query>
+
+  <query name="getDocumentVersions">
+  	SELECT dv
+  	FROM org.ow2.bonita.services.impl.DocumentVersionImpl as dv
+  	WHERE dv.versionSeriesId = :versionSeriesId
+  	ORDER BY dv.creationDate DESC, dv.dbid
+  </query>
+
+  <query name="searchDocuments">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  </query>
+
+  <query name="getNumberOfDocuments">
+  	SELECT COUNT(dv.id)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  </query>
+  
+  <query name="getDocumentsOfProcessInstanceWithName">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm  
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  	AND dd.name = :name
+  	AND dm.processInstanceUUID.value = :processInstanceUUID
+  	ORDER BY dv.creationDate DESC, dv.id
+  </query>
+
+  <query name="getNbOfDocumentsOfProcessInstanceWithName">
+  	SELECT COUNT(dv.id)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  	AND dd.name = :name
+  	AND dm.processInstanceUUID.value = :processInstanceUUID
+  </query>
+
+  <query name="hasDocumentsOfProcessInstanceWithNameAndMetaType">
+  	SELECT COUNT(dd.id)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd 
+  	WHERE dd.processInstanceUUID.value = :processInstanceUUID 
+  	AND dd.name = :name
+  	AND dd.metaDocument = :meta
+  </query>
+
+  <query name="hasDocumentsOfProcessDefinitionWithNameAndMetaType">
+  	SELECT COUNT(dd.id)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd 
+  	WHERE dd.processDefinitionUUID.value = :processDefinitionUUID
+  	AND dd.processInstanceUUID.value is NULL 
+  	AND dd.name = :name
+  	AND dd.metaDocument = :meta
+  </query>
+
+  <query name="getDocumentsOfProcessInstance">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm  
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  	AND dm.processInstanceUUID.value = :processInstanceUUID
+  	ORDER BY dd.name, dv.creationDate DESC, dv.id
+  </query>
+  
+  <query name="getDocumentsOfProcessDefinitionWithName">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  	AND dd.name = :name
+  	AND dm.processDefinitionUUID.value = :processDefinitionUUID
+  	ORDER BY dv.creationDate DESC, dv.id
+  </query>
+
+  <query name="getDocumentsOfProcessDefinitionWithoutInstances">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = false
+  	AND dm.documentDescriptorId = dd.id
+  	AND dm.processDefinitionUUID.value = :processDefinitionUUID
+  	AND dm.processInstanceUUID.value IS NULL
+  	ORDER BY dd.name, dv.creationDate DESC, dv.id
+  </query>
+
+  <query name="getMetaDocumentsDocumentsOfProcessDefinition">
+  	SELECT new org.ow2.bonita.services.impl.DocumentImpl(dd.name, dv.author, dv.creationDate, dv.lastModificationDate, dv.majorVersion, 
+  			dv.versionLabel, dv.versionSeriesId, dv.contentFileName, dv.contentMimeType, dv.contentSize, dd.processDefinitionUUID, 
+  			dd.processInstanceUUID, dv.contentStorageId, dv.dbid)
+  	FROM org.ow2.bonita.services.impl.DocumentDescriptorImpl as dd, org.ow2.bonita.services.impl.DocumentVersionImpl as dv, org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl as dm 
+  	WHERE dd.id = dv.versionSeriesId
+  	AND dd.lastVersionId = dv.id
+  	AND dd.metaDocument = true
+  	AND dm.documentDescriptorId = dd.id
+  	AND dm.processDefinitionUUID.value = :processDefinitionUUID
+  	ORDER BY dd.name, dv.creationDate DESC, dv.id
+  </query>
+
+  <!-- EVENTS -->
+  <query name="getSignalStartIncomingEvent">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.name = :signalCode
+    AND event.signal = 'event.start.signal'
+    AND event.processName IN (:processNames)
+  </query>
+
+  <query name="getMessageStartIncomingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.signal = 'event.start.message'
+    AND event.processName IN (:processNames)
+  </query>
+
+  <query name="getSignalIncomingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.name = :eventName
+    AND event.signal LIKE 'event.%.signal'
+  </query>
+
+  <query name="getInstanceIncomingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.instanceUUID.value = :instanceUUID
+  </query>
+
+  <query name="getUniqueInstanceIncomingEvent">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.instanceUUID.value = :instanceUUID
+    AND   event.name = :eventName
+  </query>
+
+  <query name="getInstanceOutgoingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+    WHERE event.instanceUUID.value = :instanceUUID
+  </query>
+
+  <query name="getOutgoingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+  </query>
+
+  <query name="getOutgoingEventsWithUUID">
+    SELECT event
+    FROM  org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+    WHERE event.name = :name
+    AND   (event.processName = :processName OR (:processName IS NULL AND event.processName IS NULL))
+    AND   (event.activityName = :activityName OR (:activityName IS NULL AND event.activityName IS NULL))
+    AND   (event.activityUUID.value = :activityUUID OR (:activityUUID IS NULL AND activityUUID IS NULL))
+  </query>
+
+  <query name="getIncomingEventsWithUUID">
+    SELECT event
+    FROM  org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.name = :name
+    AND   (event.processName = :processName OR (:processName is null AND event.processName is null))
+    AND   (event.activityName = :activityName OR (:activityName is null AND event.activityName is null))
+    AND   event.activityUUID.value = :activityUUID
+  </query>
+  
+  <query name="getActivityIncomingEvents">
+    SELECT event
+    FROM  org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.activityUUID.value = :activityUUID
+  </query>
+
+  <query name="getActivityBoundaryIncomingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.activityUUID.value = :activityUUID
+    AND event.signal LIKE 'event.boundary.%'
+  </query>
+  
+  <query name="getActivityBoundaryOutgoingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+    WHERE event.activityUUID.value = :activityUUID
+    AND event.name LIKE 'event.boundary.%'
+  </query>
+
+  <query name="getActivityDefinitionIncomingEvents">
+    SELECT event
+    FROM  org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.activityDefinitionUUID.value = :activityUUID
+  </query>
+
+  <query name="getActivityInstanceIncomingEvents">
+    SELECT event
+    FROM  org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.activityUUID.value = :activityUUID
+  </query>
+
+  <query name="getIncomingEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+  </query>
+
+  <query name="getIncomingEvent">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS event
+    WHERE event.id = :id
+  </query>
+
+  <query name="getMessageEventCouples">
+    SELECT incoming AS incoming, outgoing AS outgoing
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS incoming,
+         org.ow2.bonita.runtime.event.OutgoingEventInstance AS outgoing
+    WHERE incoming.name = outgoing.name
+    AND incoming.expression IS NOT NULL
+    AND incoming.correlationKey1 IS NULL
+    AND outgoing.correlationKey1 IS NULL
+    AND incoming.correlationKey2 IS NULL
+    AND outgoing.correlationKey2 IS NULL
+    AND incoming.correlationKey3 IS NULL
+    AND outgoing.correlationKey3 IS NULL
+    AND incoming.correlationKey4 IS NULL
+    AND outgoing.correlationKey4 IS NULL
+    AND incoming.correlationKey5 IS NULL
+    AND outgoing.correlationKey5 IS NULL
+    AND incoming.locked = FALSE
+    AND outgoing.incomingId IS NULL
+    AND (outgoing.processName IS NULL OR outgoing.processName = incoming.processName)
+    AND (outgoing.activityName IS NULL OR outgoing.activityName = incoming.activityName)
+    AND outgoing.id NOT IN elements(incoming.incompatibleEvents)
+    ORDER BY outgoing.id ASC, incoming.id ASC
+  </query>
+
+  <query name="getCorrelationKeyMessageEventCouples">
+    SELECT incoming AS incoming, outgoing AS outgoing
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS incoming,
+         org.ow2.bonita.runtime.event.OutgoingEventInstance AS outgoing
+    WHERE incoming.name = outgoing.name
+    AND incoming.expression IS NULL
+    AND incoming.locked = FALSE
+    AND outgoing.incomingId IS NULL
+    AND (outgoing.processName IS NULL OR outgoing.processName = incoming.processName)
+    AND (outgoing.activityName IS NULL OR outgoing.activityName = incoming.activityName)
+    AND (
+        (incoming.correlationKey1 IS NULL AND outgoing.correlationKey1 IS NULL)
+        OR
+        (incoming.correlationKey1 = outgoing.correlationKey1)
+    )
+    AND (
+        (incoming.correlationKey2 IS NULL AND outgoing.correlationKey2 IS NULL)
+        OR
+        (incoming.correlationKey2 = outgoing.correlationKey2)
+    )
+    AND (
+        (incoming.correlationKey3 IS NULL AND outgoing.correlationKey3 IS NULL)
+        OR
+        (incoming.correlationKey3 = outgoing.correlationKey3)
+    )
+    AND (
+        (incoming.correlationKey4 IS NULL AND outgoing.correlationKey4 IS NULL)
+        OR
+        (incoming.correlationKey4 = outgoing.correlationKey4)
+    )
+    AND (
+        (incoming.correlationKey5 IS NULL AND outgoing.correlationKey5 IS NULL)
+        OR
+        (incoming.correlationKey5 = outgoing.correlationKey5)
+    )
+    ORDER BY outgoing.id ASC, incoming.id ASC
+  </query>
+
+  <query name="getMessageEventSubProcessIncomingEvents">
+    SELECT incoming
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS incoming,
+         org.ow2.bonita.runtime.event.OutgoingEventInstance AS outgoing
+    WHERE outgoing.id = :outgoingId
+    AND incoming.eventSubProcessRootInstanceUUID = :eventSubProcessRootInstanceUUID  
+    AND incoming.name = outgoing.name
+    AND incoming.expression IS NULL
+    AND incoming.locked = FALSE
+    AND outgoing.incomingId IS NULL
+    AND (outgoing.processName IS NULL OR outgoing.processName = incoming.processName)
+    AND (outgoing.activityName IS NULL OR outgoing.activityName = incoming.activityName)
+    AND (
+        (incoming.correlationKey1 IS NULL AND outgoing.correlationKey1 IS NULL)
+        OR
+        (incoming.correlationKey1 = outgoing.correlationKey1)
+    )
+    AND (
+        (incoming.correlationKey2 IS NULL AND outgoing.correlationKey2 IS NULL)
+        OR
+        (incoming.correlationKey2 = outgoing.correlationKey2)
+    )
+    AND (
+        (incoming.correlationKey3 IS NULL AND outgoing.correlationKey3 IS NULL)
+        OR
+        (incoming.correlationKey3 = outgoing.correlationKey3)
+    )
+    AND (
+        (incoming.correlationKey4 IS NULL AND outgoing.correlationKey4 IS NULL)
+        OR
+        (incoming.correlationKey4 = outgoing.correlationKey4)
+    )
+    AND (
+        (incoming.correlationKey5 IS NULL AND outgoing.correlationKey5 IS NULL)
+        OR
+        (incoming.correlationKey5 = outgoing.correlationKey5)
+    )
+    ORDER BY incoming.id ASC
+  </query>
+
+  
+  <sql-query name="deleteIncompatibleEvents">
+    DELETE FROM BN_INCOMP_EVENTS WHERE OUTGOING_ID = :outgoingId
+  </sql-query>
+
+  <query name="getOutgoingEvent">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+    WHERE event.id = :id
+  </query>
+
+  <query name="getOverdueEvents">
+    SELECT event
+    FROM org.ow2.bonita.runtime.event.OutgoingEventInstance AS event
+    WHERE event.overdue != -1
+    AND event.overdue &lt; :current
+    AND event.locked = FALSE
+  </query>
+
+  <query name="getJob">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.id = :id
+  </query>
+
+  <query name="getJobs">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+  </query>
+
+  <query name="getJobOfActivityUUID">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.activityDefinitionUUID = :activityUUID
+  </query>
+
+  <query name="getExecutableJobsOfProcess">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.fireTime &lt;= :current
+    AND job.retries &gt; 0
+    AND job.processUUID = :processUUID
+    ORDER BY job.fireTime
+  </query>
+
+  <query name="getNonLockedProcessesHavingJobs">
+    SELECT job.processUUID
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.fireTime &lt;= :current
+    AND job.retries &gt; 0
+    AND job.processUUID NOT IN (:lockedProcessUUIDs)
+    ORDER BY job.fireTime
+  </query>
+
+  <query name="getNextJobDueDate">
+    SELECT MIN(job.fireTime)
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.retries &gt; 0
+    AND job.processUUID NOT IN (:processUUIDsToExclude)
+  </query>
+
+  <query name="getJobsOfExecution">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.executionEventUUID = :executionEventUUID
+  </query>
+
+  <query name="getJobsOfInstance">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.instanceUUID = :instanceUUID
+  </query>
+
+  <query name="getJobsOfType">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.eventType = :eventType
+  </query>
+
+  <query name="getJobsOfInstanceType">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.eventType = :eventType
+    AND job.instanceUUID = :instanceUUID
+  </query>
+
+  <query name="getJobsOfExecutionType">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.eventType = :eventType
+    AND job.executionEventUUID = :eventUUID
+  </query>
+  
+  <query name="getJobsWithoutProcessUUID">
+    SELECT job
+    FROM org.ow2.bonita.runtime.event.Job AS job
+    WHERE job.processUUID is NULL
+    ORDER BY job.id
+  </query>
+
+  <query name="getJobLock">
+    SELECT lock
+    FROM org.ow2.bonita.runtime.event.JobLock AS lock
+    WHERE lock.processUUID = :processUUID
+  </query>
+
+  <query name="getNextExpressionEventDueDate">
+    SELECT MIN(incoming.enableTime)
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS incoming,
+         org.ow2.bonita.runtime.event.OutgoingEventInstance AS outgoing
+    WHERE incoming.name = outgoing.name
+    AND incoming.expression IS NOT NULL
+    AND incoming.correlationKey1 IS NULL
+    AND outgoing.correlationKey1 IS NULL
+    AND incoming.correlationKey2 IS NULL
+    AND outgoing.correlationKey2 IS NULL
+    AND incoming.correlationKey3 IS NULL
+    AND outgoing.correlationKey3 IS NULL
+    AND incoming.correlationKey4 IS NULL
+    AND outgoing.correlationKey4 IS NULL
+    AND incoming.correlationKey5 IS NULL
+    AND outgoing.correlationKey5 IS NULL
+    AND incoming.locked = FALSE
+    AND outgoing.incomingId IS NULL
+    AND (outgoing.processName IS NULL OR outgoing.processName = incoming.processName)
+    AND (outgoing.activityName IS NULL OR outgoing.activityName = incoming.activityName)
+    AND outgoing.id NOT IN elements(incoming.incompatibleEvents)
+  </query>
+
+  <query name="getNextMessageEventDueDate">
+    SELECT MIN(incoming.enableTime)
+    FROM org.ow2.bonita.runtime.event.IncomingEventInstance AS incoming,
+         org.ow2.bonita.runtime.event.OutgoingEventInstance AS outgoing
+    WHERE incoming.name = outgoing.name
+    AND incoming.expression IS NULL
+    AND incoming.locked = FALSE
+    AND outgoing.incomingId IS NULL
+    AND (outgoing.processName IS NULL OR outgoing.processName = incoming.processName)
+    AND (outgoing.activityName IS NULL OR outgoing.activityName = incoming.activityName)
+    AND (
+        (incoming.correlationKey1 IS NULL AND outgoing.correlationKey1 IS NULL)
+        OR
+        (incoming.correlationKey1 = outgoing.correlationKey1)
+    )
+    AND (
+        (incoming.correlationKey2 IS NULL AND outgoing.correlationKey2 IS NULL)
+        OR
+        (incoming.correlationKey2 = outgoing.correlationKey2)
+    )
+    AND (
+        (incoming.correlationKey3 IS NULL AND outgoing.correlationKey3 IS NULL)
+        OR
+        (incoming.correlationKey3 = outgoing.correlationKey3)
+    )
+    AND (
+        (incoming.correlationKey4 IS NULL AND outgoing.correlationKey4 IS NULL)
+        OR
+        (incoming.correlationKey4 = outgoing.correlationKey4)
+    )
+    AND (
+        (incoming.correlationKey5 IS NULL AND outgoing.correlationKey5 IS NULL)
+        OR
+        (incoming.correlationKey5 = outgoing.correlationKey5)
+    )
+  </query>
+
+</hibernate-mapping>

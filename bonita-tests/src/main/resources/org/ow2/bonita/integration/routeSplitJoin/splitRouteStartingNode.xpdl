@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="splitRouteStartingNode" Name="splitRouteStartingNode">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>17 October 2007 17:54:40</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="splitRouteStartingNode" Id="splitRouteStartingNode">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="StatusMail" Name="StatusMail">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+        <DataField Id="Email_address" Name="Email_address">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+        <DataField Id="Phone_number" Name="Phone_number">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+        <DataField Id="Available_applications" Name="Available_applications">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="application1" />
+              <EnumerationValue Name="application2" />
+              <EnumerationValue Name="application3" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>application1</InitialValue>
+        </DataField>
+        <DataField Id="approval_decision" Name="approval_decision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="reject" />
+              <EnumerationValue Name="grant" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>reject</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="Administrator" Name="Administrator">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="SYSTEM" Name="SYSTEM">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="471" />
+            <ExtendedAttribute Name="YOffset" Value="116" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Approval" Name="Approval">
+          <Route />
+          <Performer>Administrator</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="168" />
+            <ExtendedAttribute Name="YOffset" Value="132" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="56" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Acceptance" Name="Acceptance">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="318" />
+            <ExtendedAttribute Name="YOffset" Value="66" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="70" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.integration.routeSplitJoin.MailAccept">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Rejection" Name="Rejection">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="318" />
+            <ExtendedAttribute Name="YOffset" Value="192" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="63" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.integration.routeSplitJoin.MailReject">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Rejection_Final" Name="Rejection_Final" From="Rejection" To="BonitaEnd" />
+        <Transition Id="Approval_Acceptance" Name="Approval_Acceptance" From="Approval" To="Acceptance">
+          <Condition Type="CONDITION">approval_decision.equals("grant")</Condition>
+        </Transition>
+        <Transition Id="Acceptance_Final" Name="Acceptance_Final" From="Acceptance" To="BonitaEnd" />
+        <Transition Id="Approval_Rejection" Name="Approval_Rejection" From="Approval" To="Rejection">
+          <Condition Type="CONDITION">approval_decision.equals("reject")</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

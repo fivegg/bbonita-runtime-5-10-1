@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="basicTypeVariables_Package" Name="basicTypeVariables_Package">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>24 January 2008 15:23:21</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="basicTypeVariables" Id="basicTypeVariables">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <!-- process datafields -->
+      <DataFields>
+        <DataField Id="string" Name="string">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial value</InitialValue>
+        </DataField>
+        
+        <DataField Id="float_var" Name="float_var">
+          <DataType>
+            <BasicType Type="FLOAT" />
+          </DataType>
+          <InitialValue>42.42</InitialValue>
+        </DataField>
+
+        <DataField Id="integer" Name="integer">
+          <DataType>
+            <BasicType Type="INTEGER" />
+          </DataType>
+          <InitialValue>42</InitialValue>
+        </DataField>
+        <DataField Id="bool" Name="bool">
+          <DataType>
+            <BasicType Type="BOOLEAN" />
+          </DataType>
+          <InitialValue>TRUE</InitialValue>
+        </DataField>
+        <DataField Id="datetime" Name="datetime">
+          <DataType>
+            <BasicType Type="DATETIME" />
+          </DataType>
+          <InitialValue>2008/07/31/14/00/00</InitialValue>
+        </DataField>
+        <DataField Id="performer" Name="performer">
+          <DataType>
+            <BasicType Type="PERFORMER" />
+          </DataType>
+          <InitialValue>user</InitialValue>
+        </DataField>
+        <DataField Id="enumeration" Name="enumeration">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="iiii" />
+              <EnumerationValue Name="hhhh" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>iiii</InitialValue>
+        </DataField>          
+      </DataFields>
+      <Participants>
+        <Participant Id="user2" Name="user2">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+        <Participant Id="user" Name="user">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+      </Participants>
+       <Activities>
+        <Activity Id="act1" Name="act1">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+       </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

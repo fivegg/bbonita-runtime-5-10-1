@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache name="history" updateCheck="false">
+
+  <!-- nothing is stored to disk but ehcache generate a NPE if not specified -->
+  <diskStore path="java.io.tmpdir/bonita.cache.history"/>
+
+  <defaultCache
+  	maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="120"
+    timeToLiveSeconds="120"
+    overflowToDisk="false"
+    diskExpiryThreadIntervalSeconds="120"
+    memoryStoreEvictionPolicy="LRU"
+  />
+
+  <cache
+    name="org.hibernate.cache.UpdateTimestampsCache"
+    maxElementsInMemory="5000"
+    eternal="true"
+    overflowToDisk="true"
+  />
+
+</ehcache>

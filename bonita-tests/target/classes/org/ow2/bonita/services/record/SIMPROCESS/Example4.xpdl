@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="0" Name="Example4" xmlns="http://www.wfmc.org/2002/XPDL1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+ <PackageHeader>
+  <XPDLVersion>1.0</XPDLVersion>
+  <Vendor>CACI</Vendor>
+  <Created>Tue Apr 25 13:14:14 EDT 2006</Created>
+ </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+ <TypeDeclarations>
+  <TypeDeclaration Id="Entity29" Name="Entity29">
+   <DeclaredType Id="Entity29"/>
+  </TypeDeclaration>
+ </TypeDeclarations>
+ <Participants>
+  <Participant Id="27" Name="Manager">
+   <ParticipantType Type="RESOURCE"/>
+  </Participant>
+  <Participant Id="28" Name="Worker">
+   <ParticipantType Type="RESOURCE"/>
+  </Participant>
+ </Participants>
+ <DataFields/>
+ <WorkflowProcesses>
+  <WorkflowProcess AccessLevel="PUBLIC" Id="0" Name="Example4">
+   <ProcessHeader/>
+   <Activities>
+    <Activity Id="1" Name="Start">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="6"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="204" ypos="331"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="3" Name="Make Choice">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <SimulationInformation>
+      <Cost/>
+      <TimeEstimation>
+       <Duration>0</Duration>
+      </TimeEstimation>
+     </SimulationInformation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="32"/>
+         <TransitionRef Id="35"/>
+         <TransitionRef Id="36"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="334" ypos="331"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="15" Name="Exit 1">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="528" ypos="439"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="30" Name="Exit 2">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="528" ypos="331"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="33" Name="Exit 3">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="528" ypos="224"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+   </Activities>
+   <Transitions>
+    <Transition From="1" Id="6" To="3"/>
+    <Transition From="3" Id="32" To="30">
+     <Condition Type="CONDITION">Probability == 0.33</Condition>
+    </Transition>
+    <Transition From="3" Id="35" To="33">
+     <Condition Type="CONDITION">Probability == 0.34</Condition>
+    </Transition>
+    <Transition From="3" Id="36" To="15">
+     <Condition Type="CONDITION">Probability == 0.33</Condition>
+    </Transition>
+   </Transitions>
+  </WorkflowProcess>
+ </WorkflowProcesses>
+ <ExtendedAttributes>
+  <ExtendedAttribute Name="CreatedBy" Value="SIMPROCESS"/>
+  <ExtendedAttribute Name="Version" Value="4.3b7(dev)"/>
+  <ExtendedAttribute Name="Build" Value="6421"/>
+ </ExtendedAttributes>
+</Package>

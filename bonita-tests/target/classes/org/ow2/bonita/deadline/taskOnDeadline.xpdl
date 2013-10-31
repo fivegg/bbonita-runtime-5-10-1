@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package
+  xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="TrajetCreation"
+  Name="TrajetCreation">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/05/21 17:56:49</Created>
+    <Description>Porcessus de creation d'une offre de trajet</Description>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Author>Eric Brun</Author>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="TrajetCreation" Id="TrajetCreation_2">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="demandTrouvee" Name="demandTrouvee">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>no</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="me" Name="me">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+        <Activity Id="Wait" Name="Wait">
+          <Description>Attente de 5 minutes pour relancer la recherche
+Reste la deadline à definir</Description>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>me</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <Deadline Execution="ASYNCHR">
+            <DeadlineCondition>5000</DeadlineCondition>
+            <ExceptionName>org.ow2.bonita.deadline.RepeatHook</ExceptionName>
+          </Deadline>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+        <Activity Id="searchDemand" Name="searchDemand">
+          <Description>Verification de la validité de la date de l'offre
+et si oui, recherche d'une demande correspondante
+valide.
+Mise à jour des variables :
+dateOffreTimeout
+demandTrouvee</Description>
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.deadline.SearchDemandHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Initial" Name="Initial">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Initial_searchDemand" Name="Initilal_searchDemand" From="Initial" To="searchDemand" />
+        <Transition Id="searchDemand_End" Name="searchDemand_End" From="searchDemand" To="BonitaEnd">
+          <Condition Type="CONDITION">demandTrouvee.equals("yes")</Condition>
+        </Transition>
+        <Transition Id="searchDemand_Wait" Name="searchDemand_Wait" From="searchDemand" To="Wait">
+          <Condition Type="CONDITION">demandTrouvee.equals("no")</Condition>
+        </Transition>
+        <Transition Id="Wait_searchDemand" Name="Wait_searchDemand" From="Wait" To="searchDemand" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

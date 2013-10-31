@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="instanceVars" Name="instanceVars">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-01-22T15:24:07.363+0100</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="instanceVars" Id="instanceVars">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="v" Name="v">
+          <DataType>
+            <BasicType Type="INTEGER" />
+          </DataType>
+          <InitialValue>0</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="instanceInitiator" Name="instanceInitiator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaInit" Name="BonitaInit">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="63" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="35" />
+            <ExtendedAttribute Name="YOffset" Value="166" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="621" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="695" />
+            <ExtendedAttribute Name="YOffset" Value="172" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="b" Name="b">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="303" />
+            <ExtendedAttribute Name="YOffset" Value="172" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.variable.IncrementInstanceVar">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a" Name="a">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="109" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="156" />
+            <ExtendedAttribute Name="YOffset" Value="172" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.variable.IncrementInstanceVar">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="c" Name="c">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>instanceInitiator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="435" />
+            <ExtendedAttribute Name="YOffset" Value="171" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.variable.IncrementInstanceVar">
+              <HookEventName>task:onStart</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.variable.IncrementInstanceVar">
+              <HookEventName>task:onFinish</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="d" Name="d">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="191" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="566" />
+            <ExtendedAttribute Name="YOffset" Value="175" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.variable.IncrementInstanceVar">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="b_c" Name="b_c" From="b" To="c" />
+        <Transition Id="a_b" Name="a_b" From="a" To="b" />
+        <Transition Id="Start_a" Name="Start_a" From="BonitaInit" To="a" />
+        <Transition Id="c_d" Name="c_d" From="c" To="d" />
+        <Transition Id="d_End" Name="d_End" From="d" To="BonitaEnd" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

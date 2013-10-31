@@ -1,0 +1,38 @@
+<connector>
+  <connectorId>MyConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setVariableId</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setNewValue</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <pages>
+    <page>
+      <pageId>1</pageId>
+      <widgets>
+        <text>
+          <size>20</size>
+          <maxChar>40</maxChar>
+          <setter reference="/connector/inputs/setter"/>
+          <labelId>var name</labelId>
+        </text>
+        <text>
+          <size>20</size>
+          <maxChar>40</maxChar>
+          <setter reference="/connector/inputs/setter[1]"/>
+          <labelId>var value</labelId>
+        </text>
+      </widgets>
+    </page>
+  </pages>
+</connector>

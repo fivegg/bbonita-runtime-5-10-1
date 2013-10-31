@@ -1,0 +1,136 @@
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+
+	<enterprise-beans>
+    	<session>
+    		<ejb-name>commandAPIBean</ejb-name>
+    		<mapped-name>commandAPI</mapped-name>
+    		<business-remote>org.ow2.bonita.facade.internal.RemoteCommandAPI</business-remote>
+    		<ejb-class>org.ow2.bonita.facade.ejb.CommandAPIBean</ejb-class>
+    		<session-type>Stateless</session-type>
+    	</session>
+    
+        <session>
+          <ejb-name>webAPIBean</ejb-name>
+          <mapped-name>webAPI</mapped-name>
+          <business-remote>org.ow2.bonita.facade.internal.RemoteWebAPI</business-remote>
+          <ejb-class>org.ow2.bonita.facade.ejb.WebAPIBean</ejb-class>
+          <session-type>Stateless</session-type>
+        </session>
+        
+        <session>
+          <ejb-name>identityAPIBean</ejb-name>
+          <mapped-name>identityAPI</mapped-name>
+          <business-remote>org.ow2.bonita.facade.internal.RemoteIdentityAPI</business-remote>
+          <ejb-class>org.ow2.bonita.facade.ejb.IdentityAPIBean</ejb-class>
+          <session-type>Stateless</session-type>
+        </session>
+    
+		<session>
+			<ejb-name>runtimeAPIBean</ejb-name>
+			<mapped-name>runtimeAPI</mapped-name>
+			<business-remote>org.ow2.bonita.facade.internal.RemoteRuntimeAPI</business-remote>
+			<ejb-class>org.ow2.bonita.facade.ejb.RuntimeAPIBean</ejb-class>
+			<session-type>Stateless</session-type>
+		</session>
+
+		<session>
+			<ejb-name>managementAPIBean</ejb-name>
+			<mapped-name>managementAPI</mapped-name>
+			<business-remote>org.ow2.bonita.facade.internal.RemoteManagementAPI</business-remote>
+			<ejb-class>org.ow2.bonita.facade.ejb.ManagementAPIBean</ejb-class>
+			<session-type>Stateless</session-type>
+		</session>
+
+		<session>
+			<ejb-name>queryRuntimeAPIBean</ejb-name>
+			<mapped-name>queryRuntimeAPI</mapped-name>
+			<business-remote>org.ow2.bonita.facade.internal.RemoteQueryRuntimeAPI</business-remote>
+			<ejb-class>org.ow2.bonita.facade.ejb.QueryRuntimeAPIBean</ejb-class>
+			<session-type>Stateless</session-type>
+		</session>
+
+		<session>
+			<ejb-name>queryDefinitionAPIBean</ejb-name>
+			<mapped-name>queryDefinitionAPI</mapped-name>
+			<business-remote>org.ow2.bonita.facade.internal.RemoteQueryDefinitionAPI</business-remote>
+			<ejb-class>org.ow2.bonita.facade.ejb.QueryDefinitionAPIBean</ejb-class>
+			<session-type>Stateless</session-type>
+		</session>
+		
+		<session>
+			<ejb-name>bamAPIBean</ejb-name>
+			<mapped-name>bamAPI</mapped-name>
+			<business-remote>org.ow2.bonita.facade.internal.RemoteBAMAPI</business-remote>
+			<ejb-class>org.ow2.bonita.facade.ejb.BAMAPIBean</ejb-class>
+			<session-type>Stateless</session-type>
+		</session>
+    
+        <session>
+          <ejb-name>repairAPIBean</ejb-name>
+          <mapped-name>repairAPI</mapped-name>
+          <business-remote>org.ow2.bonita.facade.internal.RemoteRepairAPI</business-remote>
+          <ejb-class>org.ow2.bonita.facade.ejb.RepairAPIBean</ejb-class>
+          <session-type>Stateless</session-type>
+        </session>
+	</enterprise-beans>
+
+	<interceptors>
+		<interceptor>
+			<interceptor-class>org.ow2.bonita.facade.interceptor.EJB3Interceptor</interceptor-class>
+			<around-invoke>
+				<method-name>performInterception</method-name>
+			</around-invoke>
+		</interceptor>
+	</interceptors>
+
+	<assembly-descriptor>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-class>org.ow2.bonita.facade.interceptor.EJB3Interceptor</interceptor-class>
+		</interceptor-binding>
+		<application-exception>
+			<exception-class>org.ow2.bonita.util.BonitaRuntimeException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.BonitaInternalException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.util.AtomicArchiveException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.BonitaWrapperException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.deployment.DeploymentRuntimeException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.env.InvalidEnvironmentException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.ExpressionEvaluationException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.HookInvocationException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.RoleMapperInvocationException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.PerformerAssignInvocationException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>org.ow2.bonita.facade.exception.MultiInstantiatorInvocationException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>java.lang.IllegalArgumentException</exception-class>
+		</application-exception>
+		<application-exception>
+			<exception-class>java.lang.IllegalStateException</exception-class>
+		</application-exception>
+		<application-exception>
+      <exception-class>org.ow2.bonita.connector.core.desc.ConnectorDescriptorNotFoundException</exception-class>
+    </application-exception>
+	</assembly-descriptor>
+</ejb-jar>

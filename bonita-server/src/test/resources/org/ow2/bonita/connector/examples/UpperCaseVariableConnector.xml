@@ -1,0 +1,22 @@
+<connector>
+  <connectorId>UCVC</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setHello</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setHELLO</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs>
+    <getter>
+      <name>result</name>
+    </getter>
+  </outputs>
+</connector>

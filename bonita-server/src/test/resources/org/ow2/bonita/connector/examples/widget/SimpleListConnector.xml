@@ -1,0 +1,50 @@
+<connector>
+  <connectorId>SimpleListConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setA</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setB</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setC</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <pages>
+    <page>
+      <pageId>page</pageId>
+      <widgets>
+        <list>
+        </list>
+        <list>
+          <labelId></labelId>
+        </list>
+        <list>
+          <labelId>a</labelId>
+          <maxRows>0</maxRows>
+          <setter reference="/connector/inputs/setter"/>
+        </list>
+        <list>
+          <labelId>b</labelId>
+          <maxRows>45</maxRows>
+          <setter reference="/connector/inputs/setter[2]"/>
+        </list>
+        <list>
+          <labelId>c</labelId>
+          <maxRows>-10</maxRows>
+          <setter reference="/connector/inputs/setter[3]"/>
+        </list>
+      </widgets>
+    </page>
+  </pages>
+</connector>

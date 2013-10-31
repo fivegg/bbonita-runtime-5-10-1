@@ -1,0 +1,120 @@
+<project name="Common file for bonita">
+    <!-- properties files -->
+    <property environment="env" />
+    <property name="bonita.dir" value="${basedir}" />
+    <property file="${bonita.dir}/build.properties" />
+    <property name="distrib.name" value="bonita" />
+	<property name="rest.server.name" value="${distrib.name}-server-rest" />
+
+    <!-- DIRECTORIES -->
+    <property name="server.lib.dir" value="${bonita.dir}/lib/server" />
+    <property name="client.lib.dir" value="${bonita.dir}/lib/client" />
+	<property name="rest.lib.dir" value="${bonita.dir}/lib/rest" />
+    <property name="conf.dir" value="${bonita.dir}/bonita/server/default/conf" />
+
+    <!-- CONF FILES -->
+    <property name="bonita-env" location="${conf.dir}/bonita-environment.xml" />
+    <property name="logging" value="${conf.dir}/logging.properties" />
+    <property name="jaasStandard" value="${conf.dir}/jaas-standard.cfg" />
+    <property name="jaasEb" value="${conf.dir}/jaas-easybeans.cfg" />
+    <property name="jaasJboss" value="${conf.dir}/jaas-jboss.cfg" />
+    <property name="jaasJonas4" value="${conf.dir}/jaas-jonas4.cfg" />
+    <property name="jaasJonas5" value="${conf.dir}/jaas-jonas5.cfg" />
+
+    <!-- ENVIRONMENT PROPERTIES -->
+    <condition property="java.options" value="${env.JAVA_OPTS}" else="">
+        <isset property="env.JAVA_OPTS" />
+    </condition>
+    <condition property="java.class.path" value="${env.CLASSPATH}" else="">
+        <isset property="env.CLASSPATH" />
+    </condition>
+    
+    <!-- PATHS -->
+    <path id="server.path">
+        <pathelement location="${conf.dir}" />
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${server.lib.dir}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <path id="client.path">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${client.lib.dir}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <path id="easybeans.path">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${eb.lib}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <path id="jonasLib">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${jonas.lib}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <path id="commonJonasRoot">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${jonas.root}/lib">
+            <include name="client.jar" />
+        </fileset>
+    </path>
+    <path id="jonas4Root">
+        <pathelement path="${java.class.path}" />
+        <path refid="commonJonasRoot" />
+        <fileset dir="${client.lib.dir}">
+            <include name="jonas4/jonas4Stubs.jar" />
+        </fileset>
+    </path>
+    <path id="jbossLib">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${jboss.lib}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <path id="jbossHome">
+        <pathelement path="${java.class.path}" />
+        <fileset dir="${jboss.home}/client">
+            <include name="jbossall-client.jar" />
+        </fileset>
+    </path>
+
+    <!-- TASKS -->
+    <taskdef name="bar" classname="org.ow2.bonita.ant.tasks.GenerateBar" classpathref="client.path" />
+    <taskdef name="bonita" classname="org.ow2.bonita.ant.tasks.BonitaJava" classpathref="client.path" />
+    <taskdef name="bonita-ee" classname="org.ow2.bonita.ant.tasks.BonitaJEE" classpathref="client.path" />
+
+    <!-- INIT Tasks -->
+    <target name="initJboss">
+        <condition property="jbossPath" value="jbossLib">
+            <isset property="jboss.lib" />
+        </condition>
+        <condition property="jbossPath" value="jbossHome">
+            <isset property="jboss.home" />
+        </condition>
+        <fail message="${jboss.launch.msg}" unless="jbossPath"/>
+    </target>
+    <target name="initJonas4">
+        <condition property="jonas.path" value="jonas4Root">
+            <isset property="jonas.root" />
+        </condition>
+        <condition property="jonas.path" value="jonasLib">
+            <isset property="jonas.lib" />
+        </condition>
+        <fail message="${jonas.launch.msg}" unless="jonas.path"/>
+    </target>
+    <target name="initJonas5">
+        <condition property="jonas.path" value="commonJonasRoot">
+            <isset property="jonas.root" />
+        </condition>
+        <condition property="jonas.path" value="jonasLib">
+            <isset property="jonas.lib" />
+        </condition>
+        <fail message="${jonas.launch.msg}" unless="jonas.path"/>
+    </target>
+    <target name="initEb">
+        <fail message="${easybeans.launch.msg}" unless="eb.lib"/>
+    </target>
+</project>

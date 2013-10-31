@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition product-version="5.0">
+<process name="My_Bar_Process" version="1.1">
+<label>My Bar Process</label>
+<description/>
+<participants>
+<participant name="waiter">
+<label>waiter</label>
+<description/>
+<role-mapper>
+<classname>org.bonitasoft.connectors.bonita.resolvers.UserListRoleResolver</classname>
+<parameters>
+<parameter name="setUsers">rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAF0AARqYWNr</parameter>
+</parameters>
+</role-mapper>
+</participant>
+<participant name="boss">
+<label>boss</label>
+<description/>
+<role-mapper>
+<classname>org.bonitasoft.connectors.bonita.resolvers.UserListRoleResolver</classname>
+<parameters>
+<parameter name="setUsers">rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAF0AARqb2hu</parameter>
+</parameters>
+</role-mapper>
+</participant>
+</participants>
+<data-fields>
+<data-field name="price">
+<label>price</label>
+<value>rO0ABXA=</value>
+<datatype-classname>java.lang.Long</datatype-classname>
+<enumeration-values/>
+</data-field>
+<data-field name="quantity">
+<label>quantity</label>
+<value>rO0ABXA=</value>
+<datatype-classname>java.lang.Long</datatype-classname>
+<enumeration-values/>
+</data-field>
+<data-field name="product">
+<value>rO0ABXA=</value>
+<datatype-classname>java.lang.String</datatype-classname>
+<enumeration-values>
+<enumeration-value>Achel</enumeration-value>
+<enumeration-value>Rochefort</enumeration-value>
+<enumeration-value>Westmalle</enumeration-value>
+<enumeration-value>Trappe</enumeration-value>
+<enumeration-value>Chimay</enumeration-value>
+<enumeration-value>Orval</enumeration-value>
+</enumeration-values>
+</data-field>
+</data-fields>
+<attachments/>
+<activities>
+<activity name="Gate7">
+<label>Gate7</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>AND</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Boss_acknowledge_need_for_beers">
+<label>Boss acknowledge need for beers</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Human</type>
+<asynchronous>false</asynchronous>
+<performers>
+<performer>boss</performer>
+</performers>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Start1">
+<label>Start1</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Apologize_to_customers">
+<label>Apologize to customers</label>
+<priority>0</priority>
+<description>Go to see customer and apologize for the lock of beers</description>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Human</type>
+<asynchronous>false</asynchronous>
+<performers>
+<performer>waiter</performer>
+</performers>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Gate5">
+<label>Gate5</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>XOR</split-type>
+<join-type>XOR</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Cash_In">
+<label>Cash In</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Human</type>
+<asynchronous>false</asynchronous>
+<performers>
+<performer>waiter</performer>
+</performers>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Serve">
+<label>Serve</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Human</type>
+<asynchronous>false</asynchronous>
+<performers>
+<performer>waiter</performer>
+</performers>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Acknowledge_Command">
+<label>Acknowledge Command</label>
+<priority>0</priority>
+<description>When aknowledging command, waiter sets the price of the bottle</description>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Human</type>
+<asynchronous>false</asynchronous>
+<performers>
+<performer>waiter</performer>
+</performers>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="End1">
+<label>End1</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>XOR</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Gate2">
+<label>Gate2</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>AND</split-type>
+<join-type>AND</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+<activity name="Gate3">
+<label>Gate3</label>
+<priority>0</priority>
+<description/>
+<executing-time>0</executing-time>
+<split-type>XOR</split-type>
+<join-type>XOR</join-type>
+<type>Automatic</type>
+<asynchronous>false</asynchronous>
+<performers/>
+<connectors/>
+<data-fields/>
+<filter/>
+<deadlines/>
+<outgoing-events/>
+<multi-instantiation/>
+<subflow-in-parameters/>
+<subflow-out-parameters/>
+</activity>
+</activities>
+<transitions>
+<transition name="Boss_acknowledge_need_for_beers__Gate5">
+<description/>
+<from>Boss_acknowledge_need_for_beers</from>
+<to>Gate5</to>
+</transition>
+<transition name="Acknowledge_Command__Apologize_to_customers">
+<label>not enough beers</label>
+<condition>quantity &gt; new org.bonitasoft.connector.StockIn().getStock(product)</condition>
+<description/>
+<from>Acknowledge_Command</from>
+<to>Apologize_to_customers</to>
+</transition>
+<transition name="Serve__Gate2">
+<description/>
+<from>Serve</from>
+<to>Gate2</to>
+</transition>
+<transition name="Start1__Acknowledge_Command">
+<description/>
+<from>Start1</from>
+<to>Acknowledge_Command</to>
+</transition>
+<transition name="Gate5__Gate7">
+<description/>
+<from>Gate5</from>
+<to>Gate7</to>
+</transition>
+<transition name="Acknowledge_Command__Serve">
+<condition>! (quantity &gt; new org.bonitasoft.connector.StockIn().getStock(product))</condition>
+<description/>
+<from>Acknowledge_Command</from>
+<to>Serve</to>
+</transition>
+<transition name="Cash_In__Gate7">
+<description/>
+<from>Cash_In</from>
+<to>Gate7</to>
+</transition>
+<transition name="Gate2__Cash_In">
+<description/>
+<from>Gate2</from>
+<to>Cash_In</to>
+</transition>
+<transition name="Gate7__End1">
+<description/>
+<from>Gate7</from>
+<to>End1</to>
+</transition>
+<transition name="Gate3__Gate5">
+<label>stock OK</label>
+<condition>new org.bonitasoft.connector.StockIn().getStock(product) &gt;= 3</condition>
+<description/>
+<from>Gate3</from>
+<to>Gate5</to>
+</transition>
+<transition name="Apologize_to_customers__End1">
+<description/>
+<from>Apologize_to_customers</from>
+<to>End1</to>
+</transition>
+<transition name="Gate3__Boss_acknowledge_need_for_beers">
+<label>need more beers</label>
+<condition>! (new org.bonitasoft.connector.StockIn().getStock(product) &gt;= 3)</condition>
+<description/>
+<from>Gate3</from>
+<to>Boss_acknowledge_need_for_beers</to>
+</transition>
+<transition name="Gate2__Gate3">
+<label>check stock</label>
+<description/>
+<from>Gate2</from>
+<to>Gate3</to>
+</transition>
+</transitions>
+<connectors/>
+</process>
+</process-definition>

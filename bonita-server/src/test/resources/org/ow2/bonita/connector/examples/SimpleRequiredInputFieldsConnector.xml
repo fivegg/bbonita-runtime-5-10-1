@@ -1,0 +1,31 @@
+<connector>
+  <connectorId>SimpleRequiredInputFieldsConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setFirstname</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setLastname</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setSex</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setEmail</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

@@ -1,0 +1,24 @@
+<connector>
+  <connectorId>SimpleRequiredInputFieldsConnector</connectorId>
+  <outputs>
+    <getter />
+    <getter>
+      <name />
+    </getter>
+    <getter>
+      <name>data</name>
+    </getter>
+    <getter>
+      <name>name</name>
+    </getter>
+    <getter>
+      <name>address</name>
+    </getter>
+    <getter>
+      <name>name</name>
+    </getter>
+    <getter>
+      <name>nam</name>
+    </getter>    
+  </outputs>
+</connector>

@@ -1,0 +1,382 @@
+<project name="Bonita Runtime Distribution" default="info" basedir=".">
+
+  <description>Bonita Runtime</description>
+
+  <condition property="filePrefix" value="file://">
+    <os family="unix" />
+  </condition>
+  <condition property="filePrefix" value="file:///">
+    <os family="windows" />
+  </condition>
+
+  <import file="commons.xml" optional="true" />
+
+  <!-- INFO -->
+  <target name="info" description="display helpful information on this distribution">
+    <echo message="**** Java version used when invoking Ant directly ****" />
+    <echo message="**** (please check that it is the java version you use with Bonita when reporting bugs) ****" />
+    <exec executable="java">
+      <arg line="-version" />
+    </exec>
+    <echo message="**** Ant version ****" />
+    <exec executable="cmd" osfamily="windows">
+   	  <arg value="/c"/>
+       <arg value="ant"/>
+       <arg value="-version"/>
+    </exec>
+    <exec executable="ant" osfamily="unix">
+      <arg line="-version" />
+    </exec>
+    <echo message="**** lib content ****" />
+    <exec executable="cmd" osfamily="windows">
+      <arg value="/c"/>
+      <arg value="dir"/>
+      <arg value="lib"/>
+    </exec>
+    <exec executable="ls" osfamily="unix">
+      <arg line="lib" />
+    </exec>
+    <echo message="**** Bonita version: ${bonita.version} ****" />
+  </target>
+
+    <!-- EAR -->
+  <target name="ear.ejb2" description="Generate an ear which can be use in an ejb2 environment (Jonas 4 or Jboss 4 application server)">
+    <property name="jeeVersion" value="ejb2" />
+    <fileset dir="${server.lib.dir}" id="ear.server.lib">
+      <include name="*.jar" />
+      <exclude name="bonita-server-${bonita.version}.jar" />
+    </fileset>
+    <pathconvert property="ear.server.libs.path" refid="ear.server.lib">
+      <map from="${server.lib.dir}" to="${server.lib.dir}/.." />
+    </pathconvert>
+
+    <manifestclasspath jarfile="bonita-ejbjar.jar" property="manifest.class.pathTemp">
+      <classpath>
+        <pathelement path="${ear.server.libs.path}" />
+      </classpath>
+    </manifestclasspath>
+    <manifestclasspath jarfile="ear/bonita-ejbjar.jar" property="manifest.class.pathTemp2">
+      <classpath>
+        <fileset dir="ear">
+          <include name="lib/*.jar" />
+        </fileset>
+      </classpath>
+    </manifestclasspath>
+
+    <property name="manifest.class.path" value="${manifest.class.pathTemp} ${manifest.class.pathTemp2}" />
+
+    <antcall target="ear" />
+    <antcall target="genJonas4Stubs" />
+    <echo>EJB2 ear has been generated in ear/ejb2 directory.</echo>
+    <echo>You can use it in jonas 4 and jboss 4 application server.</echo>
+    <antcall target="checkJonasStubs" />
+  </target>
+
+  <target name="checkJonasStubs" unless="jonas.root">
+    <echo message="${ear.jonas4.msg}" />
+  </target>
+
+  <target name="genJonas4Stubs" if="jonas.root">
+    <mkdir dir="${client.lib.dir}/jonas4" />
+    <taskdef name="genic" classname="org.objectweb.jonas.ant.GenICTask">
+      <classpath refid="jonas4Root" />
+    </taskdef>
+    <genic keepgenerated="true" additionalargs="-noaddinjar -d ear/tmpGenIc/stubs ear/tmpGenIc/META-INF/ejb-jar.xml">
+      <classpath>
+         <fileset dir="${server.lib.dir}">
+            <include name="*.jar" />
+            <exclude name="bonita-server-${bonita.version}.jar" />
+          </fileset>
+      </classpath>
+      <fileset dir="ear/ejb2">
+        <include name="bonita-ejbjar.jar" />
+      </fileset>
+    </genic>
+
+    <mkdir dir="ear/tmpGenIc" />
+    <mkdir dir="ear/tmpGenIc/stubs" />
+    <mkdir dir="ear/tmpGenIc/META-INF" />
+    <copy file="ear/ejb2/ejb-jar.xml" todir="ear/tmpGenIc/META-INF" />
+
+    <jar destfile="${client.lib.dir}/jonas4/jonas4Stubs.jar">
+      <fileset dir="ear/tmpGenIc/stubs/">
+        <include name="**/*" />
+      </fileset>
+    </jar>
+    <delete dir="ear/tmpGenIc" />
+    <echo>The jonas 4 jar (jonas4Stubs.jar) containing stubs to run the example has been generated in ${client.lib.dir}/jonas4.</echo>
+    <echo>Note : if you run the jonas 4 example with the jonas.lib property, you must include this jar in the directory that you specify</echo>
+  </target>
+
+  <target name="ear.ejb3" description="Generate an ear which can be use in an ejb3 environment (easybeans, jonas 5, jboss 5)">
+    <property name="jeeVersion" value="ejb3" />
+    <antcall target="ear" />
+    <echo>EJB3 ear has been generated in ear/ejb3 directory.</echo>
+    <echo>You can use it in the easybeans container, jonas 5 and jboss 5 application server.</echo>
+  </target>
+
+  <target name="ear">
+    <fail message="${ear.msg}" unless="jeeVersion" />  
+    <condition property="manifest.class.path" value="${manifest.class.path}" else="">
+      <isset property="manifest.class.path" />
+    </condition>
+
+    <mkdir dir="ear/tmp"/>
+    <mkdir dir="ear/tmp/META-INF"/>
+    <copy file="ear/${jeeVersion}/ejb-jar.xml" todir="ear/tmp/META-INF" overwrite="true"/>
+    <copy todir="ear/tmp/META-INF" flatten="true">
+      <fileset dir="ear/${jeeVersion}">
+        <include name="*/*.xml" />
+        <exclude name="jboss4/jboss-app.xml"/>
+      </fileset>
+    </copy>
+  
+    <copy file="${server.lib.dir}/bonita-server-${bonita.version}.jar" tofile="ear/${jeeVersion}/bonita-ejbjar.jar" overwrite="true"/>
+
+    <jar destfile="ear/${jeeVersion}/bonita-ejbjar.jar" update="true">
+      <manifest>
+        <attribute name="Class-path" value="${manifest.class.path}"/>
+      </manifest>
+      <fileset dir="ear/tmp">
+        <include name="META-INF/*"/>
+      </fileset>
+    </jar>
+
+    <delete dir="ear/tmp" />
+
+    <copy todir="ear/lib">
+      <fileset dir="${server.lib.dir}">
+        <include name="*.jar" />
+        <exclude name="bonita-server-${bonita.version}.jar" />
+      </fileset>
+    </copy>
+
+    <ear destfile="ear/${jeeVersion}/${distrib.name}.ear" appxml="ear/${jeeVersion}/application.xml">
+      <metainf file="ear/${jeeVersion}/jboss4/jboss-app.xml" /> 
+      <fileset dir="ear">
+        <include name="lib/*.jar" />
+      </fileset>
+      <fileset dir="ear/${jeeVersion}">
+        <include name="bonita-ejbjar.jar" />
+      </fileset>
+    </ear>
+  </target>
+
+  <target name="war" description="Generate an war which can be use in a REST environment (web application server)">
+  	<property name="warDir" value="war-rest-full"/>
+    <mkdir dir="${warDir}/tmp" />
+    <mkdir dir="${warDir}/META-INF" />
+    <mkdir dir="${warDir}/WEB-INF" />
+    <copy todir="${warDir}/WEB-INF/lib">
+      <fileset dir="${server.lib.dir}">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/WEB-INF/lib">
+      <fileset dir="${rest.lib.dir}">
+        <include name="*.jar" />                      
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/META-INF">
+      <fileset dir="war">
+        <include name="context.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/META-INF">
+      <fileset dir="war/META-INF"/>
+    </copy>
+    <copy todir="${warDir}/WEB-INF">
+      <fileset dir="war/WEB-INF"/>
+	  <!-- necessary for Jboss -->
+      <fileset dir="war/META-INF"/>
+    </copy>				
+    <war file="war/${rest.server.name}.war" webxml="war/web.xml">      
+      <metainf dir="${warDir}/META-INF"/>
+      <webinf dir="${warDir}/WEB-INF"/>
+    </war>
+  	<delete dir="${warDir}"/>
+  </target>
+	
+  <target name="war-rest-light" description="Generate an war which can be use in a REST environment, does not includes engine libs">
+  	<property name="warDir" value="war-rest-light"/>
+    <mkdir dir="${warDir}/tmp" />
+    <mkdir dir="${warDir}/META-INF" />
+    <mkdir dir="${warDir}/WEB-INF" />
+    <copy todir="${warDir}/META-INF">
+      <fileset dir="war">
+        <include name="context.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/META-INF">
+      <fileset dir="war/META-INF"/>
+    </copy>
+    <copy todir="${warDir}/WEB-INF">
+      <fileset dir="war/WEB-INF"/>
+      <!-- necessary for Jboss -->
+      <fileset dir="war/META-INF"/>
+    </copy>
+  	<mkdir dir="war/${warDir}" />
+    <war file="war/${warDir}/${rest.server.name}.war" webxml="war/web.xml">      
+      <metainf dir="${warDir}/META-INF"/>
+      <webinf dir="${warDir}/WEB-INF"/>
+    </war>
+  	<delete dir="${warDir}"/>
+  </target>
+
+  <target name="war-rest" description="Generate a WAR file with REST libraries">
+    <property name="warDir" value="war-rest"/>
+    <mkdir dir="${warDir}/tmp" />
+    <mkdir dir="${warDir}/META-INF" />
+    <mkdir dir="${warDir}/WEB-INF" />
+  	<copy todir="${warDir}/WEB-INF/lib">
+      <fileset dir="${rest.lib.dir}">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/WEB-INF/lib">
+      <fileset dir="${client.lib.dir}">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  	<copy todir="${warDir}/META-INF">
+      <fileset dir="war">
+        <include name="context.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${warDir}/META-INF">
+      <fileset dir="war/META-INF"/>
+    </copy>
+    <copy todir="${warDir}/WEB-INF">
+      <fileset dir="war/WEB-INF"/>
+      <!-- necessary for Jboss -->
+      <fileset dir="war/META-INF"/>
+    </copy>
+  	<mkdir dir="war/${warDir}" />
+    <war file="war/${warDir}/${rest.server.name}.war" webxml="war/web.xml">      
+      <metainf dir="${warDir}/META-INF"/>
+      <webinf dir="${warDir}/WEB-INF"/>
+    </war>
+    <delete dir="${warDir}"/>
+  </target>
+
+  <target name="init-db-ds" description="Generate database schema from the environment configuration using datasource">
+   <input addproperty="initdb.domain" defaultvalue="default">
+      Which domain to you want to use (press enter without nothing to use default)?
+    </input>
+    <input addproperty="bonita.home">
+      Where is your BONITA_HOME folder?
+    </input>
+    <input addproperty="initdb.hibernate.configuration" defaultvalue="hibernate-configuration:core hibernate-configuration:history">
+      Which hibernate configuration to use to generate database (press enter without nothing to use default)?
+      Default is 'hibernate-configuration:core hibernate-configuration:history' to init both databases
+    </input>
+  	<input addproperty="factory">
+      What is the "java.naming.factory.initial" class name?
+  	</input>
+  	<input addproperty="url">
+  	   What is the URL of the server?
+  	</input>
+  	<input addproperty="jaas">
+  	   Where is your jaas file?
+  	</input>
+  	<input addproperty="ext.lib.dir">
+  		Where is the folder containing web container client libraries?
+  	</input>
+
+  	<path id="ext.path">
+  		<fileset dir="${ext.lib.dir}" />
+    </path>
+  	<echo>Initializing databases</echo>
+    <java classname="org.ow2.bonita.util.DbTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+      <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+   	  <sysproperty key="java.naming.factory.initial" value="${factory}" />
+      <sysproperty key="java.naming.provider.url" value="${url}" />
+      <sysproperty key="org.ow2.bonita.api-type" value="${api.type}" />
+      <sysproperty key="java.security.auth.login.config" value="${jaas}" />
+
+      <classpath refid="server.path" />
+      <classpath refid="ext.path" />
+      <arg line="${initdb.domain} ${initdb.hibernate.configuration}" />
+    </java>
+    <echo>indexing databases</echo>
+    <java classname="org.ow2.bonita.util.IndexTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+      <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <sysproperty key="java.naming.factory.initial" value="${factory}" />
+      <sysproperty key="java.naming.provider.url" value="${url}" />
+      <sysproperty key="org.ow2.bonita.api-type" value="${api.type}" />
+      <sysproperty key="java.security.auth.login.config" value="${jaas}" />
+
+   	  <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <classpath refid="ext.path" />
+      <arg line="${initdb.domain} 5 12" />
+    </java>
+  </target>
+
+  <target name="init-db" description="Generate database schema from the environment configuration">
+    <input addproperty="initdb.domain" defaultvalue="default">
+      Which domain to you want to use (press enter without nothing to use default)?
+    </input>
+    <input addproperty="bonita.home">
+      Where is your BONITA_HOME folder?
+    </input>
+    <input addproperty="initdb.hibernate.configuration" defaultvalue="hibernate-configuration:core hibernate-configuration:history">
+      Which hibernate configuration to use to generate database (press enter without nothing to use default)?
+      Default is 'hibernate-configuration:core hibernate-configuration:history' to init both databases
+    </input>
+    <java classname="org.ow2.bonita.util.DbTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+      <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <arg line="${initdb.domain} ${initdb.hibernate.configuration}" />
+    </java>
+    <java classname="org.ow2.bonita.util.IndexTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+   	  <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <arg line="${initdb.domain} 5 12" />
+    </java>
+  </target>
+
+  <target name="migrate-db" description="Migrate database defined in the environment configuration">
+    <input addproperty="migratedb.domain" defaultvalue="default">
+      Which domain to you want to use (press enter without nothing to use default)?
+    </input>
+    <input addproperty="bonita.home">
+      Where is your bonita.home folder?
+    </input>
+    <input addproperty="migratedb.database" defaultvalue="h2">
+      What is your database type (h2, mysql, oracle, postgresql, sqlserver)?
+    </input>
+    <java classname="org.ow2.bonita.util.DbMigration" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+      <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <arg line="${migratedb.domain} ${migratedb.database} 5.7" />
+    </java>
+    <java classname="org.ow2.bonita.util.IndexTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+   	  <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <arg line="${migratedb.domain} 5 12" />
+    </java>
+  </target>
+
+  <target name="index" description="Purge and index again database in order to search entities">
+    <input addproperty="search.domain" defaultvalue="default">
+      Which domain to you want to use (press enter without nothing to use default)?
+    </input>
+  	<input addproperty="bonita.home">
+  	  Where is your BONITA_HOME folder?
+  	</input>
+    <java classname="org.ow2.bonita.util.IndexTool" fork="true" failonerror="true">
+      <jvmarg line="${java.options}" />
+      <sysproperty key="BONITA_HOME" value="${bonita.home}" />
+      <classpath refid="server.path" />
+      <arg line="${search.domain} 5 12" />
+    </java>
+  </target>
+
+</project>

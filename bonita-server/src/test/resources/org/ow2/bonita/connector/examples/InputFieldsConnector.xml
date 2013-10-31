@@ -1,0 +1,23 @@
+<connector>
+  <connectorId>InputFieldsConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setName</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setSurname</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setAge</setterName>
+      <parameters>
+        <int>15</int>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="testTaskVariables_Project" Name="testTaskVariables_Project">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>21 May 2007 17:05:40</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="testTaskVariables" Id="testTaskVariables">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+       <DataFields>
+        <DataField Id="act_str1" Name="act_str1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial value</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="act_enum_stat" Name="act_enum_stat">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="v1" />
+              <EnumerationValue Name="v2" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>v1</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+       </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+
+      <!-- **** myTask *** -->
+        <Activity Id="myTask" Name="myTask">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="220" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="57" />
+            <ExtendedAttribute Name="XOffset" Value="263" />
+            <ExtendedAttribute Name="YOffset" Value="102" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="property" Value="act_str1">
+                          <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="act_enum_stat">
+                          <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+
+        <!-- *** end *** -->
+          <Activity Id="end" Name="end">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="220" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="57" />
+            <ExtendedAttribute Name="XOffset" Value="263" />
+            <ExtendedAttribute Name="YOffset" Value="102" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+
+        <!-- *** initial *** -->
+        <Activity Id="initial" Name="initial">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="105" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="43" />
+            <ExtendedAttribute Name="YOffset" Value="148" />
+            <ExtendedAttribute Name="CellHeight" Value="27" />
+            <ExtendedAttribute Name="CellWidth" Value="66" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="initial_myTask" Name="initial_myTask" From="initial" To="myTask" />
+        <Transition Id="myTask_end" Name="myTask_end" From="myTask" To="end" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

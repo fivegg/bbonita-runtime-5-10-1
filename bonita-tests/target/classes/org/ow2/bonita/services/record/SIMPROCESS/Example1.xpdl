@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="Example1" Name="Example1" xmlns="http://www.wfmc.org/2002/XPDL1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+ <PackageHeader>
+  <XPDLVersion>1.0</XPDLVersion>
+  <Vendor>CACI</Vendor>
+  <Created>Tue Apr 25 13:13:32 EDT 2006</Created>
+ </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+ <TypeDeclarations>
+  <TypeDeclaration Id="Entity10" Name="Entity10">
+   <DeclaredType Id="Entity10"/>
+  </TypeDeclaration>
+ </TypeDeclarations>
+ <Participants/>
+ <DataFields/>
+ <WorkflowProcesses>
+  <WorkflowProcess AccessLevel="PUBLIC" Id="Example1" Name="Example1">
+   <ProcessHeader/>
+   <Activities>
+    <Activity Id="a1" Name="Start">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="t6"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="176" ypos="350"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="a3" Name="Activity1">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <SimulationInformation>
+      <Cost/>
+      <TimeEstimation>
+       <Duration>1</Duration>
+      </TimeEstimation>
+     </SimulationInformation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="t9"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="348" ypos="350"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="a7" Name="Exit1">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="519" ypos="350"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+   </Activities>
+   <Transitions>
+    <Transition From="a1" Id="t6" To="a3"/>
+    <Transition From="a3" Id="t9" To="a7"/>
+   </Transitions>
+  </WorkflowProcess>
+ </WorkflowProcesses>
+ <ExtendedAttributes>
+  <ExtendedAttribute Name="CreatedBy" Value="SIMPROCESS"/>
+  <ExtendedAttribute Name="Version" Value="4.3b7(dev)"/>
+  <ExtendedAttribute Name="Build" Value="6421"/>
+ </ExtendedAttributes>
+</Package>

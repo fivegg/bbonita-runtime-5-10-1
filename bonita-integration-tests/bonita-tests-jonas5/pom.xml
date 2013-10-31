@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures,
+		B.P.68, 78340, Les Clayes-sous-Bois - - This library is free software;
+		you can redistribute it and/or - modify it under the terms of the GNU
+		Lesser General Public - License as published by the Free Software
+		Foundation; either - version 2.1 of the License, or (at your option)
+		any later version. - - This library is distributed in the hope that it
+		will be useful, - but WITHOUT ANY WARRANTY; without even the implied
+		warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+		the GNU - Lesser General Public License for more details. - - You
+		should have received a copy of the GNU Lesser General Public - License
+		along with this library; if not, write to the Free Software -
+		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+		02110-1301, USA - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - - - - - - - - -
+	-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-tests-jonas5</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Integration Tests - Jonas5</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-integration-tests</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<properties>
+		<jaas>${external.conf.dir}/jaas-jonas5.cfg</jaas>
+		<jonas5.version>5.2.0</jonas5.version>
+		<jonas.root>${build.dir}/jonas5/jonas-full-${jonas5.version}</jonas.root>
+		<jonas.base>${jonas.root}</jonas.base>
+		<provider.urlJonas>rmi://localhost:${provider.port}</provider.urlJonas>
+		<jonas.launch.msg>ErrorlaunchingJOnAS</jonas.launch.msg>
+		<provider.port>7099</provider.port>
+		<jonas.number>5</jonas.number>
+		<carol.icf>org.objectweb.carol.jndi.spi.MultiOrbInitialContextFactory</carol.icf>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>integrationTests</id>
+			<activation>
+				<property>
+					<name>!skipIntegrationTests</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-jonas5</id>
+								<phase>package</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.ow2.jonas.assemblies.profiles</groupId>
+											<artifactId>jonas-full</artifactId>
+											<version>${jonas5.version}</version>
+											<classifier>bin</classifier>
+											<type>tar.gz</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${project.build.directory}/jonas5</outputDirectory>
+									<overWriteReleases>false</overWriteReleases>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install jonas</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<propertyfile file="${jonas.root}/conf/carol.properties">
+											<entry key="carol.jrmp.url" value="rmi://localhost:${provider.port}" />
+											<entry key="carol.jrmp.server.port" value="0" />
+										</propertyfile>
+
+										<delete file="${jonas.root}/rars/autoload/joram_for_jonas_ra.rar" />
+
+										<propertyfile file="${jonas.root}/conf/jonas.properties">
+											<entry key="jonas.services"
+												value="registry,jmx,jtm,db,security,wm,wc,resource,ejb2,ejb3,ear,depmonitor,web" />
+										</propertyfile>
+
+										<!--  Prevent javassist JAR conflict -->
+										<replace
+											file="${jonas.root}/conf/classloader-default-filtering.xml"
+											token="&lt;filter-name&gt;org.apache.commons.digester.*&lt;/filter-name&gt;"
+											value="&lt;filter-name&gt;org.apache.commons.digester.*&lt;/filter-name&gt;
+											&lt;filter-name&gt;org.hibernate.*&lt;/filter-name&gt;" />
+
+										<ant dir="${distrib.dir}" antfile="build.xml" target="ear.ejb3">
+											<property name="jonas.root" value="${jonas.root}" />
+										</ant>
+
+										<copy todir="${jonas.root}/deploy" file="${distrib.dir}/ear/ejb3/bonita.ear" />
+
+										<!--
+											Copy ONLY JDBC drivers in lib ext otherwise Hibernate cannot
+											load the driver
+										-->
+										<copy todir="${jonas.root}/lib/ext" file="${distrib.dir}/lib/server/h2-1.2.139.jar" />
+
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>run jonas tests</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<property name="test_classpath" refid="maven.test.classpath" />
+										<property environment="env" />
+										<property name="added.java.options" value="${tmpdir.opts}" />
+										<condition property="java.options"
+											value="${env.JAVA_OPTS} ${added.java.options}" else="${added.java.options}">
+											<isset property="env.JAVA_OPTS" />
+										</condition>
+
+										<path id="client.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${client.lib.dir}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<path id="test.path">
+											<pathelement path="${java.class.path}" />
+											<path refid="client.path" />
+											<pathelement path="${test_classpath}" />
+										</path>
+										<path id="jonas.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${jonas.root}/lib">
+												<include name="client.jar" />
+											</fileset>
+										</path>
+
+										<copy file="${hudson.hbm.core}" tofile="${hbm.core}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.hbm.history}" tofile="${hbm.history}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.logging}" tofile="${logging}"
+											overwrite="true" failonerror="false" />
+										<copy todir="${server.lib.dir}" overwrite="true"
+											failonerror="false">
+											<fileset dir="${config.dir}" includes="*.jar" />
+										</copy>
+
+										<!-- Create default bonita.home folder -->
+										<copy todir="${bonita.home}" verbose="true">
+											<fileset dir="${build.dir}/${distrib.name}/bonita/" />
+										</copy>
+
+										<echo>Init databases...</echo>
+										<ant dir="${distrib.dir}" antfile="build.xml" target="init-db">
+											<property name="initdb.domain" value="${default.domain}" />
+											<property name="bonita.home" value="${bonita.home}" />
+											<property name="initdb.hibernate.configuration" value="${core.hbm.cfg} ${history.hbm.cfg}" />
+										</ant>
+
+										<waitfor maxwait="1" maxwaitunit="minute">
+											<socket server="localhost" port="${provider.port}" />
+										</waitfor>
+
+										<mkdir dir="${report.xml}" />
+										<junit printsummary="yes" fork="yes" forkmode="once"
+											showoutput="true">
+											<jvmarg line="${java.options}" />
+											<classpath refid="test.path" />
+											<classpath refid="jonas.path" />
+											<sysproperty key="${jaasKey}" value="${jaas}" />
+											<sysproperty key="${icfKey}" value="${carol.icf}" />
+											<sysproperty key="${providerUrlKey}" value="${provider.urlJonas}" />
+											<sysproperty key="${loggingKey}" value="${logging}" />
+											<sysproperty key="${apitypeKey}" value="${apitype.ejb3}" />
+											<sysproperty key="${jeeServer}" value="jonas5" />
+											<sysproperty key="BONITA_HOME" value="${bonita.home}" />
+											<formatter type="xml" />
+											<test todir="${report.xml}" name="${test.class}" />
+										</junit>
+										<junitreport todir="${report.xml}">
+											<fileset dir="${report.xml}" includes="TEST-*.xml" />
+											<report todir="${report.results}" />
+										</junitreport>
+										<copy todir="${surefire.reports}">
+											<fileset dir="${report.xml}" />
+										</copy>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<container>
+								<containerId>jonas5x</containerId>
+								<home>${project.build.directory}/jonas5/jonas-full-${jonas5.version}</home>
+								<systemProperties>
+									<BONITA_HOME>${bonita.home}</BONITA_HOME>
+									<javax.xml.parsers.DocumentBuilderFactory>com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl</javax.xml.parsers.DocumentBuilderFactory>
+								</systemProperties>
+							</container>
+							<configuration>
+								<type>existing</type>
+								<home>${project.build.directory}/jonas5/jonas-full-${jonas5.version}</home>
+							</configuration>
+							<wait>false</wait>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>jonas-tests</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/*</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

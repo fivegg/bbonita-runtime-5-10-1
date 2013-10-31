@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false" default-access="field"
+  package="org.ow2.bonita.facade.identity.impl">
+  
+  <class name="UserImpl" table="BN_USER">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="uuid" column="USER_UUID_" unique="true" index="IDX_USER_UUID" />
+    <property name="username" column="USER_USERNAME_" unique="true" index="IDX_USER_USERNAME" />
+    <property name="firstName" column="USER_FIRST_NAME_" />
+    <property name="lastName" column="USER_LAST_NAME_" />
+    <property name="password" column="USER_PASSWORD_" />
+    <property name="title" column="USER_TITLE_" />
+    <property name="jobTitle" column="USER_JOBTITLE_" />
+    <property name="manager" column="USER_MANAGER_" />
+    <property name="delegee" column="USER_DELEGEE_" />
+    <component name="professionalContactInfo" class="ContactInfoImpl">
+    	<property name="email" column="USER_PRO_EMAIL_" />
+    	<property name="phoneNumber" column="USER_PRO_PHONE_" />
+    	<property name="mobileNumber" column="USER_PRO_MOBILE_" />
+    	<property name="faxNumber" column="USER_PRO_FAX_" />
+    	<property name="building" column="USER_PRO_BUILDING_" />
+    	<property name="room" column="USER_PRO_ROOM_" />
+    	<property name="address" column="USER_PRO_ADDRESS_" />
+    	<property name="zipCode" column="USER_PRO_ZIPCODE_" />
+    	<property name="city" column="USER_PRO_CITY_" />
+    	<property name="state" column="USER_PRO_STATE_" />
+    	<property name="country" column="USER_PRO_COUNTRY_" />
+    	<property name="website" column="USER_PRO_WEBSITE_" />
+    </component>
+    <component name="personalContactInfo" class="ContactInfoImpl">
+    	<property name="email" column="USER_PERSO_EMAIL_" />
+    	<property name="phoneNumber" column="USER_PERSO_PHONE_" />
+    	<property name="mobileNumber" column="USER_PERSO_MOBILE_" />
+    	<property name="faxNumber" column="USER_PERSO_FAX_" />
+    	<property name="building" column="USER_PERSO_BUILDING_" />
+    	<property name="room" column="USER_PERSO_ROOM_" />
+    	<property name="address" column="USER_PERSO_ADDRESS_" />
+    	<property name="zipCode" column="USER_PERSO_ZIPCODE_" />
+    	<property name="city" column="USER_PERSO_CITY_" />
+    	<property name="state" column="USER_PERSO_STATE_" />
+    	<property name="country" column="USER_PERSO_COUNTRY_" />
+    	<property name="website" column="USER_PERSO_WEBSITE_" />
+    </component>
+    <map name="metadata" table="BN_USER_PROFILE_METADATA" inverse="true">
+      <key column="USER_DBID_" not-null="true" />
+      <map-key-many-to-many class="ProfileMetadataImpl" column="PROFILE_METADATA_DBID_" />
+      <element type="string" column="USER_METADATA_VALUE_" />
+    </map>
+    <set name="memberships" cascade="none" table="BN_USER_MEMBERSHIP">
+      <key column="USER_DBID_" not-null="true" />
+      <many-to-many class="MembershipImpl" column="MEMBERSHIP_DBID_"/>
+    </set>
+  </class>
+  
+  <class name="ProfileMetadataImpl" table="BN_PROFILE_METADATA">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="uuid" column="PROFILE_METADATA_UUID_" unique="true" index="IDX_PROFILE_METADATA_UUID" />
+    <property name="name" column="PROFILE_METADATA_NAME_" unique="true" index="IDX_PROFILE_METADATA_NAME" />
+    <property name="label" column="PROFILE_METADATA_LABEL_" />
+    <map name="users" table="BN_USER_PROFILE_METADATA" cascade="all">
+      <key column="PROFILE_METADATA_DBID_" not-null="true" />
+      <map-key-many-to-many class="UserImpl" column="USER_DBID_" />
+      <element type="string" column="USER_METADATA_VALUE_" />
+    </map>
+  </class>
+  
+  <class name="RoleImpl" table="BN_ROLE">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="uuid" column="ROLE_UUID_" unique="true" index="IDX_ROLE_UUID" />
+    <property name="name" column="ROLE_NAME_" unique="true" index="IDX_ROLE_NAME" />
+    <property name="label" column="ROLE_LABEL_" />
+    <property name="description" column="ROLE_DESCRIPTION_" type="text" />
+  </class>
+  
+  <class name="GroupImpl" table="BN_GROUP">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="uuid" column="GROUP_UUID_" unique="true" index="IDX_GROUP_UUID" />
+    <property name="name" column="GROUP_NAME_" index="IDX_GROUP_NAME" />
+    <property name="label" column="GROUP_LABEL_" />
+    <property name="description" column="GROUP_DESCRIPTION_" type="text" />
+    <many-to-one name="parentGroup" column="PARENT_GROUP_" class="GroupImpl" index="IDX_GROUP_PARENT" />
+  </class>
+  
+  <class name="MembershipImpl" table="BN_MEMBERSHIP">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="uuid" column="MEMBERSHIP_UUID_" unique="true" index="IDX_MEMBERSHIP_UUID" />
+    <many-to-one name="role" column="MEMBERSHIP_ROLE_" class="RoleImpl" not-null="true" cascade="none" unique-key="membershipRoleGroup" />
+    <many-to-one name="group" column="MEMBERSHIP_GROUP_" class="GroupImpl" not-null="true" cascade="none" unique-key="membershipRoleGroup" />
+  </class>
+  
+</hibernate-mapping>

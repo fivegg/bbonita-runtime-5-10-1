@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="badIteration_Project" Name="badIteration">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/07/03 09:25:50</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="badIteration" Id="badIteration">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="v1" Name="v1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>yes</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants />
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="307" />
+            <ExtendedAttribute Name="YOffset" Value="203" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="40" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a1" Name="a1">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="165" />
+            <ExtendedAttribute Name="YOffset" Value="91" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="Iteration" Value="v1.equals(&quot;yes&quot;)">
+              <To>a2</To>
+              <ExtendedAttributes>
+                <ExtendedAttribute Name="BreakPoint" Value="205.0-106.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="205.0-26.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="215.0-21.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="225.0-36.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="206.0-107.0" />
+              </ExtendedAttributes>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="a1_End" Name="a1_End" From="a1" To="BonitaEnd">
+          <Condition Type="CONDITION">v1.equals("no")</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

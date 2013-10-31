@@ -1,0 +1,11 @@
+<connector>
+  <connectorId>PrimitiveDataTypesArray</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setString</setterName>
+      <parameters>
+        <string-array/>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

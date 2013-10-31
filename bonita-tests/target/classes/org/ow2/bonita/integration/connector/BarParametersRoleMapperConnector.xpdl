@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="RoleMapperConnector" Name="RoleMapperConnector">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-05-25T09:48:54.937+0200</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="RoleMapperConnector" Id="RoleMapperConnector">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <Participants>
+        <Participant Id="Customer" Name="Customer">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom">
+			  <Parameters>
+			    <Properties Var="bar:ParametersRoleMapperConfig.xml" />
+		      </Parameters>
+			</ExtendedAttribute>
+			<ExtendedAttribute Name="MapperClassName"
+			    Value="org.ow2.bonita.integration.connector.rolemapper.ParametersRoleMapperConnector" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="Request" Name="Request">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>Customer</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+      </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

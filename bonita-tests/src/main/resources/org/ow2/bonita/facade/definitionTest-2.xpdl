@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="definitionTest_Project" Name="definitionTest">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>My Package Created</Created>
+    <Description>My Package Description</Description>
+    <Documentation>My Package Documentation</Documentation>
+    <PriorityUnit>My Priority Unit</PriorityUnit>
+    <CostUnit>My Cost Unit</CostUnit>
+  </PackageHeader>
+  <RedefinableHeader PublicationStatus='UNDER_TEST'>
+    <Author>Romulus</Author>
+    <Version>0.1</Version>
+    <Codepage>UTF8</Codepage>
+    <Countrykey>fr</Countrykey>
+    <Responsibles>
+      <Responsible>Romulus</Responsible>
+      <Responsible>Remus</Responsible>
+    </Responsibles>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PRIVATE" Id="definitionTest2">
+      <ProcessHeader />
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

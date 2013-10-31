@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	- - - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures, B.P.68, 
+	78340, Les Clayes-sous-Bois - - This library is free software; you can redistribute 
+	it and/or - modify it under the terms of the GNU Lesser General Public - 
+	License as published by the Free Software Foundation; either - version 2.1 
+	of the License, or (at your option) any later version. - - This library is 
+	distributed in the hope that it will be useful, - but WITHOUT ANY WARRANTY; 
+	without even the implied warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+	PURPOSE. See the GNU - Lesser General Public License for more details. - 
+	- You should have received a copy of the GNU Lesser General Public - License 
+	along with this library; if not, write to the Free Software - Foundation, 
+	Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA - - - - 
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-server</artifactId>
+	<packaging>jar</packaging>
+	<name>Bonita - Server</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-runtime</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.spec.ee</groupId>
+			<artifactId>ow2-ejb-3.0-spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<!-- Hibernate gives you a choice of bytecode providers between cglib and 
+			javassist -->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>hibernate.cfg.xml</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<BONITA_HOME>${project.build.directory}/bonita</BONITA_HOME>
+					</systemPropertyVariables>
+					<includes>
+						<!--<include>org/ow2/bonita/pvm/CheckInTests.java</include> -->
+						<include>org/ow2/bonita/AllTests.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.ow2.bonita:bonita-client</include>
+								</includes>
+							</artifactSet>
+							<outputDirectory>${basedir}/target</outputDirectory>
+							<destFileName>${project.build.finalName}.jar</destFileName>
+							<promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+							<createDependencyReducedPom>true</createDependencyReducedPom>
+							<createSourcesJar>true</createSourcesJar>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>buildDoc</id>
+			<activation>
+				<property>
+					<name>!skipDoc</name>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.ow2.bonita</groupId>
+					<artifactId>bonita-client</artifactId>
+					<version>${project.version}</version>
+					<scope>provided</scope>
+					<classifier>javadoc</classifier>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-javadoc-dependencies</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeClassifiers>javadoc</includeClassifiers>
+									<type>jar</type>
+									<includeGroupIds>org.ow2.bonita</includeGroupIds>
+									<includeScope>provided</includeScope>
+									<outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+									<overWriteReleases>true</overWriteReleases>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

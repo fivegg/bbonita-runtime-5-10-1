@@ -1,0 +1,86 @@
+<wire-bindings>
+
+  <!-- ########################### -->
+  <!-- ### BONITA ENV bindings ### -->
+  <!-- ########################### -->
+  <binding class="org.ow2.bonita.env.binding.DbSessionBinding" />
+  <binding class="org.ow2.bonita.env.binding.DomainBinding" />
+  <binding class="org.ow2.bonita.env.binding.ChainerBinding" />
+  <binding class="org.ow2.bonita.env.binding.QuerierListAccessorBinding" />
+  <binding class="org.ow2.bonita.env.binding.APIBinding" />
+  <binding class="org.ow2.bonita.env.binding.IdentityServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.AuthenticationServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.PrivilegeServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.WebTokenManagementServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.LargeDataRepositoryBinding" />
+  <binding class="org.ow2.bonita.env.binding.DocumentationManagerBinding" />
+  <binding class="org.ow2.bonita.env.binding.DocumentStorageServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.SecurityBinding" />
+  <binding class="org.ow2.bonita.env.binding.RecorderBinding" />
+  <binding class="org.ow2.bonita.env.binding.ArchiverBinding" />
+  <binding class="org.ow2.bonita.env.binding.JournalBinding" />
+  <binding class="org.ow2.bonita.env.binding.WebServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.UUIDServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.ClassdataLoaderServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.EventServiceBinding" />
+  <binding class="org.ow2.bonita.env.binding.HistoryBinding" />
+  <binding class="org.ow2.bonita.env.binding.FinishedInstanceHandlerBinding" />
+  <binding class="org.ow2.bonita.env.binding.UndeployedProcessHandlerBinding" />
+
+  <!-- basic types -->
+  <binding class="org.ow2.bonita.env.binding.TrueBinding" />
+  <binding class="org.ow2.bonita.env.binding.FalseBinding" />
+  <binding class="org.ow2.bonita.env.binding.BooleanBinding" />
+  <binding class="org.ow2.bonita.env.binding.CharBinding" />
+  <binding class="org.ow2.bonita.env.binding.DoubleBinding" />
+  <binding class="org.ow2.bonita.env.binding.FloatBinding" />
+  <binding class="org.ow2.bonita.env.binding.IntBinding" />
+  <binding class="org.ow2.bonita.env.binding.ShortBinding" />
+  <binding class="org.ow2.bonita.env.binding.ByteBinding" />
+  <binding class="org.ow2.bonita.env.binding.LongBinding" />
+  <binding class="org.ow2.bonita.env.binding.StringBinding" />
+  <binding class="org.ow2.bonita.env.binding.NullBinding" />
+  <binding class="org.ow2.bonita.env.binding.ClassBinding" />
+  <!-- object and ref --> 
+  <binding class="org.ow2.bonita.env.binding.ObjectBinding" />
+  <binding class="org.ow2.bonita.env.binding.RefBinding" />
+  <binding class="org.ow2.bonita.env.binding.JndiBinding" />
+  <!-- collections -->
+  <binding class="org.ow2.bonita.env.binding.ListBinding" />
+  <binding class="org.ow2.bonita.env.binding.SetBinding" />
+  <binding class="org.ow2.bonita.env.binding.MapBinding" />
+  <binding class="org.ow2.bonita.env.binding.PropertiesBinding" />
+  <!-- environment refs -->
+  <binding class="org.ow2.bonita.env.binding.EnvironmentFactoryRefBinding" />
+  <binding class="org.ow2.bonita.env.binding.EnvironmentRefBinding" />
+  <binding class="org.ow2.bonita.env.binding.ContextRefBinding" />
+  <!-- various specials -->
+  <binding class="org.ow2.bonita.env.binding.EventExecutorBinding" />
+  <binding class="org.ow2.bonita.env.binding.IterationDetectionBinding" />
+  <binding class="org.ow2.bonita.env.binding.ExtensionPointsBinding" />
+  <!-- hibernate bindings -->
+  <binding class="org.ow2.bonita.env.binding.HibernateConfigurationBinding" />
+  <binding class="org.ow2.bonita.env.binding.HibernateSessionBinding" />
+  <binding class="org.ow2.bonita.env.binding.HibernateSessionFactoryBinding" />
+  <!-- dynamic type mapping configuration  -->    
+  <binding class="org.ow2.bonita.env.binding.VariableTypesBinding" />
+  <binding class="org.ow2.bonita.env.binding.VariablesBinding" />
+  <!-- services  -->
+  <binding class="org.ow2.bonita.env.binding.StandardCommandServiceBinding" />
+  
+  <!-- ############################ -->
+  <!-- ### Interceptor bindings ### -->
+  <!-- ############################ -->
+  <binding class="org.ow2.bonita.env.binding.EnvironmentInterceptorBinding" />
+  <binding class="org.ow2.bonita.env.binding.RetryInterceptorBinding" />
+  <binding class="org.ow2.bonita.env.binding.StandardTransactionInterceptorBinding" />
+  <binding class="org.ow2.bonita.env.binding.EnlistBinding" />
+
+  <!-- ########################## -->
+  <!-- ### Operation bindings ### -->
+  <!-- ########################## -->
+  <binding class="org.ow2.bonita.env.binding.PropertyBinding" />
+  <binding class="org.ow2.bonita.env.binding.FieldBinding" />
+  <binding class="org.ow2.bonita.env.binding.InvokeBinding" />
+  <binding class="org.ow2.bonita.env.binding.SubscribeBinding" />
+</wire-bindings>

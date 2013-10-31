@@ -1,0 +1,33 @@
+<connector>
+  <inputs>
+   <setter>
+      <setterName>setFirstInput</setterName>
+      <parameters>
+        <int>0</int>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setSecondInput</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setThirdInput</setterName>
+      <parameters>
+        <double>0.0</double>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setFourthInput</setterName>
+      <parameters>
+        <date>2009-09-21 11:11:11.779 CEST</date>
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs>
+    <getter>
+      <name>output</name>
+    </getter>
+  </outputs>
+</connector>

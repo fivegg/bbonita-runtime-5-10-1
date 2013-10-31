@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jboss>
+  
+  <enterprise-beans>
+   <session>
+   <ejb-name>commandAPIBean</ejb-name>
+   <jndi-name>commandAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>webAPIBean</ejb-name>
+   <jndi-name>webAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>identityAPIBean</ejb-name>
+   <jndi-name>identityAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>runtimeAPIBean</ejb-name>
+   <jndi-name>runtimeAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>managementAPIBean</ejb-name>
+   <jndi-name>managementAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>queryRuntimeAPIBean</ejb-name>
+   <jndi-name>queryRuntimeAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>queryDefinitionAPIBean</ejb-name>
+   <jndi-name>queryDefinitionAPI</jndi-name>
+   </session>
+
+   <session>
+   <ejb-name>bamAPIBean</ejb-name>
+   <jndi-name>bamAPI</jndi-name>
+   </session>
+   
+   <session>
+   <ejb-name>repairAPIBean</ejb-name>
+   <jndi-name>repairAPI</jndi-name>
+   </session>
+
+  </enterprise-beans>  
+</jboss>

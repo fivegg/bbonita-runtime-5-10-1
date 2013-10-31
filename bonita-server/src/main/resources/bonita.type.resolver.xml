@@ -1,0 +1,20 @@
+<type-resolver>
+	<!-- types stored in a native column -->
+	<type name="string" class="java.lang.String" variable-class="org.ow2.bonita.type.variable.StringVariable" />
+  <type name="long"   class="java.lang.Long" variable-class="org.ow2.bonita.type.variable.LongVariable" />
+  <type name="double" class="java.lang.Double" variable-class="org.ow2.bonita.type.variable.DoubleVariable" />
+
+  <!-- types converted to a string -->
+  <type name="date"    class="java.util.Date" converter="org.ow2.bonita.type.converter.DateToStringConverter" variable-class="org.ow2.bonita.type.variable.StringVariable" />
+  <type name="boolean" class="java.lang.Boolean" converter="org.ow2.bonita.type.converter.BooleanToStringConverter" variable-class="org.ow2.bonita.type.variable.StringVariable" />
+
+  <!-- types converted to a long -->
+  <type name="integer" class="java.lang.Integer" converter="org.ow2.bonita.type.converter.IntegerToLongConverter" variable-class="org.ow2.bonita.type.variable.LongVariable" />
+  
+  <!-- types converted to a double -->
+  <type name="float" class="java.lang.Float" converter="org.ow2.bonita.type.converter.FloatToDoubleConverter" variable-class="org.ow2.bonita.type.variable.DoubleVariable" />
+		
+  <!-- types serialized to a blob -->
+  <type name="serializable" class="serializable" converter="org.ow2.bonita.type.converter.SerializableToBytesConverter" variable-class="org.ow2.bonita.type.variable.BlobVariable" />
+  <!-- <type name="byte[]" class="[B" variable-class="org.ow2.bonita.type.variable.BlobVariable" />  -->
+</type-resolver>

@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+      Process definition schema 1.0 for Bonita open solution.
+      Copyright (C) 2010 BonitaSoft S.A.
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="process-definition">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="process" minOccurs="1" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:all>
+              <xsd:element name="label" type="xsd:string" minOccurs="0" />
+              <xsd:element name="description" type="xsd:string" minOccurs="0" />
+              <xsd:element name="type" type="ProcessType" minOccurs="0" />
+              <xsd:element name="participants" type="Participants" minOccurs="0" />
+              <xsd:element name="transitions" type="Transitions" minOccurs="0" />
+              <xsd:element name="activities" type="Activities" minOccurs="0" />
+              <xsd:element name="data-fields" type="Datafields" minOccurs="0" />
+              <xsd:element name="attachments" type="Attachments" minOccurs="0" />
+              <xsd:element name="connectors" type="Connectors" minOccurs="0" />
+              <xsd:element name="categories" type="Categories" minOccurs="0" />
+              <xsd:element name="event-sub-processes" type="EventSubProcesses" minOccurs="0" />
+            </xsd:all>
+            <xsd:attribute name="name" type="xsd:string" use="required" />
+            <xsd:attribute name="version" type="xsd:string" use="required" />
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="product-version" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="Participants">
+    <xsd:sequence>
+      <xsd:element name="participant" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="role-mapper" minOccurs="0">
+              <xsd:complexType>
+                <xsd:all>
+                  <xsd:element name="classname" type="xsd:string" minOccurs="0" />
+                  <xsd:element name="description" type="xsd:string" minOccurs="0" />
+                  <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+                </xsd:all>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Transitions">
+    <xsd:sequence>
+      <xsd:element name="transition" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="condition" type="xsd:string" minOccurs="0" />
+            <xsd:element name="from" type="xsd:string" />
+            <xsd:element name="boundary-event" type="xsd:string" minOccurs="0" />
+            <xsd:element name="to" type="xsd:string" />
+            <xsd:element name="is-default" type="xsd:boolean" minOccurs="0" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Datafields">
+    <xsd:sequence>
+      <xsd:element name="data-field" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="datatype-classname" type="xsd:string" />
+            <xsd:element name="value" type="xsd:string" minOccurs="0" />
+            <xsd:element name="scripting-value" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="is-transient" type="xsd:boolean" minOccurs="0"/>
+            <xsd:element name="enumeration-values" minOccurs="0">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="enumeration-value" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Attachments">
+    <xsd:sequence>
+      <xsd:element name="attachment" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="file-path" type="xsd:string" minOccurs="0" />
+            <xsd:element name="file-name" type="xsd:string" minOccurs="0" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Events">
+    <xsd:all>
+      <xsd:element name="timers" type="TimerEvents" minOccurs="0" />
+      <xsd:element name="messages" type="MessageEvents" minOccurs="0" />
+      <xsd:element name="errors" type="ErrorEvents" minOccurs="0" />
+      <xsd:element name="signals" type="SignalEvents" minOccurs="0" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="TimerEvents">
+    <xsd:sequence>
+      <xsd:element name="timer" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="condition" type="xsd:string" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MessageEvents">
+    <xsd:sequence>
+      <xsd:element name="message" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="expression" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-name-1" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-expression-1" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-name-2" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-expression-2" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-name-3" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-expression-3" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-name-4" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-expression-4" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-name-5" type="xsd:string" minOccurs="0" />
+            <xsd:element name="correlation-key-expression-5" type="xsd:string" minOccurs="0" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ErrorEvents">
+    <xsd:sequence>
+      <xsd:element name="error" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="error-code" type="xsd:string" minOccurs="0" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+    <xsd:complexType name="SignalEvents">
+    <xsd:sequence>
+      <xsd:element name="signal" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="signal-code" type="xsd:string" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Connectors">
+    <xsd:sequence>
+      <xsd:element name="connector" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="classname" type="xsd:string" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="event" type="EventType" />
+            <xsd:element name="throw-exception" type="xsd:boolean"/>
+            <xsd:element name="error-code" type="xsd:string" minOccurs="0" />
+            <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Parameters">
+    <xsd:sequence>
+      <xsd:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Activities">
+    <xsd:sequence>
+      <xsd:element name="activity" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="dynamic-label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="dynamic-description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="dynamic-execution-summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="priority" type="xsd:int" />
+            <xsd:element name="executing-time" type="xsd:long" />
+            <xsd:element name="split-type" type="JoinSplitType" />
+            <xsd:element name="join-type" type="JoinSplitType" />
+            <xsd:element name="subflow-process-name" type="xsd:string" minOccurs="0" />
+            <xsd:element name="subflow-process-version" type="xsd:string" minOccurs="0" />
+            <xsd:element name="timer-condition" type="xsd:string" minOccurs="0" />
+            <xsd:element name="type" type="ActivityType" />
+            <xsd:element name="asynchronous" type="xsd:boolean" />
+            <xsd:element name="catch-event" type="xsd:boolean" minOccurs="0" />
+            <xsd:element name="terminate-process" type="xsd:boolean" minOccurs="0" />
+            <xsd:element name="loop-condition" type="xsd:string" minOccurs="0" />
+            <xsd:element name="loop-maximum" type="xsd:string" minOccurs="0" />
+            <xsd:element name="before-execution" type="xsd:boolean" minOccurs="0" />
+            <xsd:element name="performers" minOccurs="0">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="performer" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="boundary-events" type="Events" minOccurs="0" />
+            <xsd:element name="connectors" type="Connectors" minOccurs="0" />
+            <xsd:element name="data-fields" type="Datafields" minOccurs="0" />
+            <xsd:element name="filter" type="Filter" minOccurs="0" />
+            <xsd:element name="deadlines" type="Deadlines" minOccurs="0" />
+            <xsd:element name="multi-instantiation" type="MultiInstantiation" minOccurs="0" />
+            <xsd:element name="multiple-act-instantiator" type="MultiInstantiation" minOccurs="0" />
+            <xsd:element name="multiple-act-joinchecker" type="MultiInstantiation" minOccurs="0" />
+            <xsd:element name="incoming-event" type="IncomingEvent" minOccurs="0" />
+            <xsd:element name="outgoing-events" type="OutgoingEvents" minOccurs="0" />
+            <xsd:element name="subflow-in-parameters" type="SubflowInParameters" minOccurs="0" />
+            <xsd:element name="subflow-out-parameters" type="SubflowOutParameters" minOccurs="0" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Categories">
+    <xsd:sequence>
+      <xsd:element name="category" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Filter">
+    <xsd:all>
+      <xsd:element name="classname" type="xsd:string" minOccurs="0" />
+      <xsd:element name="description" type="xsd:string" minOccurs="0" />
+      <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="Deadlines">
+    <xsd:sequence>
+      <xsd:element name="deadline" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="classname" type="xsd:string" />
+            <xsd:element name="condition" type="xsd:string" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="throw-exception" type="xsd:boolean" minOccurs="0"/>
+            <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MultiInstantiation">
+    <xsd:all>
+      <xsd:element name="classname" type="xsd:string" minOccurs="0" />
+      <xsd:element name="variable-name" type="xsd:string" minOccurs="0" />
+      <xsd:element name="description" type="xsd:string" minOccurs="0" />
+      <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="Event">
+    <xsd:sequence>
+      <xsd:element name="correlation-key-name-1" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-expression-1" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-name-2" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-expression-2" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-name-3" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-expression-3" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-name-4" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-expression-4" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-name-5" type="xsd:string" minOccurs="0" />
+      <xsd:element name="correlation-key-expression-5" type="xsd:string" minOccurs="0" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+  </xsd:complexType>
+
+  <xsd:complexType name="IncomingEvent">
+    <xsd:complexContent>
+      <xsd:extension base="Event">
+      <xsd:sequence>
+        <xsd:element name="expression" type="xsd:string" minOccurs="0" />
+      </xsd:sequence>
+  	  </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="OutgoingEvents">
+    <xsd:sequence>
+      <xsd:element name="outgoing-event" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="Event">
+          	  <xsd:sequence>
+                <xsd:element name="time-to-live" type="xsd:long" />
+                <xsd:element name="to-activity" type="xsd:string" minOccurs="0" />
+                <xsd:element name="to-process" type="xsd:string" minOccurs="0" />
+                <xsd:element name="parameters" type="Parameters" minOccurs="0" />
+              </xsd:sequence>
+          	</xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SubflowInParameters">
+    <xsd:sequence>
+      <xsd:element name="subflow-in-parameter" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="source" type="xsd:string" />
+            <xsd:element name="destination" type="xsd:string" />
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SubflowOutParameters">
+    <xsd:sequence>
+      <xsd:element name="subflow-out-parameter" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="source" type="xsd:string" />
+            <xsd:element name="destination" type="xsd:string" />
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+    <xsd:complexType name="EventSubProcesses">
+    <xsd:sequence>
+      <xsd:element name="event-sub-process" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="label" type="xsd:string" minOccurs="0" />
+            <xsd:element name="description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="version" type="xsd:string" minOccurs="1" />
+          </xsd:all>
+          <xsd:attribute name="name" type="xsd:string" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="JoinSplitType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="XOR" />
+      <xsd:enumeration value="AND" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ActivityType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Automatic" />
+      <xsd:enumeration value="Human" />
+      <xsd:enumeration value="Timer" />
+      <xsd:enumeration value="Decision" />
+      <xsd:enumeration value="Subflow" />
+      <xsd:enumeration value="SendEvents" />
+      <xsd:enumeration value="ReceiveEvent" />
+      <xsd:enumeration value="ErrorEvent" />
+      <xsd:enumeration value="SignalEvent" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="EventType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="taskOnReady" />
+      <xsd:enumeration value="taskOnStart" />
+      <xsd:enumeration value="taskOnFinish" />
+      <xsd:enumeration value="taskOnSuspend" />
+      <xsd:enumeration value="taskOnResume" />
+      <xsd:enumeration value="taskOnCancel" />
+      <xsd:enumeration value="automaticOnEnter" />
+      <xsd:enumeration value="automaticOnExit" />
+      <xsd:enumeration value="onTimer" />
+      <xsd:enumeration value="instanceOnStart" />
+      <xsd:enumeration value="instanceOnFinish" />
+      <xsd:enumeration value="instanceOnCancel" />
+      <xsd:enumeration value="instanceOnAbort" />
+      <xsd:enumeration value="onEvent" />
+    </xsd:restriction>
+  </xsd:simpleType>
+    <xsd:simpleType name="ProcessType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PROCESS" />
+      <xsd:enumeration value="EVENT_SUB_PROCESS" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

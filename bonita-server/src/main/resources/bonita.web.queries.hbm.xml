@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false">
+
+  <query name="getSystemLabels">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.ownerName = :ownerName
+    and label.isSystemLabel = true
+    ORDER BY label.displayOrder
+  </query>
+  
+  <query name="getUserCustomLabels">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.ownerName = :ownerName
+    and label.isSystemLabel = false
+    ORDER BY label.displayOrder
+  </query>
+  
+  <query name="getAllLabels">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.ownerName = :ownerName
+  </query>
+  
+  <query name="getLabelByID">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.ownerName = :ownerName
+    and label.name = :labelName
+  </query>
+  
+  <query name="getUserCases">
+    SELECT webCase.labelName
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.uuid.value = :caseId
+  </query>
+  
+  <query name="getLabels">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.ownerName = :ownerName
+    AND label.name in (:labelNames)
+  </query>
+  
+  <query name="getLabelsWithName">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.name in (:labelNames)
+  </query>
+  
+  <query name="getLabelsByNameExcept">
+    SELECT label
+    FROM org.ow2.bonita.facade.runtime.impl.LabelImpl AS label
+    WHERE label.name NOT IN (:labelNames)
+  </query>
+  
+  <query name="getLabelCasesSublist">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.labelName = :labelName
+    AND webCase.uuid.value in (:caseUUIDs)
+  </query>
+  
+  <query name="getLabelCasesUUIDsSublist">
+    SELECT webCase.uuid
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.labelName = :labelName
+    AND webCase.uuid.value in (:caseUUIDs)
+  </query>
+  
+  <query name="getLabelsCases">
+    SELECT webCase.uuid
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.labelName in (:labelNames)
+  </query>
+  
+  <query name="getLabelCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.labelName = :labelName
+  </query>
+
+  <query name="getCasesNumber">
+    SELECT count(webCase.uuid)
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.ownerName = :ownerName
+    AND webCase.labelName = :label
+  </query>
+
+  <query name="getCasesNumberWithTwoLabels">
+    SELECT count(webCase1.uuid.value)
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl as webCase1,
+         org.ow2.bonita.facade.runtime.impl.CaseImpl as webCase2
+    WHERE webCase1.uuid.value = webCase2.uuid.value
+    AND   webCase1.label = :label1
+    AND   webCase2.label = :label2
+  </query>
+  
+  <query name="getCasesWithTwoLabelsWithLimit">
+    SELECT webCase1
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl as webCase1,
+         org.ow2.bonita.facade.runtime.impl.CaseImpl as webCase2
+    WHERE webCase1.uuid.value = webCase2.uuid.value
+    AND   webCase1.label = :label1
+    AND   webCase2.label = :label2
+  </query>
+  
+  
+  <query name="getCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.uuid.value = :caseId
+  </query>
+  
+  <query name="getCase">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.uuid.value = :caseUUID
+    AND   webCase.ownerName = :ownerName
+    AND   webCase.labelName = :labelName
+  </query>
+  
+  <query name="getAllCases">
+    SELECT webCase.uuid
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+  </query>
+  
+  <query name="getAllWebCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+  </query>
+  
+  <query name="getMatchingCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.uuid.value IN (:uuids)
+  </query>
+  
+  <query name="getLabelNameCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.uuid.value IN (:uuids)
+    AND   webCase.labelName = :labelName
+  </query>
+  
+  <query name="getLabelsNameCases">
+    SELECT webCase
+    FROM org.ow2.bonita.facade.runtime.impl.CaseImpl AS webCase
+    WHERE webCase.uuid.value IN (:uuids)
+    AND   webCase.labelName IN (:labelsNames)
+    AND   webCase.ownerName = :ownerName
+  </query>
+  
+  <query name="getTemporaryTokenFromKey">
+    SELECT temporaryToken
+    FROM org.ow2.bonita.facade.runtime.impl.WebTemporaryTokenImpl as temporaryToken
+    WHERE temporaryToken.token = :tokenKey
+  </query>
+   
+  <query name="getExpiredTemporaryTokens">
+    SELECT temporaryToken
+    FROM org.ow2.bonita.facade.runtime.impl.WebTemporaryTokenImpl as temporaryToken
+    WHERE (temporaryToken.expirationDate &lt; :currentDate)
+  </query> 
+     
+    
+</hibernate-mapping>

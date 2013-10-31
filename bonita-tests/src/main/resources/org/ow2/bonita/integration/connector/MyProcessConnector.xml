@@ -1,0 +1,8 @@
+<connector>
+  <connectorId>MyProcess</connectorId>
+  <outputs>
+    <getter>
+      <name>result</name>
+    </getter>
+  </outputs>
+</connector>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false" default-access="field"
+  package="org.ow2.bonita.facade.runtime.impl">
+
+  <class name="CategoryImpl" table="BN_CATEGORY">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+	<discriminator column="CATEGORY_TYPE_" type="string"/>
+	<property name="uuid" column="CATEGORY_UUID_" unique="true" index="IDX_CATEGORY_UUID" />
+	<property name="name" column="NAME" />
+	<property name="readonlyCSSStyleName" column="RO_CSS" />
+    <property name="previewCSSStyleName" column="PREV_CSS" />
+    <property name="iconCSSStyle" column="ICON_CSS" />
+	<subclass name="LabelImpl" discriminator-value="WEB_LABEL">
+		<property name="ownerName" column="OWNER" />
+    	<property name="editableCSSStyleName" column="EDITA_CSS" />
+    	<property name="isVisible" column="VISIBILITY" />
+    	<property name="isSystemLabel" column="SYSTEM" />
+    	<property name="hasToBeDisplayed" column="DISPLAYED" />
+    	<property name="displayOrder" column="DISP_ORDER" />
+    </subclass>
+  </class>
+  
+  <class name="CaseImpl" table="BN_WEB_CASE">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="CASE_UUID" index="IDX_CASE_UUID" />
+    </component>
+    <property name="labelName" column="NAME" index="IDX_CASE_LAB"/>
+    <property name="ownerName" column="OWNER"  index="IDX_CASE_OWN"/>
+    <property name="lastUpdate" column="LAST_UPDATE" type="long" index="IDX_CASE_UPD"/>
+    <property name="label" column="LABEL_" type="string"  index="IDX_LABEL"/>
+  </class>
+
+  <class name="WebTemporaryTokenImpl" table="BN_WEB_TOKEN">
+   	<id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="token" column="TOKEN"/>
+    <property name="expirationDate" column="EXPIRATION_DATE"/>
+    <property name="identityKey" column="IDENTITY_KEY"/>
+  </class>
+
+</hibernate-mapping>

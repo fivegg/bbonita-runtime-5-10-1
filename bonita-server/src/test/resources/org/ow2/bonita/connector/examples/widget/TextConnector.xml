@@ -1,0 +1,94 @@
+<connector>
+  <connectorId>SimpleRequiredInputFieldsConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setA</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setB</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setC</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setD</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setE</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setF</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <pages>
+    <page>
+      <pageId>page</pageId>
+      <widgets>
+        <text>
+          <size>20</size>
+          <maxChar>20</maxChar>
+          <setter reference="/connector/inputs/setter"/>
+          <labelId>a</labelId>
+        </text>
+        <text>
+          <size>5</size>
+          <maxChar>-1</maxChar>
+          <setter reference="/connector/inputs/setter[2]"/>
+          <labelId>b</labelId>
+        </text>
+        <text>
+          <size>-5</size>
+          <maxChar>45</maxChar>
+          <setter reference="/connector/inputs/setter[3]"/>
+          <labelId>c</labelId>
+        </text>
+        <text>
+          <size>5</size>
+          <maxChar>15</maxChar>
+          <setter reference="/connector/inputs/setter[4]"/>
+          <labelId>d</labelId>
+        </text>
+        <text>
+          <size>20</size>
+          <maxChar>20</maxChar>
+          <labelId>e</labelId>
+        </text>
+        <text>
+          <size>15</size>
+          <maxChar>5</maxChar>
+          <setter reference="/connector/inputs/setter[6]"/>
+          <labelId>f</labelId>
+        </text>
+        <text>
+          <size>15</size>
+          <maxChar>5</maxChar>
+          <setter reference="/connector/inputs/setter[6]"/>en>
+          <labelId></labelId>
+        </text>
+        <text>
+          <size>15</size>
+          <maxChar>5</maxChar>
+          <setter reference="/connector/inputs/setter[6]"/>
+        </text>
+      </widgets>
+    </page>
+  </pages>
+</connector>

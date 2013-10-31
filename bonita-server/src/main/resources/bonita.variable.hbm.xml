@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.ow2.bonita.type.variable" default-access="field">
+
+  <!-- ### VARIABLE ####################################################### -->
+	<class name="org.ow2.bonita.type.Variable" abstract="true" discriminator-value=" " table="BN_VAR">
+	  <!-- discriminator values:
+	  date   : org.ow2.bonita.type.variable.DateVariable
+	  double : org.ow2.bonita.type.variable.DoubleVariable
+	  hibl   : org.ow2.bonita.type.variable.HibernateLongVariable
+	  long   : org.ow2.bonita.type.variable.LongVariable
+	  hibs   : org.ow2.bonita.type.variable.HibernateStringVariable
+	  string : org.ow2.bonita.type.variable.StringVariable
+	  null   : org.ow2.bonita.type.variable.NullVariable
+	  blob   : org.ow2.bonita.type.variable.BlobVariable
+	  clob   : org.ow2.bonita.type.variable.ClobVariable
+	  -->
+	
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+		<discriminator column="CLASS_"/>
+    <version name="dbversion" column="DBVERSION_" />
+		
+		<property name="key" column="KEY_"/>
+		<property name="converter" type="converter" column="CONVERTER_" />
+		<component name="processUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+	</class>
+
+	<subclass name="DateVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="T">
+		<property name="date" column="DATE_VALUE_" type="long"/>
+	</subclass>
+	
+	<subclass name="DoubleVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="D">
+		<property name="d" column="DOUBLE_VALUE_" type="double"/>
+	</subclass>
+	
+	<subclass name="HibernateLongVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="l">
+		<property name="hibernatable" column="LONG_VALUE_" type="long"/>
+	</subclass>
+	
+	<subclass name="LongVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="L">
+		<property name="l" column="LONG_VALUE_" type="long"/>
+	</subclass>
+	
+	<subclass name="HibernateStringVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="s">
+		<property name="hibernatableString" column="STRING_VALUE_" type="string"/>
+		<property name="hibernatableText" column="TEXT_VALUE_" type="text"/>
+	</subclass>
+	
+	<subclass name="StringVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="S">
+		<property name="string" column="STRING_VALUE_" type="string"/>
+		<property name="text" column="TEXT_VALUE_" type="text"/>
+	</subclass>
+	
+	<subclass name="NullVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="N">
+	</subclass>
+	
+	<subclass name="BlobVariable" extends="org.ow2.bonita.type.Variable" discriminator-value="blob">
+    <many-to-one name="lob"
+                 column="LOB_" 
+                 cascade="all"
+                 class="org.ow2.bonita.type.lob.Lob"
+                 foreign-key="FK_VAR_LOB"
+                 index="IDX_VAR_LOB" />
+  </subclass>
+  
+  <class name="org.ow2.bonita.type.lob.Lob" table="BN_LOB">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <version name="dbversion" column="DBVERSION_" />
+    <property name="blob" type="blob">
+      <column name="BLOB_VALUE_" /> <!-- MYSQL AND ORACLE sql-type="LONGBLOB" length="518576" --> 
+    </property>
+    
+    <!-- 
+    should only be re-introduced if there comes a concrete need for it.
+    <property name="bytes" type="binary" column="BINARY_VALUE_"/>
+    <property name="clob" type="clob" column="CLOB_VALUE_" />
+    <property name="text" type="text" column="TEXT_VALUE_"/>
+    -->
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="cycleDetection_Project" Name="cycleDetection">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-02-16T11:28:48.045+0100</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="cycleDetection" Id="cycleDetection">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="cond" Name="cond">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>true</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants />
+      <Activities>
+        <Activity Id="a5" Name="a5">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="275" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="99" />
+            <ExtendedAttribute Name="XOffset" Value="327" />
+            <ExtendedAttribute Name="YOffset" Value="446" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a10" Name="a10">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="357" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="831" />
+            <ExtendedAttribute Name="YOffset" Value="399" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a12" Name="a12">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="439" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="242" />
+            <ExtendedAttribute Name="YOffset" Value="510" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a2" Name="a2">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="521" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="170" />
+            <ExtendedAttribute Name="YOffset" Value="244" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a8" Name="a8">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="603" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="98" />
+            <ExtendedAttribute Name="XOffset" Value="744" />
+            <ExtendedAttribute Name="YOffset" Value="342" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a7" Name="a7">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="685" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="556" />
+            <ExtendedAttribute Name="YOffset" Value="334" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="Iteration" Value="cond.equals(&quot;true&quot;)">
+              <To>a7</To>
+              <ExtendedAttributes>
+                <ExtendedAttribute Name="BreakPoint" Value="596.0-349.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="596.0-269.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="606.0-264.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="616.0-279.0" />
+                <ExtendedAttribute Name="BreakPoint" Value="597.0-350.0" />
+              </ExtendedAttributes>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a9" Name="a9">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="767" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="742" />
+            <ExtendedAttribute Name="YOffset" Value="477" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a6" Name="a6">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="849" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="327" />
+            <ExtendedAttribute Name="YOffset" Value="347" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a14" Name="a14">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="931" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="98" />
+            <ExtendedAttribute Name="XOffset" Value="416" />
+            <ExtendedAttribute Name="YOffset" Value="536" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="1013" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="531" />
+            <ExtendedAttribute Name="YOffset" Value="436" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a0" Name="a0">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="1078" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="423" />
+            <ExtendedAttribute Name="YOffset" Value="93" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a11" Name="a11">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="1160" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="124" />
+            <ExtendedAttribute Name="YOffset" Value="502" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a13" Name="a13">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="1242" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="98" />
+            <ExtendedAttribute Name="XOffset" Value="319" />
+            <ExtendedAttribute Name="YOffset" Value="587" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a4" Name="a4">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="193" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="67" />
+            <ExtendedAttribute Name="XOffset" Value="165" />
+            <ExtendedAttribute Name="YOffset" Value="400" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a1" Name="a1">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="111" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="35" />
+            <ExtendedAttribute Name="XOffset" Value="310" />
+            <ExtendedAttribute Name="YOffset" Value="142" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a3" Name="a3">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="315" />
+            <ExtendedAttribute Name="YOffset" Value="264" />
+            <ExtendedAttribute Name="CellHeight" Value="31" />
+            <ExtendedAttribute Name="CellWidth" Value="82" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="a4_a5" Name="a4_a5" From="a4" To="a5" />
+        <Transition Id="a9_a10" Name="a9_a10" From="a9" To="a10" />
+        <Transition Id="a5_End" Name="a5_End" From="a5" To="BonitaEnd" />
+        <Transition Id="a2_a4" Name="a2_a4" From="a2" To="a4" />
+        <Transition Id="a10_a8" Name="a10_a8" From="a10" To="a8" />
+        <Transition Id="a9_a8" Name="a9_a8" From="a9" To="a8">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="702.0-402.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="a11_a12" Name="a11_a12" From="a11" To="a12" />
+        <Transition Id="a13_a11" Name="a13_a11" From="a13" To="a11" />
+        <Transition Id="a0_a3" Name="a0_a3" From="a0" To="a3" />
+        <Transition Id="a6_a7" Name="a6_a7" From="a6" To="a7" />
+        <Transition Id="a2_a3" Name="a2_a3" From="a2" To="a3" />
+        <Transition Id="a0_a1" Name="a0_a1" From="a0" To="a1" />
+        <Transition Id="a5_a6" Name="a5_a6" From="a5" To="a6" />
+        <Transition Id="a7_a8" Name="a7_a8" From="a7" To="a8" />
+        <Transition Id="a3_a1" Name="a3_a1" From="a3" To="a1" />
+        <Transition Id="a12_a13" Name="a12_a13" From="a12" To="a13" />
+        <Transition Id="a4_a6" Name="a4_a6" From="a4" To="a6" />
+        <Transition Id="a8_a9" Name="a8_a9" From="a8" To="a9">
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="780.0-378.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="a1_a2" Name="a1_a2" From="a1" To="a2" />
+        <Transition Id="a4_a11" Name="a4_a11" From="a4" To="a11" />
+        <Transition Id="a14_a12" Name="a14_a12" From="a14" To="a12" />
+        <Transition Id="a13_a14" Name="a13_a14" From="a13" To="a14" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

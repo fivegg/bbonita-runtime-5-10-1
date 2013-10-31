@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="testNestedCycleNoExtraNodes_package" Name="testNestedCycleNoExtraNodes_package">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/08/21 17:02:41</Created>
+    <Description>Simplify the process that raised the bug</Description>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="testNestedCycleNoExtraNodes" Id="testNestedCycleNoExtraNodes">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>2.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="loop1" Name="loop1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>no</InitialValue>
+        </DataField>
+        <DataField Id="loop2" Name="loop2">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>no</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="169" />
+            <ExtendedAttribute Name="YOffset" Value="337" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="init" Name="init">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="168" />
+            <ExtendedAttribute Name="YOffset" Value="15" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="step1" Name="step1">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="148" />
+            <ExtendedAttribute Name="YOffset" Value="90" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="step2" Name="step2">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="109" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="184" />
+            <ExtendedAttribute Name="XOffset" Value="147" />
+            <ExtendedAttribute Name="YOffset" Value="175" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="step3" Name="step3">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="191" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="216" />
+            <ExtendedAttribute Name="XOffset" Value="150" />
+            <ExtendedAttribute Name="YOffset" Value="256" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="step0" Name="step0">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="273" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="248" />
+            <ExtendedAttribute Name="XOffset" Value="15" />
+            <ExtendedAttribute Name="YOffset" Value="86" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="init_step0" Name="init_step0" From="init" To="step0" />
+        <Transition Id="step3_step0" Name="step3_step0" From="step3" To="step0">
+          <Condition Type="CONDITION">loop2.equals("no")</Condition>
+        </Transition>
+        <Transition Id="step3_End" Name="step3_End" From="step3" To="BonitaEnd">
+          <Condition Type="CONDITION">loop2.equals("yes")</Condition>
+        </Transition>
+        <Transition Id="step1_step2" Name="step1_step2" From="step1" To="step2" />
+        <Transition Id="step2_step1" Name="step2_step1" From="step2" To="step1">
+          <Condition Type="CONDITION">loop1.equals("no")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="174.0-150.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="step2_step3" Name="step2_step3" From="step2" To="step3">
+          <Condition Type="CONDITION">loop1.equals("yes")</Condition>
+        </Transition>
+        <Transition Id="step0_step1" Name="step0_step1" From="step0" To="step1" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

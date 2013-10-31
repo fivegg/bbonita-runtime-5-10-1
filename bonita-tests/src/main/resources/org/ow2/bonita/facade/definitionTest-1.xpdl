@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="definitionTest_Project" Name="definitionTest">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>My Package Created</Created>
+    <Description>My Package Description</Description>
+    <Documentation>My Package Documentation</Documentation>
+    <PriorityUnit>My Priority Unit</PriorityUnit>
+    <CostUnit>My Cost Unit</CostUnit>
+  </PackageHeader>
+  <RedefinableHeader PublicationStatus='UNDER_TEST'>
+    <Author>Romulus</Author>
+    <Version>P_Project</Version>
+    <Codepage>UTF8</Codepage>
+    <Countrykey>fr</Countrykey>
+    <Responsibles>
+      <Responsible>Romulus</Responsible>
+      <Responsible>Remus</Responsible>
+    </Responsibles>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="definitionTestName"
+      Id="definitionTest">
+      <ProcessHeader DurationUnit="Y">
+        <Created>P_Created</Created>
+        <Description>P_Description</Description>
+        <Priority>P_Priority</Priority>
+        <Limit>P_Limit</Limit>
+        <ValidFrom>P_ValidFrom</ValidFrom>
+        <ValidTo>P_ValidTo</ValidTo>
+        <TimeEstimation>
+          <xpdl:WaitingTime>P_WaitingTime</xpdl:WaitingTime>
+          <xpdl:WorkingTime>P_WorkingTime</xpdl:WorkingTime>
+          <xpdl:Duration>P_Duration</xpdl:Duration>
+        </TimeEstimation>
+      </ProcessHeader>
+      <RedefinableHeader PublicationStatus="UNDER_REVISION">
+        <xpdl:Author>P_Author</xpdl:Author>
+        <Version>0.1</Version>
+        <xpdl:Codepage>P_Codepage</xpdl:Codepage>
+        <xpdl:Countrykey>P_Countrykey</xpdl:Countrykey>
+        <xpdl:Responsibles>
+          <xpdl:Responsible>P_Responsible1</xpdl:Responsible>
+          <xpdl:Responsible>P_Responsible2</xpdl:Responsible>
+        </xpdl:Responsibles>
+      </RedefinableHeader>
+      <xpdl:FormalParameters>
+        <xpdl:FormalParameter Id="fp1">
+          <xpdl:DataType>
+            <xpdl:BasicType Type="STRING" />
+          </xpdl:DataType>
+          <xpdl:Description>fp1_Description</xpdl:Description>
+        </xpdl:FormalParameter>
+        <xpdl:FormalParameter Id="fp2">
+          <xpdl:DataType>
+            <xpdl:EnumerationType>
+              <xpdl:EnumerationValue Name="Enum1" />
+            </xpdl:EnumerationType>
+          </xpdl:DataType>
+          <xpdl:Description>fp2_Description</xpdl:Description>
+        </xpdl:FormalParameter>
+      </xpdl:FormalParameters>
+      <Participants>
+        <Participant Id="Remus" Name="Remus">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant"
+              Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="Caesar" Name="Caesar">
+          <ParticipantType Type="HUMAN" />
+          <Description>
+            Render unto Caesar the things which are
+            Caesar's...
+          </Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant"
+              Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+                <Participant Id="manager" Name="manager">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="org.ow2.bonita.facade.AdminsRoleMapper" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="Activity_A" Name="Activity A Name">
+          <Description>A_Description</Description>
+          <!-- <xpdl:Limit>A_Limit</xpdl:Limit> -->
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>Caesar</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <xpdl:FinishMode>
+            <xpdl:Manual />
+          </xpdl:FinishMode>
+          <!-- <xpdl:Priority>A_Priority</xpdl:Priority> -->
+<!-- Deadlines are not supported yet -->
+<!--
+          <xpdl:Deadline>
+            <xpdl:DeadlineCondition>
+              DC1
+            </xpdl:DeadlineCondition>
+            <xpdl:ExceptionName>EN1</xpdl:ExceptionName>
+          </xpdl:Deadline>
+          <xpdl:Deadline>
+            <xpdl:DeadlineCondition>
+              DC2
+            </xpdl:DeadlineCondition>
+            <xpdl:ExceptionName>EN2</xpdl:ExceptionName>
+          </xpdl:Deadline>
+-->
+          <xpdl:SimulationInformation Instantiation="ONCE">
+            <xpdl:Cost>Cost</xpdl:Cost>
+            <TimeEstimation>
+              <xpdl:WaitingTime>WAT</xpdl:WaitingTime>
+              <xpdl:WorkingTime>WOT</xpdl:WorkingTime>
+              <xpdl:Duration>D</xpdl:Duration>
+            </TimeEstimation>
+          </xpdl:SimulationInformation>
+          <xpdl:Icon>A_Icon</xpdl:Icon>
+          <xpdl:Documentation>
+            A_Documentation
+          </xpdl:Documentation>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView"
+              Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView"
+              Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="163" />
+            <ExtendedAttribute Name="YOffset" Value="112" />
+            <ExtendedAttribute Name="hook"
+              Value="org.ow2.bonita.services.record.DefHook1">
+              <HookEventName>
+                task:onFinish
+              </HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="hook"
+              Value="org.ow2.bonita.services.record.DefHook2">
+              <HookEventName>task:onStart</HookEventName>
+            </ExtendedAttribute>
+            <!-- <ExtendedAttribute Name="PerformerAssign" Value="Callback">
+              <Callback>my.PerformerAssign</Callback>
+              </ExtendedAttribute> -->
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Activity_B" Name="Activity B">
+          <Description>My Activity B Description</Description>
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>Remus</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView"
+              Value="0" />
+            <ExtendedAttribute Name="YOffsetParticipantView"
+              Value="0" />
+            <ExtendedAttribute Name="XOffset" Value="432" />
+            <ExtendedAttribute Name="YOffset" Value="176" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

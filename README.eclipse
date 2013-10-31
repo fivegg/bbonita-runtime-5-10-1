@@ -1,0 +1,19 @@
+########################
+# ECLIPSE MAVEN PLUGIN #
+########################
+
+Bonita is build using maven for easier dependencies management.
+To have maven dependencies in the eclipse project, the plugin m2eclipse is needed.
+
+update site: http://m2eclipse.sonatype.org/update
+
+
+####################################
+# Running junit tests from eclipse #
+####################################
+
+The following arguments should be passed to the JVM when running tests: 
+(Run Configurations -> Arguments -> VM) 
+
+-Djava.security.auth.login.config=modules/distrib/resources/conf/jaas-standard.cfg 
+-Djava.util.logging.config.file=modules/distrib/resources/conf/logging.properties

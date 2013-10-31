@@ -1,0 +1,204 @@
+###########
+# LOGGING #
+###########
+You can use the system property in your JAVA_OPTS:
+-Djava.util.logging.config.file=<path to the file to use>
+
+Note that we provide a convenient logging config file in  
+conf/logging.properties that uses the Formatter 
+org.ow2.bonita.util.TraceFormatter. For your convenience, find below 
+the option you may want to copy/paste:
+ 
+-Djava.util.logging.config.file=<BONITA_HOME>/conf/logging.properties. 
+
+Logging policy :
+
+SEVERE
+The program has experienced an error for some internal or unexpected nonrecoverable exception.
+
+WARNING
+A problem requiring attention from the system administrator has occurred.
+An action occurred or a condition was discovered that should be reviewed and may require action before an error occurs.
+
+INFO
+A report of a normal action or event. This could be a user operation, such as "login completed" or an automatic operation such as a log file rotation.
+
+CONFIG
+A configuration-related message or problem.
+
+FINE / FINER / FINEST
+A trace or debug message used for debugging or performance monitoring. Typically contains detailed event data.
+
+######################
+# CREATING A PACKAGE #
+######################
+From bonita root directory, type 
+mvn clean package
+A zip file is created in modules/distrib/target directory.
+
+#######################
+# JAVADOC FOR THE API #
+#######################
+ant javadoc-api
+
+##################################
+# Publishing to maven repository #
+##################################
+
+A snapshot release has a version number ending with -SNAPSHOT
+A stable release has a version number without -SNAPSHOT
+
+
+To release a dependency:
+1) Change version in pom.xml of the dependency
+2) commit
+3) tag
+4) mvn clean install deploy:deploy
+
+The package is deployed to ow2 maven repository.
+
+To release Bonita:
+1) update main pom to have the last dependency revisions
+2) change version to the release version in the main pom.xml, in the poms of all modules,
+and in nightly/build.properties
+3) commit the changes
+4) tag svn
+5) mvn clean install deploy:deploy
+6) change the poms to the next SNAPSHOT revision (version should end with "-SNAPSHOT")
+7) commit the changes  
+
+To change the user name used by maven: 
+mvn -Dmaven.username=bpm -Duser.name=bpm [... maven targets...]
+ 
+To deploy distributions on remote repository :
+ mvn deploy 
+or
+WARNING : change paths, repoId (snapshot vs release), version, packaging...
+ mvn deploy:deploy-file 
+  -Dfile=target/bonita-runtime-4.0.tar.gz 
+  -DpomFile=pom.xml 
+  -DrepositoryId=ow2.snapshot 
+  -DgroupId=org.ow2.bonita 
+  -DartifactId=bonita-runtime 
+  -Dversion=4.0
+  -Dpackaging=tar.gz 
+  -Durl=scp://jupiter.objectweb.org/var/lib/gforge/chroot/home/groups/maven/htdocs/maven2
+
+################################
+# GENERATING DOC USING DOCBOOK #
+################################
+As described in Ant documentation (http://ant.apache.org/manual/index.html -> Lib dependencies),
+users who want to use xsl tasks need to install xalan.jar (and resolver.jar if not included in
+xalan.jar).
+
+#########################
+# CONFIGURING EASYBEANS #
+#########################
+Download easybeans 1.0.1 jar file:
+
+http://maven.objectweb.org/maven2/org/ow2/easybeans/easybeans-uberjar-toplink-essentials/1.0.1/easybeans-uberjar-toplink-essentials-1.0.1.jar
+
+Easybeans is using a directory called 'easybeans-deploy' in the basedir to deploy new archives.
+Create a directory with this name in the folder from where you will start easybeans container
+
+Generate an ear file for bonita :
+  - ant ear.ejb3 under bonita installation directory
+  - copy this ear file in to the created 'easybeans-deploy' directory
+
+Be sure to have all security permissions in your java.policy file:
+
+grant {
+  permission java.security.AllPermission;
+};
+
+Then start easybeans:
+
+java $JAVA_OPTS
+  
+  -Dorg.ow2.bonita.environment= URL to the xml file containing the workflow environment configuration
+   or filepath to this file or resource path
+  -Djava.security.manager
+  -Djava.security.policy=<JAVA_POLICY_FILE>
+  -cp <path-to-driver.jar or $CLASSPATH>:<EASYBEANS_JAR_FILE>:<bonita-client jar>
+  org.ow2.easybeans.server.EasyBeans
+
+where ENVIRONMENT_FILE_NAME is an environment file from <BONITA_HOME>/conf. (e.g. environment.xml.mem)
+
+org.ow2.easybeans.server.EasyBeans is the EasyBeans main class that can be found in the MANIFEST file of EASYBEANS_JAR_FILE.
+#######################
+# CONFIGURING JONAS 4 #
+#######################
+Download Jonas 4_8_6.
+Untar it in a repository, and start jonas.
+
+Generate the ear file for bonita :
+ - ant ear.jonas4 -Djonas.root=/path/to/jonas
+ - copy this ear (generated in ear/ejb2/jonas4/ repertory) to $JONAS_ROOT/apps
+ - Deploy it on jonas
+
+################
+# STRESS TESTS #
+################
+
+2 different cases:
+  1) light mode (no server)
+    2 ant targets: stress-mem (to execute perf tests in memory), stress-standalone (in database)
+    available aliases: light.all, light.approval
+  2) ee (easybeans)
+    1 ant target: stress-ee (the storage mode is defined by the file you gave at your ee container startup: envrionment.xml.[mem][db]
+    available aliases: ee.all, ee.approval
+
+In all cases, you have to execute :
+
+ant -f <BONITA_HOME>/build.xml <ANT_TARGET>
+  -Dalgo=< ? >
+  -DthreadNb=< ? >
+  -DprintFinished=< ? >
+  -DprintLaunched=< ? >
+  -DtimeBetweenVerifications=< ? >
+  -DtimeBetweenPrints=< ? >
+  -DtestsToRunClasses=< ? >
+  -DthinkTime=< ? >
+  -DloadTime=< ? >
+  -DwarmupTime=< ? >
+
+##########################
+# DATABASE CONFIGURATION #
+##########################
+update <BONITA_HOME>/conf/hibernate-core.properties. and/or<BONITA_HOME>/conf/hibernate-history.properties 
+For example to setup a postgres db:
+hibernate.dialect                      org.hibernate.dialect.PostgreSQLDialect
+hibernate.connection.driver_class      org.postgresql.Driver
+hibernate.connection.url               jdbc:postgresql://<your path>
+hibernate.connection.username          <username>
+hibernate.connection.password          <password>
+hibernate.hbm2ddl.auto                 update
+
+don't forget to put postgres drivers in your classpath!
+
+
+and remember, Have Fun!
+
+
+##################################
+# Double precision in postgresql #
+##################################
+
+By default, postgresql rounds double data. To fix that, change postgresql.conf and set:
+extra_float_digits 2
+
+(see http://www.postgresql.org/docs/8.3/static/runtime-config-client.html#GUC-EXTRA-FLOAT-DIGITS)
+
+##########################################
+# Launching continuous integration tasks #
+##########################################
+maven options :
+-DskipDoc to skip doc generation
+-DskipTests to skip maven unit tests
+
+To launch a continuous integration task:
+1) generate a zip package and install it to the local maven repository:
+mvn clean install
+2) launch the continuous integration test task:
+e.g.: ant -f build-nightly.xml test-easybeans
+ 

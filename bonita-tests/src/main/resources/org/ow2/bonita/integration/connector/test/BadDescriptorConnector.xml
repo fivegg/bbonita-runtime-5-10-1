@@ -1,0 +1,9 @@
+<connector>
+  <inputs />
+
+  <outputs>
+    <getter>
+      <id>out</id>
+      <name>getResult</name>
+    </getter>
+  </outputs>

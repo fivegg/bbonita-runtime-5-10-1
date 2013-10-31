@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	- - - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures, B.P.68, 
+	78340, Les Clayes-sous-Bois - - This library is free software; you can redistribute 
+	it and/or - modify it under the terms of the GNU Lesser General Public - 
+	License as published by the Free Software Foundation; either - version 2.1 
+	of the License, or (at your option) any later version. - - This library is 
+	distributed in the hope that it will be useful, - but WITHOUT ANY WARRANTY; 
+	without even the implied warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+	PURPOSE. See the GNU - Lesser General Public License for more details. - 
+	- You should have received a copy of the GNU Lesser General Public - License 
+	along with this library; if not, write to the Free Software - Foundation, 
+	Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA - - - - 
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-client</artifactId>
+	<packaging>jar</packaging>
+	<name>Bonita - Client library</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-runtime</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.spec.ee</groupId>
+			<artifactId>ow2-ejb-3.0-spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.util.asm</groupId>
+			<artifactId>asm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+		</dependency>
+
+		<!-- REST dependencies -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<showDeprecation>false</showDeprecation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>buildDoc</id>
+			<activation>
+				<property>
+					<name>!skipDoc</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack-javadoc-dependencies</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeClassifiers>javadoc</includeClassifiers>
+									<type>jar</type>
+									<includeGroupIds>org.ow2.bonita</includeGroupIds>
+									<includeScope>provided</includeScope>
+									<outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+									<overWriteReleases>true</overWriteReleases>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

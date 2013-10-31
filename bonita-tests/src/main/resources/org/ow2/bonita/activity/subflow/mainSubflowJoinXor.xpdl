@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="mainSubflowJoinXor" Name="mainSubflowJoinXor">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-02-16T11:03:42.858+0100</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="mainSubflowJoinXor" Id="mainSubflowJoinXor">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="sf2" Name="sf2">
+          <Implementation>
+            <SubFlow Execution="SYNCHR" Id="subflowWithTask" />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="361" />
+            <ExtendedAttribute Name="YOffset" Value="222" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="100" />
+            <ExtendedAttribute Name="File" Value="/home/porcherg/workspace/bonitaPVM/modules/tests/src/main/resources/org/ow2/bonita/activity/subflow/subflowWithTask.xpdl" />
+            <ExtendedAttribute Name="Workspace" Value="/home/porcherg/workspace" />
+            <ExtendedAttribute Name="SubFlowVersion" Value="1.0" />
+            <ExtendedAttribute Name="SubFlowName" Value="subflowWithTask" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="sf1" Name="sf1">
+          <Implementation>
+            <SubFlow Execution="SYNCHR" Id="subflowWithTask" />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="129" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="44" />
+            <ExtendedAttribute Name="XOffset" Value="355" />
+            <ExtendedAttribute Name="YOffset" Value="99" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="100" />
+            <ExtendedAttribute Name="File" Value="/home/porcherg/workspace/bonitaPVM/modules/tests/src/main/resources/org/ow2/bonita/activity/subflow/subflowWithTask.xpdl" />
+            <ExtendedAttribute Name="Workspace" Value="/home/porcherg/workspace" />
+            <ExtendedAttribute Name="SubFlowVersion" Value="1.0" />
+            <ExtendedAttribute Name="SubFlowName" Value="subflowWithTask" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="join" Name="join">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="231" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="86" />
+            <ExtendedAttribute Name="XOffset" Value="519" />
+            <ExtendedAttribute Name="YOffset" Value="172" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaInit" Name="BonitaInit">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="63" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="233" />
+            <ExtendedAttribute Name="YOffset" Value="166" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="621" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="725" />
+            <ExtendedAttribute Name="YOffset" Value="166" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="waitState" Name="waitState">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="631" />
+            <ExtendedAttribute Name="YOffset" Value="172" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="63" />
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="sf2_join" Name="sf2_join" From="sf2" To="join" />
+        <Transition Id="Start_sf2" Name="Start_sf2" From="BonitaInit" To="sf2" />
+        <Transition Id="join_waitState" Name="join_waitState" From="join" To="waitState" />
+        <Transition Id="sf1_join" Name="sf1_join" From="sf1" To="join" />
+        <Transition Id="Start_sf1" Name="Start_sf1" From="BonitaInit" To="sf1" />
+        <Transition Id="waitState_End" Name="waitState_End" From="waitState" To="BonitaEnd" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

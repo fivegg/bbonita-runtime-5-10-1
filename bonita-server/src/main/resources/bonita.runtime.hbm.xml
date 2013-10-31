@@ -1,0 +1,588 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false" default-access="field"
+  package="org.ow2.bonita.facade.runtime.impl">
+
+  <class name="InternalActivityInstance" table="BN_ACT_INST">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.ActivityInstanceUUID" unique="true">
+      <property name="value" column="ACT_INST_UUID_" index="IDX_ACT_UUID"/>
+    </component>
+    <component name="processUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" index="IX_PROC_UUID"/>
+    </component>
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="INST_UUID_" index="IDX_INST_UUID"/>
+    </component>
+    <component name="subflowProcessInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="SUB_INST_UUID_" index="IDX_SUB_INST_UUID"/>
+    </component>
+    <component name="rootInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="ROOT_INST_UUID_" index="IDX_ACT_ROOT_INST_UUID"/>
+    </component>
+    <property name="state" column="ACTIVITY_STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.ActivityState
+        </param>
+      </type>
+    </property>
+
+    <property name="readyDate" column="READY_DATE" type="long" />
+    <property name="startedDate" column="START_DATE" type="long" />
+    <property name="endedDate" column="END_DATE" type="long" />
+    <property name="lastUpdate" column="LAST_UPD" type="long" />
+    <property name="startedBy" column="START_BY" />
+    <property name="endedBy" column="END_BY" />
+    <property name="expectedEndDate" column="EXPEN_DATE" type="long" />
+    <property name="human" column="IS_HUMAN_" />
+
+    <component name="activityDefinitionUUID" class="org.ow2.bonita.facade.uuid.ActivityDefinitionUUID">
+      <property name="value" column="ACT_DEF_UUID_" index="IDX_ACT_DEF_UUID"/>
+    </component>
+    
+    <property name="type" column="TYPE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.majorElement.ActivityDefinition$Type
+        </param>
+      </type>
+    </property>
+
+    <property name="priority" column="PRIORITY" />
+    <property name="name" column="NAME" />
+    <property name="description" column="DESCR" type="text" />
+    <property name="label" column="LABEL" />
+    
+    <property name="dynamicDescription" column="DYN_DESCR" type="text" />
+    <property name="dynamicLabel" column="DYN_LABEL" type="text" />
+    
+    <property name="executionSummary" column="DYN_EXECUTION_SUMMARY" type="text" />
+    
+    <set name="candidates" cascade="all" table="BN_ACT_CAND" fetch="subselect">
+      <key foreign-key="FK_ACT_CAND">
+        <column name="ACTIVITY_ID_" index="IDX_ACT_CAND"/>
+      </key>
+      <element type="string" column="CANDIDATE_"/>
+    </set>
+    <property name="userId" column="USERID_"/>
+    <property name="iterationId" column="ITERATION_ID_" />
+    <property name="activityInstanceId" column="ACT_INST_ID_" />
+    <property name="loopId" column="LOOP_ID_" />
+
+    <map name="variables" cascade="all-delete-orphan" table="BN_ACT_INST_VARS" fetch="subselect">
+      <key foreign-key="FK_ACT_VAR_BR">
+         <column name="ACT_ID_" index="IDX_ACT_VAR_BR"/>
+      </key>
+      <map-key type="string" column="KEY_" />
+      <one-to-many class="org.ow2.bonita.type.Variable" />
+    </map>
+
+    <list name="variableUpdates" cascade="all" fetch="subselect">
+      <key foreign-key="FK_ACT_VAR_UPD">
+        <column name="ACT_ID_" index="IDX_ACT_VAR_UPD"/>
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.runtime.impl.InternalVariableUpdate" />
+    </list>
+    <list name="stateUpdates" cascade="all" fetch="subselect">
+      <key foreign-key="FK_ACTIVITY_STATE_UPD">
+        <column name="ACTIVITY_ID_" index="IDX_ACTIVITY_STATE_UPD"/>
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="StateUpdateImpl"/>
+    </list>
+
+    <list name="assignUpdates" cascade="all" fetch="subselect">
+      <key foreign-key="FK_TASK_ASSIGN_UPD">
+        <column name="TASK_ID_" index="IDX_TASK_ASSIGN_UPD"/>
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="AssignUpdateImpl"/>
+    </list>
+  </class>
+
+  <class name="AttachmentInstanceImpl" table="BN_ATTS_INST">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <component name="processInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="INST_UUID_" index="IDX_ATT_INST_UUID"/>
+    </component>
+    <property name="name" column="ATT_INST_NAME_" />
+    <property name="label" column="ATT_INST_LABEL_" />
+    <property name="description" column="ATT_INST_DESC_" />
+    <property name="fileName" column="ATT_INST_FILENAME_" />
+    <property name="author" column="ATT_INST_AUTHOR_" />
+    <property name="versionDate" column="ATT_INST_DATE_" type="long" />
+    <map name="metaData" cascade="all" table="BN_ATTS_METADATA" fetch="subselect">
+      <key column="ATT_DBID_" />
+      <map-key type="string" column="KEY_" />
+      <element type="string" column="VALUE_" />
+    </map>
+  </class>
+
+  <class name="InternalProcessInstance" table="BN_PROC_INST">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="nb" column="NB_"/>
+    <component name="processUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" index="IDX_INST_PROC_UUID"/>
+    </component>
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID" unique="true">
+      <property name="value" column="INST_UUID_" index="IDX_PROC_INST_UUID" />
+    </component>
+    <component name="rootInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="ROOT_INST_UUID_" index="IDX_PROC_ROOT_INST_UUID" />
+    </component>
+    <component name="parentInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="PARENT_INST_UUID_" />
+    </component>
+    <component name="parentActivityUUID" class="org.ow2.bonita.facade.uuid.ActivityInstanceUUID">
+      <property name="value" column="PARENT_ACT_INST_UUID_" />
+    </component>
+
+    <property name="isArchived" column="ARCHIVED" />
+    <property name="lastUpdate" column="LAST_UPD" type="long" />
+    <property name="userXPRead" column="XP_READ_" type="long" />
+    <property name="nbOfAttachments" column="NB_OF_ATTACHMENTS_" />
+    <property name="startedDate" column="START_DATE" type="long" />
+    <property name="endedDate" column="END_DATE" type="long" />
+    <property name="startedBy" column="START_BY" />
+    <property name="endedBy" column="END_BY" />
+    <property name="state" column="INST_STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.InstanceState
+        </param>
+      </type>
+    </property>
+
+    <list name="commentFeed" cascade="all" fetch="subselect">
+      <key column="FEED_ID_" />
+      <list-index column="INDEX_" />
+      <one-to-many class="CommentImpl" />
+    </list>
+
+    <list name="variableUpdates" cascade="all" fetch="subselect">
+      <key foreign-key="FK_INST_VAR_UPD">
+        <column name="INST_ID_" index="IDX_INST_VAR_UPD"/>
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.runtime.impl.InternalVariableUpdate" />
+    </list>
+    <list name="instanceStateUpdates" cascade="all" fetch="subselect">
+      <key foreign-key="FK_INST_STATE_UPD">
+        <column name="INST_ID_" index="IDX_INST_STATE_UPD"/>
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="InstanceStateUpdateImpl" />
+    </list>
+    <set name="childrenInstanceUUID" cascade="all" table="BN_PROC_INST_CHILD" fetch="subselect">
+      <key column="CHILDREN_UUID_" />
+      <composite-element class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+        <property name="value" column="CHILDREN_UUID" index="IDX_CHILDREN_UUID" />
+      </composite-element>
+    </set>
+
+    <map name="variables" cascade="all-delete-orphan" table="BN_PROC_INST_VARS" fetch="subselect">
+      <key foreign-key="FK_PROC_VAR_BR">
+        <column name="PROC_ID_" index="IDX_PROC_VAR_BR"/>
+      </key>
+      <map-key type="string" column="KEY_"/>
+      <many-to-many class="org.ow2.bonita.type.Variable" foreign-key="FK_PROC_VAR_VAL_BR">
+        <column name="VAR_" index="IDX_PROC_VAR_VAL_BR"/>
+      </many-to-many>
+    </map>
+    
+    <set name="activities" cascade="all"  fetch="subselect">
+      <key foreign-key="FK_INST_ACT">
+        <column name="INSTANCE_DBID_" index="IDX_INST_ACT"/>
+      </key>
+      <one-to-many class="org.ow2.bonita.facade.runtime.impl.InternalActivityInstance"/>
+    </set>
+    
+    <many-to-one name="rootExecution"
+                 class="org.ow2.bonita.runtime.model.Execution"
+                 column="ROOT_EXEC_"
+                 cascade="all"
+                 index="IDX_INST_ROOT_EXEC"
+                 foreign-key="FK_INST_ROOT_EXEC"/>
+    <map name="transitionStates" table="BN_TRANS_STATES" cascade="all" fetch="subselect">
+      <key column="INSTANCE_ID_"/>
+      <index type="string" column="TRANS_NAME_"/>
+      <element type="string" column="STATE_"/>
+    </map>
+    <set name="involvedUsers" cascade="all" table="BN_INST_USERS" fetch="subselect">
+      <key foreign-key="FK_INST_USERS">
+        <column name="INSTANCE_ID_" index="IDX_INST_USERS"/>
+      </key>
+      <element type="string" column="USER_"/>
+    </set>
+    
+     <set name="activeUsers" cascade="all" table="BN_INST_ACTUSERS" fetch="subselect">
+      <key foreign-key="FK_INST_ACTUSERS">
+        <column name="INSTANCE_DBID_" index="IDX_INST_ACTUSERS"/>
+      </key>
+      <element type="string" column="USER_" />
+    </set>
+    
+  </class>
+  
+  <class name="CommentImpl" table="BN_COMMENTS">
+  	<id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+  	<property name="userId" column="USERID_" />
+  	<property name="message" column="MESSAGE_" type="text" />
+  	<property name="date" column="DATE_" type="long" />
+  	<component name="activityUUID" class="org.ow2.bonita.facade.uuid.ActivityInstanceUUID">
+      <property name="value" column="ACTIVITY_UUID_" />
+    </component>
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+  </class>
+    
+  <class name="StateUpdateImpl" table="BN_STATE_UPD">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="date" column="DATE_" type="long" />
+    <property name="state" column="ACTIVITY_STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.ActivityState
+        </param>
+      </type>
+    </property>
+    <property name="updateUserId" column="UPDATED_USERID_"/>
+    <property name="initialState" column="INITIAL_STATE_">
+      <type
+        name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.ActivityState
+        </param>
+      </type>
+    </property>
+  </class>
+  
+  <class name="InstanceStateUpdateImpl" table="BN_PI_STATE_UPD">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="date" column="DATE_" type="long" />
+    <property name="currentState" column="INST_STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.InstanceState
+        </param>
+      </type>
+    </property>
+    <property name="updateUserId" column="UPDATED_USERID_"/>
+    <property name="initialState" column="INITIAL_STATE_">
+      <type
+        name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.InstanceState
+        </param>
+      </type>
+    </property>
+  </class>
+  
+  <class name="AssignUpdateImpl" table="BN_TASK_ASS_UPD">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="date" column="DATE_" type="long" />
+    <property name="state" column="TASK_STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.runtime.ActivityState
+        </param>
+      </type>
+    </property>
+    <property name="updateUserId" column="UPDATED_USERID_"/>
+    <set name="candidates" cascade="all" table="BN_TA_UPD_CAND" fetch="join">
+      <key foreign-key="FK_ASS_UP_CAND">
+        <column name="ASSIGN_UP_ID_" index="IDX_ASS_UP_CAND"/>
+      </key>
+      <element type="string" column="CANDIDATE_"/>
+    </set>
+    <property name="userId" column="USERID_"/>
+  </class>
+
+  <class name="org.ow2.bonita.facade.runtime.impl.InternalVariableUpdate" table="BN_VAR_UPDATE">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="date" column="DATE_" type="long"/>
+    <property name="userId" column="USERID_"/>
+    <property name="name" column="VAR_NAME_"/>
+    <many-to-one name="variable" 
+                 class="org.ow2.bonita.type.Variable" 
+                 cascade="all" 
+                 index="IDX_VAR_UPD_VAL" 
+                 foreign-key="FK_VAR_UPD_VAL"
+                 />
+  </class>
+
+  <class name="org.ow2.bonita.runtime.model.Execution" table="BN_PVM_EXEC">
+    <id name="id" column="DBID_">
+      <generator class="native" />
+    </id>
+    <version name="dbversion" column="DBVERSION_" />
+    
+    <property name="eventUUID" column="EVENT_UUID" index="IDX_EVENT_UUID_" />
+    <property name="name" column="NAME_" />
+    <property name="state" column="STATE_" />
+    <property name="iterationId" column="ITERATION_ID_" />
+    <property name="waitingForActivityInstanceNb" column="WAITING_FOR_" />
+    <property name="activityInstanceNb" column="ACT_INST_NB_" />
+    <property name="activityInstanceId" column="ACT_INST_ID_" />
+    
+    <many-to-one name="node" 
+                 class="org.ow2.bonita.facade.def.InternalActivityDefinition" 
+                 column="NODE_"
+                 foreign-key="FK_EXEC_NODE"
+                 index="IDX_EXEC_NODE"/>
+    
+    <many-to-one name="activityInstance" 
+                 class="org.ow2.bonita.facade.runtime.impl.InternalActivityInstance" 
+                 column="ACT_INST_"
+                 foreign-key="FK_EXEC_ACT_INST"
+                 index="IDX_ACT_INST"/>
+    
+    <many-to-one name="processDefinition"
+                 class="org.ow2.bonita.facade.def.InternalProcessDefinition" 
+                 column="PROCESS_"
+                 foreign-key="FK_EXEC_PROCESS" 
+                 index="IDX_EXEC_PROCESS" />
+
+    <list name="executions" 
+          cascade="all-delete-orphan"
+          inverse="false" fetch="subselect">
+      <key column="PARENT_" foreign-key="FK_EXEC_PARENT" />
+      <list-index column="PARENT_IDX_" />
+      <one-to-many class="org.ow2.bonita.runtime.model.Execution" />
+    </list>
+    <many-to-one name="parent"
+                 class="org.ow2.bonita.runtime.model.Execution"
+                 column="PARENT_"
+                 foreign-key="FK_INTERN_EXEC_PARENT"
+                 index="IDX_INTERN_EXEC_PARENT" />
+    <many-to-one name="instance"
+                 column="INTERN_INST_"
+                 foreign-key="FK_INTERN_INSTANCE"
+                 index="IDX_INTERN_INSTANCE" />
+  </class>
+
+  <class abstract="true" name="org.ow2.bonita.definition.activity.AbstractActivity" table="BN_ABSTR_ACT">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <discriminator column="CLASS_" force="false" insert="true" not-null="true" />
+    <property name="activityName" column="ACT_NAME"/>
+  </class>
+
+  <subclass discriminator-value="Automatic" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.AutomaticActivity" />
+  <subclass discriminator-value="Task" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.Task" />
+  <subclass discriminator-value="Subflow" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.SubFlow"/>
+  <subclass discriminator-value="Timer" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.Timer"/>
+  <subclass discriminator-value="SendEvents" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.SendEvents"/>
+  <subclass discriminator-value="ReceiveEvent" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.ReceiveEvent"/>
+  <subclass discriminator-value="ThrowingErrorEvent" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.ThrowingErrorEvent"/>
+  <subclass discriminator-value="ThrowingSignalEvent" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.ThrowingSignalEvent"/>
+  <subclass discriminator-value="CatchingSignalEvent" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.CatchingSignalEvent"/>
+  <subclass discriminator-value="CatchingErrorEvent" extends="org.ow2.bonita.definition.activity.AbstractActivity" name="org.ow2.bonita.definition.activity.CatchingErrorEvent"/>
+
+  <class name="org.ow2.bonita.runtime.event.OutgoingEventInstance" table="BN_OEI_">
+    <id column="DBID_" name="id">
+      <generator class="native" />
+    </id>
+    <component name="activityUUID" class="org.ow2.bonita.facade.uuid.ActivityInstanceUUID">
+      <property name="value" column="OEI_ACT_INST_UUID_" index="IDX_OEI_ACT_UUID"/>
+    </component>
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="OEI_INST_UUID_" index="IDX_OEI_UUID"/>
+    </component>
+    <map name="parameters" table="BN_OEI_PARAMS" cascade="all" fetch="subselect">
+      <key column="OEI_VP_ID_" />
+      <map-key type="string" column="PARAM_NAME_" />
+      <one-to-many class="org.ow2.bonita.type.Variable" />
+    </map>
+    <property name="name" column="NAME" index="IDX_OEI" />
+    <property name="processName" column="PROC_NAME" index="IDX_OEI" />
+    <property name="activityName" column="ACT_NAME" index="IDX_OEI" />
+    <property name="locked" column="LOCKED" index="IDX_OEI, IDX_LOCK_" />
+    <property name="overdue" column="OVERDUE" index="IDX_LOCK_" />
+    <property name="incomingId" column="INCOMING_ID_" />
+    <property name="correlationKey1" column="COR_KEY1_" index="IDX_OEI_COR_KEY_" length="55" />
+    <property name="correlationKey2" column="COR_KEY2_" index="IDX_OEI_COR_KEY_" length="55" />
+    <property name="correlationKey3" column="COR_KEY3_" index="IDX_OEI_COR_KEY_" length="55" />
+    <property name="correlationKey4" column="COR_KEY4_" index="IDX_OEI_COR_KEY_" length="55" />
+    <property name="correlationKey5" column="COR_KEY5_" index="IDX_OEI_COR_KEY_" length="55" />
+  </class>
+
+  <class name="org.ow2.bonita.runtime.event.IncomingEventInstance" table="BN_IEI_">
+    <id name="id" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="activityDefinitionUUID" class="org.ow2.bonita.facade.uuid.ActivityDefinitionUUID">
+      <property name="value" column="IEI_ACT_DEF_UUID_" index="IDX_IEI_DEF_UUID"/>
+    </component>
+    <component name="activityUUID" class="org.ow2.bonita.facade.uuid.ActivityInstanceUUID">
+      <property name="value" column="IEI_ACT_INST_UUID_" index="IDX_IEI_ACT_UUID"/>
+    </component>
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="IEI_INST_UUID_" index="IDX_IEI_INST_UUID"/>
+    </component>
+    <component name="eventSubProcessRootInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="IEI_ESPRI_UUID_" index="IDX_IEI_ESPRI_UUID"/>
+    </component>
+    <property name="name" column="NAME" index="IDX_IEI, IDX_BN_IEI_NAM_SIG_PROCNAM" />
+    <property name="processName" column="PROC_NAME" index="IDX_IEI, IDX_BN_IEI_NAM_SIG_PROCNAM" />
+    <property name="activityName" column="ACT_NAME" index="IDX_IEI" />
+    <property name="expression" column="EXPR" type="text"/>
+    <property name="executionUUID" column="EXEC_UUID_"/>
+    <property name="signal" column="SIGNAL_" index="IDX_BN_IEI_NAM_SIG_PROCNAM" />
+    <property name="enableTime" column="ENABLE_TIME_" index="IDX_IEI" />
+    <property name="executionLocked" column="EXEC_LOCKED"/>
+    <property name="exception" column="EXCEPTION_" type="text" />
+    <property name="permanent" column="PERMANENT_" />
+    <property name="locked" column="LOCKED" index="IDX_IEI" />
+    <set name="incompatibleEvents" cascade="all" table="BN_INCOMP_EVENTS" fetch="join">
+      <key foreign-key="FK_INCOMING_INCOMP">
+        <column name="INCOMING_ID" index="IDX_INCOMING_INCOMP_"/>
+      </key>
+      <element type="long" column="OUTGOING_ID"/>
+    </set>
+    <property name="correlationKey1" column="COR_KEY1_" index="IDX_IEI_COR_KEY_" length="55" />
+    <property name="correlationKey2" column="COR_KEY2_" index="IDX_IEI_COR_KEY_" length="55" />
+    <property name="correlationKey3" column="COR_KEY3_" index="IDX_IEI_COR_KEY_" length="55" />
+    <property name="correlationKey4" column="COR_KEY4_" index="IDX_IEI_COR_KEY_" length="55" />
+    <property name="correlationKey5" column="COR_KEY5_" index="IDX_IEI_COR_KEY_" length="55" />
+  </class>
+
+  <class name="org.ow2.bonita.services.impl.DocumentVersionImpl" table="BN_DOCUMENT_VERSION">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="author" column="DOC_AUTHOR_" />
+    <property name="creationDate" column="CREATION_DATE_" type="long" />
+    <property name="lastModifiedBy" column="LAST_MODIFIED_BY_" />
+    <property name="lastModificationDate" column="LAST_MODIFICATION_DATE_" type="long" />
+    <property name="majorVersion" column="MAJOR_VERSION_" />
+    <property name="versionSeriesId" column="VERSION_SERIES_ID_" type="long" index="IDX_VERSION_S_ID"/>
+    <property name="contentMimeType" column="CONTENT_MIME_TYPE_" />
+    <property name="contentFileName" column="CONTENT_FILENAME_" />
+    <property name="contentSize" column="CONTENT_SIZE_" />
+    <property name="contentStorageId" column="CONTENT_STORAGE_ID_" />
+    <property name="versionLabel" column="VERSION_LABEL_" />
+  </class>
+
+  <class name="org.ow2.bonita.services.impl.DocumentDescriptorImpl" table="BN_DOCUMENT_DSCR">
+  	<id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="lastVersionId" column="LAST_VERSION_ID_" type="long" index="IDX_LAST_META"/>
+    <property name="lastVersionLabel" column="LAST_VERSION_LABEL_" type="long"/>
+    <property name="metaDocument" column="META_DOCUMENT_"  index="IDX_LAST_META" unique-key="name_meta_procdef_procinst"/>
+    <property name="name" column="DOC_NAME_" index="IDX_DOC_NAME" unique-key="name_meta_procdef_procinst"/>
+    <component name="processInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID" >
+      <property name="value" column="INST_UUID_" unique-key="name_meta_procdef_procinst"/>
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_DEF_UUID_" unique-key="name_meta_procdef_procinst"/>
+    </component>
+  </class>
+
+  <class name="org.ow2.bonita.services.impl.DocumentDescriptorMappingImpl" table="BN_DOCUMENT_DSCR_MAP">
+  	<id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="documentDescriptorId" column="DOC_DESC_ID_" index="IDX_DOC_DES_ID"/>
+    <component name="processInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID" >
+      <property name="value" column="INST_UUID_" index="IDX_DOC_DESC_MAP_INST_UUID"/>
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_DEF_UUID_" index="IX_DOC_DESC_MAP_PROC_DEF_UUID"/>
+    </component>
+  </class>
+
+  <class name="org.ow2.bonita.services.impl.DocumentContentImpl" table="BN_DOCUMENT_CONTENT">
+  	<id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <version name="dbversion" column="DBVERSION_" />
+    <property name="blob" type="blob">
+      <column name="BLOB_CONTENT_" /> 
+    </property>
+  </class>
+
+  <class name="org.ow2.bonita.runtime.event.Job" table="BN_JOB">
+    <id name="id" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="eventName" column="EVENT_NAME_" not-null="true" />
+    <property name="eventPosition" column="EVENT_POSITION_" not-null="true" length="15" />
+    <property name="eventType" column="EVENT_TYPE_" not-null="true" length="15" index="IDX_JB_EVT_TYP_" />
+    <property name="processUUID" column="PROC_UUID_" length="255" type="string" />
+    <component name="eventSubProcessRootInstanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="SUB_PRO_UUID_" />
+    </component>
+    <property name="executionEventUUID" column="EXEC_UUID_" index="IDX_EXEC_ID_" />
+    <component name="activityDefinitionUUID" class="org.ow2.bonita.facade.uuid.ActivityDefinitionUUID">
+      <property name="value" column="ACT_DEF_UUID_" index="IDX_JB_ACT_UUID_" />
+    </component>
+    <many-to-one name="outgoingEvent" foreign-key="FK_OE_" column="OE_ID_"/>
+    <property name="timerExpression" column="EXPR_" type="text" />
+    <property name="fireTime" column="FIRE_TIME_" not-null="true" />
+    <property name="retries" column="RETRIES_" not-null="true" length="2" index="IDX_JB_LK_" />
+    <property name="exception" column="EXCEPTION_" type="text" />
+    <component name="instanceUUID" class="org.ow2.bonita.facade.uuid.ProcessInstanceUUID">
+      <property name="value" column="INST_UUID_" index="IDX_JB_INST_UUID_" />
+    </component>
+  </class>
+
+  <class name="org.ow2.bonita.runtime.event.JobLock" table="BN_JOB_LOCK">
+    <id name="id" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="lockedBy" column="LOCKED_BY_" length="55" type="string" index="IDX_JL_" />
+    <property name="processUUID" column="PROC_UUID_" length="255" type="string" unique="true" index="IDX_JL_, IDX_JL_PID_" />
+  </class>
+  
+  <class name="org.ow2.bonita.runtime.event.Master" table="BN_MASTER">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="heartbeat" column="HEARTBEAT_"/>
+    <property name="node" column="NODE" length="50" type="string"/>
+  </class>
+  
+  <class name="org.ow2.bonita.runtime.event.Node" table="BN_NODE">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="heartbeat" column="HEARTBEAT_"/>
+    <property name="node" column="NODE" length="50" type="string"/>
+    <property name="status" column="STATUS" length="20" type="string"/>
+    <property name="option" column="OPTION_" length="50" type="string"/>
+  </class>
+
+  <database-object>
+    <create>create index IDX_IC_OEI_ on BN_INCOMP_EVENTS (OUTGOING_ID)</create>
+    <drop />
+  </database-object>
+
+  <database-object>
+    <create>create index IDX_IC_IEI_OEI_ on BN_INCOMP_EVENTS (INCOMING_ID, OUTGOING_ID)</create>
+    <drop />
+  </database-object>
+
+</hibernate-mapping>

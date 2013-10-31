@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures,
+		B.P.68, 78340, Les Clayes-sous-Bois - - This library is free software;
+		you can redistribute it and/or - modify it under the terms of the GNU
+		Lesser General Public - License as published by the Free Software
+		Foundation; either - version 2.1 of the License, or (at your option)
+		any later version. - - This library is distributed in the hope that it
+		will be useful, - but WITHOUT ANY WARRANTY; without even the implied
+		warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+		the GNU - Lesser General Public License for more details. - - You
+		should have received a copy of the GNU Lesser General Public - License
+		along with this library; if not, write to the Free Software -
+		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+		02110-1301, USA - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - - - - - - - - -
+	-->
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-tests-jboss4-ejb2</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Integration Tests - Jboss4 / EJB2</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-integration-tests</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<properties>
+		<jaas>${external.conf.dir}/jaas-jboss.cfg</jaas>
+		<jboss4.version>jboss-4.2.2.GA</jboss4.version>
+		<jboss.ejb.version>ejb2</jboss.ejb.version>
+		<jboss.number>4</jboss.number>
+		<jboss.icf>org.jnp.interfaces.NamingContextFactory</jboss.icf>
+		<jboss.web.port>7080</jboss.web.port>
+		<provider.port>7099</provider.port>
+		<serverBindPort>9445</serverBindPort>
+		<provider.urlJboss>jnp://localhost:${provider.port}</provider.urlJboss>
+		<jboss.dir>${build.dir}/jboss4</jboss.dir>
+		<jboss.home>${jboss.dir}/${jboss4.version}</jboss.home>
+		<jboss.deploy.dir>${jboss.home}/server/default/deploy</jboss.deploy.dir>
+		<jboss.conf.dir>${jboss.home}/server/default/conf</jboss.conf.dir>
+		<jboss.download.url>http://surfnet.dl.sourceforge.net/sourceforge/jboss/${jboss4.version}.zip</jboss.download.url>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>integrationTests</id>
+			<activation>
+				<property>
+					<name>!skipIntegrationTests</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install jboss</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<taskdef name="if" classname="${if.task}"
+											classpathref="maven.runtime.classpath" />
+
+										<available file="${env.HOME}/${jboss4.version}.zip" property="jboss.present" />
+										<if>
+											<equals arg1="${jboss.present}" arg2="true" />
+											<then>
+												<unzip dest="${jboss.dir}" src="${env.HOME}/${jboss4.version}.zip" />
+											</then>
+											<else>
+												<get dest="${bonita.home}/${jboss4.version}.zip" src="${jboss.download.url}"
+													usetimestamp="true" />
+												<unzip dest="${jboss.dir}" src="${bonita.home}/${jboss4.version}.zip" />
+											</else>
+										</if>
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;Port&quot;&gt;1099&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;Port&quot;&gt;${provider.port}&lt;/attribute&gt;" />
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;RMIObjectPort&quot;&gt;4444&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;RMIObjectPort&quot;&gt;0&lt;/attribute&gt;" />
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;RmiPort&quot;&gt;1098&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;RmiPort&quot;&gt;0&lt;/attribute&gt;" />
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;serverBindPort&quot;&gt;4446&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;serverBindPort&quot;&gt;${serverBindPort}&lt;/attribute&gt;" />
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;ServerBindPort&quot;&gt;4445&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;ServerBindPort&quot;&gt;0&lt;/attribute&gt;" />
+
+										<replace file="${jboss.deploy.dir}/ejb-deployer.xml"
+											token="&lt;depends optional-attribute-name=&quot;WebServiceName&quot;&gt;jboss:service=WebService&lt;/depends&gt;"
+											value="" />
+
+										<replace file="${jboss.conf.dir}/jboss-service.xml"
+											token="&lt;attribute name=&quot;Port&quot;&gt;8083&lt;/attribute&gt;"
+											value="&lt;attribute name=&quot;Port&quot;&gt;0&lt;/attribute&gt;" />
+
+										<replace file="${jboss.deploy.dir}/jboss-web.deployer/server.xml"
+											token="port=&quot;8080&quot;" value="port=&quot;${jboss.web.port}&quot;" />
+
+										<replace file="${jboss.conf.dir}/jboss-log4j.xml"
+											token="&lt;root&gt;" value="&lt;root&gt;&lt;priority value=&quot;warn&quot; /&gt;" />
+
+										<delete>
+											<fileset dir="${jboss.deploy.dir}">
+												<exclude name="jmx-invoker-service.xml" />
+												<exclude name="ear-deployer.xml" />
+												<exclude name="ejb-deployer.xml" />
+												<exclude name="ejb3-interceptors-aop.xml" />
+												<exclude name="hsqldb-ds.xml" />
+												<exclude name="jbossjca-service.xml" />
+												<include name="*.xml" />
+												<exclude name="jboss-ha-local-jdbc.rar" />
+												<exclude name="jboss-local-jdbc.rar" />
+												<include name="*.rar" />
+											</fileset>
+										</delete>
+
+										<delete dir="${jboss.deploy.dir}/jboss-bean.deployer" />
+										<delete dir="${jboss.deploy.dir}/http-invoker.sar" />
+										<delete dir="${jboss.deploy.dir}/jbossws.sar" />
+										<delete dir="${jboss.deploy.dir}/uuid-key-generator.sar" />
+										<delete dir="${jboss.deploy.dir}/jmx-console.war" />
+										<delete dir="${jboss.deploy.dir}/jms" />
+										<delete dir="${jboss.deploy.dir}/management" />
+
+										<delete file="${distrib.dir}/lib/server/stax-api-1.0.1.jar" />
+										<ant dir="${distrib.dir}" antfile="build.xml" target="ear.${jboss.ejb.version}" />
+										<copy todir="${jboss.deploy.dir}"
+											file="${distrib.dir}/ear/${jboss.ejb.version}/bonita.ear" />
+
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>run jboss tests</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<property name="test_classpath" refid="maven.test.classpath" />
+										<property environment="env" />
+										<property name="added.java.options" value="${tmpdir.opts}" />
+										<condition property="java.options"
+											value="${env.JAVA_OPTS} ${added.java.options}" else="${added.java.options}">
+											<isset property="env.JAVA_OPTS" />
+										</condition>
+
+										<path id="client.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${client.lib.dir}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<path id="test.path">
+											<pathelement path="${java.class.path}" />
+											<path refid="client.path" />
+											<pathelement path="${test_classpath}" />
+										</path>
+										<path id="jboss.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${jboss.home}/client">
+												<include name="jbossall-client.jar" />
+											</fileset>
+										</path>
+
+										<copy file="${hudson.hbm.core}" tofile="${hbm.core}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.hbm.history}" tofile="${hbm.history}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.logging}" tofile="${logging}"
+											overwrite="true" failonerror="false" />
+										<copy todir="${server.lib.dir}" overwrite="true"
+											failonerror="false">
+											<fileset dir="${config.dir}" includes="*.jar" />
+										</copy>
+
+                                        <!-- Create default bonita.home folder -->
+										<copy todir="${bonita.home}" verbose="true">
+											<fileset dir="${build.dir}/${distrib.name}/bonita/" />
+										</copy>
+
+										<echo>Init databases...</echo>
+										<ant dir="${distrib.dir}" antfile="build.xml" target="init-db">
+											<property name="initdb.domain" value="${default.domain}" />
+											<property name="bonita.home" value="${bonita.home}" />
+											<property name="initdb.hibernate.configuration" value="${core.hbm.cfg} ${history.hbm.cfg}" />
+										</ant>
+
+										<!-- JBOSS4-EJB2 SPECIFIC STUFF -->
+										<waitfor maxwait="1" maxwaitunit="minute">
+											<socket server="localhost" port="${provider.port}" />
+										</waitfor>
+
+										<mkdir dir="${report.xml}" />
+										<junit printsummary="yes" fork="yes" forkmode="once"
+											showoutput="true">
+											<jvmarg line="${java.options}" />
+											<classpath refid="test.path" />
+											<classpath refid="jboss.path" />
+											<sysproperty key="BONITA_HOME" value="${bonita.home}" />
+											<sysproperty key="${jaasKey}" value="${jaas}" />
+											<sysproperty key="${icfKey}" value="${jboss.icf}" />
+											<sysproperty key="${providerUrlKey}" value="${provider.urlJboss}" />
+											<sysproperty key="${loggingKey}" value="${logging}" />
+											<sysproperty key="${apitypeKey}" value="${apitype.ejb2}" />
+											<sysproperty key="${jeeServer}" value="jboss4" />
+											<formatter type="xml" />
+											<test todir="${report.xml}" name="${test.class}" />
+										</junit>
+										<junitreport todir="${report.xml}">
+											<fileset dir="${report.xml}" includes="TEST-*.xml" />
+											<report todir="${report.results}" />
+										</junitreport>
+
+										<copy todir="${surefire.reports}">
+											<fileset dir="${report.xml}" />
+										</copy>
+
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<container>
+								<containerId>jboss42x</containerId>
+								<home>${project.build.directory}/jboss4/${jboss4.version}</home>
+								<systemProperties>
+									<BONITA_HOME>${bonita.home}</BONITA_HOME>
+									<javax.xml.parsers.DocumentBuilderFactory>com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl</javax.xml.parsers.DocumentBuilderFactory>
+								</systemProperties>
+							</container>
+							<configuration>
+								<type>existing</type>
+								<home>${project.build.directory}/jboss4/${jboss4.version}/server/default</home>
+								<properties>
+									<cargo.jboss.configuration>default</cargo.jboss.configuration>
+									<cargo.servlet.port>${jboss.web.port}</cargo.servlet.port>
+									<cargo.rmi.port>${provider.port}</cargo.rmi.port>
+								</properties>
+							</configuration>
+							<wait>false</wait>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>jboss-tests</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/*</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

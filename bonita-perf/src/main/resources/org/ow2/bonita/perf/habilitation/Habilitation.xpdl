@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" 
+  Id="demande_habilitation"
+  Name="demande_habilitation">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Together</Vendor>
+    <Created>15 September 2005 16:19:41</Created>
+  </PackageHeader>
+  <RedefinableHeader PublicationStatus="UNDER_TEST">
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED"/>
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="stress_ompower" Id="stress_ompower">
+    <ProcessHeader />
+      <DataFields>
+        <DataField Id="Nom" Name="Nom">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Dupont</InitialValue>
+          <Description>Nom du demandeur de l'habilitation</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="Mail" Name="Mail">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>x.y@bull.net</InitialValue>
+          <Description>Adresse mail du demandeur</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="decision" Name="decision">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="oui" />
+              <EnumerationValue Name="non" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>oui</InitialValue>
+          <Description>Decision demande habilitation donnee par approbateur</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="Telephone" Name="Telephone">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>04.76.29.75.00</InitialValue>
+          <Description>Telephone du demandeur</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="approbateur" Name="approbateur">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Durand</InitialValue>
+          <Description>Approbateur de la demande d'habilitation</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="Services_existants" Name="Services existants">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>hab1</InitialValue>
+          <Description>Liste des habilitations existentes</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="Service_demande" Name="Service demande">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>habx</InitialValue>
+          <Description>Nouvelle habilitation demandee</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="motivation_demande" Name="motivation demande">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Besoin pour ...</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="motif_refus" Name="motif refus">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Pas besoin !!!</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="No_Dossier" Name="No Dossier">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>10305</InitialValue>
+        </DataField>
+        <DataField Id="Motif_de_la_demande" Name="Motif de la demande">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Demande d'une ...</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="DEMANDEUR" Name="DEMANDEUR">
+          <ParticipantType Type="ROLE" />
+          <Description>Demandeur initial de l'habilitation</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Properties" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="APPROBATEUR" Name="APPROBATEUR">
+          <ParticipantType Type="ROLE" />
+          <Description>Role approbateur pour accepter l'habilitation</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Properties" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="InitialRole" Name="InitialRole">
+          <ParticipantType Type="SYSTEM" />
+          <Description>Role systeme pour execution des activites automatiques</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="SYSTEM" Name="SYSTEM">
+          <ParticipantType Type="SYSTEM" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="approbation" Name="approbation">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>APPROBATEUR</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffset" Value="234" />
+            <ExtendedAttribute Name="YOffset" Value="164" />
+            <ExtendedAttribute Name="property" Value="decision">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="motif_refus">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="refus" Name="refus">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>InitialRole</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffset" Value="104" />
+            <ExtendedAttribute Name="YOffset" Value="280" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.perf.habilitation.hook.RefusAM">
+              <HookEventName>task:onFinish</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="initialisation" Name="initialisation">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>DEMANDEUR</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffset" Value="42" />
+            <ExtendedAttribute Name="YOffset" Value="52" />
+            <ExtendedAttribute Name="property" Value="Nom">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="Mail">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="Telephone">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="Services_existants">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="Service_demande">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="approbateur">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="motivation_demande">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="demande" Name="demande">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>DEMANDEUR</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffset" Value="236" />
+            <ExtendedAttribute Name="YOffset" Value="50" />
+            <ExtendedAttribute Name="property" Value="motivation_demande">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="acceptation" Name="acceptation">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>InitialRole</Performer>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffset" Value="352" />
+            <ExtendedAttribute Name="YOffset" Value="280" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.perf.habilitation.hook.AcceptationAM">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="initialisation_demande" Name="initialisation_demande" From="initialisation" To="demande" />
+        <Transition Id="approbation_refus" Name="approbation_refus" From="approbation" To="refus">
+          <Condition Type="CONDITION">!decision.equals("oui")</Condition>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="BreakPoint" Value="382.0-65.0" />
+            <ExtendedAttribute Name="BreakPoint" Value="492.0-55.0" />
+          </ExtendedAttributes>
+        </Transition>
+        <Transition Id="approbation_acceptation" Name="approbation_acceptation" From="approbation" To="acceptation">
+          <Condition Type="CONDITION">decision.equals("oui")</Condition>
+        </Transition>
+        <Transition Id="demande_approbation" Name="demande_approbation" From="demande" To="approbation" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

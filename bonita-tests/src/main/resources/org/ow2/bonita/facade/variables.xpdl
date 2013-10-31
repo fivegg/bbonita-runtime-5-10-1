@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="variables_pack" Name="variables_pack">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>28 January 2008 16:26:46</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="variables" Id="variables">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <!-- datafields defined within Workflow process -->
+      <DataFields>
+        <DataField Id="string_process" Name="string_process">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial string value</InitialValue>
+          <Description>string for process</Description>
+        </DataField>
+        <DataField Id="enum_process" Name="enum_process">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="iiii" />
+              <EnumerationValue Name="hhhh" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>iiii</InitialValue>
+        </DataField>
+        <DataField Id="string_activity" Name="string_activity">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial value</InitialValue>
+          <Description>string for activity</Description>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="enum_activity" Name="enum_activity">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="iiii" />
+              <EnumerationValue Name="hhhh" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>iiii</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="act3" Name="act3">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+        <Activity Id="act2" Name="act2">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="property" Value="string_activity">
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="enum_activity">
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="act1" Name="act1">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="act1_act2" Name="act1_act2" From="act1" To="act2" />
+        <Transition Id="act2_act3" Name="act2_act3" From="act2" To="act3" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

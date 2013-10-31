@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+  <typedef name="converter" class="org.ow2.bonita.runtime.hibernate.ConverterType">
+	  <param name="org.ow2.bonita.type.converter.BooleanToStringConverter"    >bool-str</param>
+	  <param name="org.ow2.bonita.type.converter.ByteToLongConverter"         >byte-long</param>
+	  <param name="org.ow2.bonita.type.converter.CharacterToStringConverter"  >char-str</param>
+	  <param name="org.ow2.bonita.type.converter.DateToLongConverter"         >date-long</param>
+	  <param name="org.ow2.bonita.type.converter.DateToStringConverter"       >date-str</param>
+	  <param name="org.ow2.bonita.type.converter.DoubleToStringConverter"     >double-str</param>
+	  <param name="org.ow2.bonita.type.converter.FloatToDoubleConverter"      >float-double</param>
+	  <param name="org.ow2.bonita.type.converter.FloatToStringConverter"      >float-str</param>
+	  <param name="org.ow2.bonita.type.converter.IntegerToLongConverter"      >int-long</param>
+	  <param name="org.ow2.bonita.type.converter.SerializableToBytesConverter">ser-bytes</param>
+	  <param name="org.ow2.bonita.type.converter.ShortToLongConverter"        >short-long</param>
+  </typedef>
+  <!-- 
+  <typedef name="text" class="org.ow2.bonita.util.hibernate.TextType" />
+   -->
+</hibernate-mapping>

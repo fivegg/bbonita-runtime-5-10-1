@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="ConnectorSet" Name="ConnectorSet">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-05-04T13:04:52.094+0200</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="FileParameters" Id="FileParameters">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="ldap_answer" Name="ldap_answer">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+        <DataField Id="ldap_filter" Name="ldap_filter">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>(uid=doej)</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="ldap_attributes" Name="ldap_attributes">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>mail</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants />
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="621" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="443" />
+            <ExtendedAttribute Name="YOffset" Value="250" />
+            <ExtendedAttribute Name="Async" Value="false" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaInit" Name="BonitaInit">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="63" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="53" />
+            <ExtendedAttribute Name="YOffset" Value="244" />
+            <ExtendedAttribute Name="Async" Value="false" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="LdapSearch" Name="LdapSearch">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="252" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="136" />
+            <ExtendedAttribute Name="YOffset" Value="170" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="117" />
+            <ExtendedAttribute Name="Async" Value="false" />
+            <ExtendedAttribute Name="property" Value="ldap_filter" />
+            <ExtendedAttribute Name="property" Value="ldap_attributes" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.connector.impl.ldap.LdapConnector">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+			 <Parameters>
+				<Properties Var="file:W:\\LdapConnector.cfg" />
+				<InParameter Var="ldap_filter" Setter="setFilter" />
+				<InParameter Var="ldap_attributes" Setter="setAttributes" />
+				<OutParameter Var="ldap_answer" Getter="getResult" />
+		      </Parameters>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Start_LdapSearch" Name="Start_LdapSearch" From="BonitaInit" To="LdapSearch" />
+        <Transition Id="LdapSearch_End" Name="LdapSearch_End" From="LdapSearch" To="BonitaEnd" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

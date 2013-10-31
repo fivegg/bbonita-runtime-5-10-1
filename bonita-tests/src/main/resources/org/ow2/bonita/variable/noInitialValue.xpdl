@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+	Id="noInitialValue">
+	<PackageHeader>
+		<XPDLVersion>1.0</XPDLVersion>
+		<Vendor>Bonita Project Team</Vendor>
+		<Created>24 January 2008 15:23:21</Created>
+	</PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+	<ConformanceClass GraphConformance="NON_BLOCKED" />
+	<WorkflowProcesses>
+		<WorkflowProcess AccessLevel="PUBLIC" Id="noInitialValue">
+			<ProcessHeader />
+			<DataFields>
+				<DataField Id="nullVar">
+					<DataType>
+						<BasicType Type="STRING" />
+					</DataType>
+					<!-- <InitialValue>initial value</InitialValue> -->
+				</DataField>
+			</DataFields>
+			<Participants>
+				<Participant Id="admin" Name="admin">
+					<ParticipantType Type="HUMAN" />
+				</Participant>
+			</Participants>
+			<Activities>
+				<Activity Id="initial">
+					<Implementation>
+						<No />
+					</Implementation>
+				</Activity>
+				<Activity Id="task">
+					<Implementation>
+						<No />
+					</Implementation>
+					<Performer>admin</Performer>
+					<StartMode>
+						<Manual />
+					</StartMode>
+				</Activity>
+				<Activity Id="end">
+					<Implementation>
+						<No />
+					</Implementation>
+				</Activity>
+			</Activities>
+			<Transitions>
+        <Transition Id="initial_task" From="initial" To="task" />
+        <Transition Id="task_end" From="task" To="end">
+          <Condition Type="CONDITION">nullVar.equals("ok")</Condition>
+        </Transition>
+      </Transitions>
+		</WorkflowProcess>
+	</WorkflowProcesses>
+</Package>

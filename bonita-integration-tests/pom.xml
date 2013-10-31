@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures,
+		B.P.68, 78340, Les Clayes-sous-Bois - - This library is free software;
+		you can redistribute it and/or - modify it under the terms of the GNU
+		Lesser General Public - License as published by the Free Software
+		Foundation; either - version 2.1 of the License, or (at your option)
+		any later version. - - This library is distributed in the hope that it
+		will be useful, - but WITHOUT ANY WARRANTY; without even the implied
+		warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+		the GNU - Lesser General Public License for more details. - - You
+		should have received a copy of the GNU Lesser General Public - License
+		along with this library; if not, write to the Free Software -
+		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+		02110-1301, USA - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - - - - - - - - -
+	-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-integration-tests</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Integration Tests</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-runtime</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-distrib</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+        	<groupId>ant-contrib</groupId>
+        	<artifactId>ant-contrib</artifactId>
+        	<version>1.0b3</version>
+        	<exclusions>
+        		<exclusion>
+        			<groupId>ant</groupId>
+        			<artifactId>ant</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-tests</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<!-- STATIC PROPERTIES -->
+		<jeeServer>org.ow2.bonita.test.jee.server</jeeServer>
+		<apitypeKey>org.ow2.bonita.api-type</apitypeKey>
+		<apitype.autodetect>AutoDetect</apitype.autodetect>
+		<apitype.ejb2>EJB2</apitype.ejb2>
+		<apitype.ejb3>EJB3</apitype.ejb3>
+		<apitype.rest>REST</apitype.rest>
+		<apitype.standard>Standard</apitype.standard>
+		<bonitaEnvKey>org.ow2.bonita.environment</bonitaEnvKey>
+		<core.hbm.cfg>hibernate-configuration:core</core.hbm.cfg>
+		<history.hbm.cfg>hibernate-configuration:history</history.hbm.cfg>
+		<icfKey>java.naming.factory.initial</icfKey>
+		<initdb.key>initdb.hibernate.configuration</initdb.key>
+		<initdb.domain.key>initdb.domain</initdb.domain.key>
+		<default.domain>default</default.domain>
+		<jaasKey>java.security.auth.login.config</jaasKey>
+		<loggingKey>java.util.logging.config.file</loggingKey>
+		<login.mode>test</login.mode>
+		<providerUrlKey>java.naming.provider.url</providerUrlKey>
+		<test.class>org.ow2.bonita.DefaultEnvNonRegressionTests</test.class>
+		<rest.test.class>org.ow2.bonita.facade.rest.RESTTests</rest.test.class>
+		<if.task>net.sf.antcontrib.logic.IfTask</if.task>
+		<restserveraddressKey>org.ow2.bonita.rest-server-address</restserveraddressKey>
+		<cmis.repository>${plateform}</cmis.repository>
+
+		<!-- DYNAMIC PROPERTIES -->
+		<bonita.version>${project.version}</bonita.version>
+		<build.dir>${project.build.directory}</build.dir>		
+		<server.src>${build.dir}/bonita-server-src</server.src>
+
+		<bonita.home>${project.build.directory}/bonita</bonita.home>
+		<default.server.conf>${bonita.home}/server/default/conf</default.server.conf>
+		<external.conf.dir>${bonita.home}/external/security</external.conf.dir>
+
+		<!-- DISTRIB DIRS -->
+		<distrib.name>BOS-Engine-${bonita.version}</distrib.name>
+		<distrib.dir>${build.dir}/${distrib.name}</distrib.dir>
+		<lib.dir>${distrib.dir}/lib</lib.dir>
+		<server.lib.dir>${lib.dir}/server</server.lib.dir>
+		<client.lib.dir>${lib.dir}/client</client.lib.dir>
+		<test.lib.dir>${lib.dir}/test</test.lib.dir>
+		<conf.dir>${distrib.dir}/conf</conf.dir>
+
+		<!-- HUDSON -->
+		<cfg.base>${build.dir}/bonita-runtime-${bonita.version}/conf</cfg.base>
+		<cfg.ext>notusedforthemoment</cfg.ext>
+		<config.dir>${cfg.base}/${cfg.ext}</config.dir>
+		<hudson.hbm.core>${config.dir}/bonita-journal.properties</hudson.hbm.core>
+		<hudson.hbm.history>${config.dir}/bonita-history.properties</hudson.hbm.history>
+		<hudson.logging>${config.dir}/logging.properties</hudson.logging>
+
+		<!-- PROPERTIES / OPTS -->
+		<java.class.path>${env.CLASSPATH}</java.class.path>
+		<tmpdir.opts>-Djava.io.tmpdir=${project.build.directory}</tmpdir.opts>
+		<logging>${conf.dir}/logging.properties</logging>
+		<logging.bak>${logging}.bak</logging.bak>
+		<hbm.core>${distrib.dir}/conf/bonita-journal.properties</hbm.core>
+		<hbm.history>${distrib.dir}/conf/bonita-history.properties</hbm.history>
+
+		<!-- TESTS DIRS -->
+		<report.results>${distrib.dir}/target/testresults</report.results>
+		<report.xml>${report.results}/xml</report.xml>
+		<surefire.reports>${build.dir}/surefire-reports</surefire.reports>
+
+	</properties>
+	<build>
+		<plugins>
+			<!-- Unpack the assembly -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeArtifactsId>bonita-distrib</includeArtifactsId>
+							<excludeArtifactIds>ant-contrib,bonita-tests</excludeArtifactIds>
+							<excludeTransitive>true</excludeTransitive>
+							<outputDirectory>${build.dir}</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

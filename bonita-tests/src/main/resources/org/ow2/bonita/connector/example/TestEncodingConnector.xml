@@ -1,0 +1,9 @@
+<connector>
+  <connectorId>TestEncodingConnector</connectorId>
+  <version>5.0</version>
+  <categories>
+    <category>
+      <name>Other</name>
+    </category>
+  </categories>
+ </connector>

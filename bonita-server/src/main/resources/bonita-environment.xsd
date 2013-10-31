@@ -1,0 +1,477 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:group name="descriptor">
+    <xsd:choice>
+      <!-- Pvm bindings -->
+      <!-- Basic types -->
+      <xsd:element name="boolean" type="tBasic" />
+      <xsd:element name="true" type="tName" />
+      <xsd:element name="false" type="tName" />
+      <xsd:element name="char" type="tBasic" />
+      <xsd:element name="double" type="tBasic" />
+      <xsd:element name="float" type="tBasic" />
+      <xsd:element name="int" type="tBasic" />
+      <xsd:element name="short" type="tBasic" />
+      <xsd:element name="byte" type="tBasic" />
+      <xsd:element name="long" type="tBasic" />
+      <xsd:element name="string" type="tBasic" />
+      <xsd:element name="null" type="tName" />
+      <!-- Object and ref -->
+      <xsd:element name="object" type="tObject" />
+      <xsd:element name="ref" type="tRef" />
+      <!-- Collections -->
+      <xsd:element name="list" type="tListSet" />
+      <xsd:element name="set" type="tListSet" />
+      <xsd:element name="map" type="tMap" />
+      <xsd:element name="properties" type="tProperties" />
+      <!-- Environment -->
+      <xsd:element name="environment-factory" type="tName" />
+      <xsd:element name="environment" type="tName" />
+      <xsd:element name="context" type="tName" />
+      <!-- Various specials -->
+      <xsd:element name="domain" type="tDomain" />
+      <xsd:element name="class" type="tClass" />
+      <xsd:element name="transaction" type="tName" />
+      <xsd:element name="message-session" type="tName" />
+      <xsd:element name="timer-session" type="tName" />
+      <xsd:element name="event-executor" type="tEvent-executor" />
+      <xsd:element name="iteration-detection-policy" type="tIteration-detection" />
+      <xsd:element name="extension-points" type="tExtension-points" />
+
+      <!-- Hibernate bindings -->
+      <xsd:element name="hibernate-configuration" type="tHibernate-configuration" />
+      <xsd:element name="hibernate-session" type="tHibernate-session" />
+      <xsd:element name="hibernate-session-factory" type="tHibernate-session-factory" />
+      <xsd:element name="pvm-db-session" type="tPvm-db-session" />
+      <!-- Dynamic type mapping configuration -->
+      <xsd:element name="variable-types" type="tVariable-types" />
+      <xsd:element name="variables" type="tVariables" />
+      <!-- Services -->
+      <xsd:element name="command-service" type="tStandard-command-service" />
+      <xsd:element name="async-command-service" type="tAsync-command-service" />
+      <xsd:element name="pvm-service" type="tName" />
+
+      <xsd:element name="db-session" type="tHibernate-xpdl-persistence-service" maxOccurs="unbounded" />
+      <xsd:element name="repository" type="tRepository.Bonita" />
+      <xsd:element name="web-service" type="tRepository.Bonita" />
+      <xsd:element name="event-service" type="tRepository.Bonita" />
+      <xsd:element name="uuid-service" type="tRepository.Bonita" />
+      <xsd:element name="classdata-loader" type="tRepository.Bonita" />
+      <xsd:element name="timer-service" type="tRepository.Bonita" />
+      <xsd:element name="large-data-repository" type="tRepository.Bonita" />
+      <xsd:element name="documentation-manager" type="tRepository.Bonita" />
+      <xsd:element name="document-storage-service" type="tRepository.Bonita" />
+      <xsd:element name="identity-service" type="tRepository.Bonita" />
+      <xsd:element name="authentication-service" type="tRepository.Bonita" />
+      <xsd:element name="privilege-service" type="tRepository.Bonita" />
+      <xsd:element name="web-token-service" type="tRepository.Bonita" />
+      <xsd:element name="security" type="tRepository.Bonita" />
+      <xsd:element name="finished-instance-handler" type="tRepository.Bonita" />
+      <xsd:element name="undeployed-process-handler" type="tRepository.Bonita" />
+      <xsd:element name="recorder" type="tRepository.Bonita" />
+      <xsd:element name="journal" type="tRepository.Bonita" />
+      <xsd:element name="chainer" type="tListSet.Bonita" />
+      <xsd:element name="history" type="tRepository.Bonita" />
+      <xsd:element name="archiver" type="tRepository.Bonita" />
+      <xsd:element name="queryApi" type="tListSet.Bonita" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="environmentDefinitionData">
+    <xsd:sequence>
+      <xsd:element name="environment-factory" type="tDescriptor" />
+      <xsd:element name="environment" type="tDescriptor" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="tDescriptor">
+    <xsd:sequence>
+      <xsd:group ref="descriptor" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- Basic types -->
+
+  <xsd:complexType name="tBasic">
+    <xsd:attribute name="value" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <!-- Services -->
+
+  <xsd:complexType name="tStandard-command-service">
+    <xsd:sequence>
+      <xsd:group ref="interceptor" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tAsync-command-service">
+    <xsd:sequence>
+      <xsd:group ref="interceptor" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="propagate-auth" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <!-- Interceptor bindings -->
+
+  <xsd:group name="interceptor">
+    <xsd:choice>
+      <xsd:element name="environment-interceptor" />
+      <xsd:element name="authorization-interceptor" />
+      <xsd:element name="retry-interceptor" type="tRetry-interceptor" />
+      <xsd:element name="standard-transaction-interceptor" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="tRetry-interceptor">
+    <xsd:attribute name="retries" />
+    <xsd:attribute name="delay" />
+    <xsd:attribute name="delay-factor" />
+  </xsd:complexType>
+
+  <!-- Object and ref -->
+
+  <xsd:complexType name="tObject">
+    <xsd:sequence>
+      <xsd:group ref="group-tObject" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="name" />
+    <xsd:attribute name="auto-wire" />
+    <xsd:attribute name="class" />
+    <xsd:attribute name="factory" />
+    <xsd:attribute name="method" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tRef">
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+    <xsd:attribute name="object" />
+  </xsd:complexType>
+
+  <xsd:group name="group-tObject">
+    <xsd:choice>
+      <xsd:element name="constructor" type="tConstructor" />
+      <xsd:element name="factory" type="tArg" />
+      <xsd:element name="arg" type="tArg" />
+      <xsd:element name="operation" type="tOperation" />
+    </xsd:choice>
+  </xsd:group>
+
+  <!-- Operation bindings -->
+
+  <xsd:group name="group-tOperation">
+    <xsd:choice>
+      <xsd:element name="property" />
+      <xsd:element name="field" />
+      <xsd:element name="invoke" />
+      <xsd:element name="subscribe" />
+      <xsd:element name="enlist" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="tOperation">
+    <xsd:sequence>
+      <xsd:group ref="group-tOperation" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="tArg">
+    <xsd:sequence>
+      <xsd:group ref="descriptor" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="tConstructor">
+    <xsd:sequence>
+      <xsd:element name="arg" minOccurs="0" maxOccurs="unbounded"
+        type="tArg" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- Collections -->
+
+  <xsd:complexType name="tListSet">
+    <xsd:sequence>
+      <xsd:element name="descriptor" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="synchronized" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tMap">
+    <xsd:sequence>
+      <xsd:element name="entry" minOccurs="0" maxOccurs="unbounded"
+        type="tEntry" />
+    </xsd:sequence>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tEntry">
+    <xsd:sequence>
+      <xsd:element name="key" minOccurs="0" maxOccurs="unbounded"
+        type="tArg" />
+      <xsd:element name="value" minOccurs="0" maxOccurs="unbounded"
+        type="tArg" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="tProperties">
+    <xsd:sequence>
+      <xsd:element name="property" minOccurs="0" maxOccurs="unbounded"
+        type="tProperty" />
+    </xsd:sequence>
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="file" />
+    <xsd:attribute name="url" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="is-xml" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tProperty">
+    <xsd:attribute name="name" />
+    <xsd:attribute name="value" />
+  </xsd:complexType>
+
+  <!-- Various specials -->
+
+  <xsd:complexType name="tDomain">
+    <xsd:attribute name="id" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tEvent-executor">
+    <xsd:all>
+    	<xsd:element name="job-executor" type="tJobExecutor" minOccurs="1" />
+    	<xsd:element name="matcher" type="tMatcher" minOccurs="1" />
+    	<xsd:element name="master-checker" type="tMasterChecker" minOccurs="1" />
+    </xsd:all>
+    <xsd:attribute name="auto-start" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="threads" />
+    <xsd:attribute name="idle" />
+    <xsd:attribute name="idle-min" />
+    <xsd:attribute name="lock" />
+    <xsd:attribute name="retries" use="optional" />
+    <xsd:attribute name="init" />
+    <xsd:attribute name="command-service" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tJobExecutor">
+    <xsd:attribute name="class" />
+    <xsd:attribute name="locks-to-query" />
+    <xsd:attribute name="lock-idle-time" />
+    <xsd:attribute name="clean-locks-at-startup" />
+  </xsd:complexType>
+  
+  <xsd:complexType name="tMasterChecker">
+    <xsd:attribute name="class" />
+    <xsd:attribute name="enable" />
+    <xsd:attribute name="master-heartbeat-delay" />
+    <xsd:attribute name="slave-heartbeat-delay" />
+    <xsd:attribute name="max-idle-delay" />
+  </xsd:complexType>
+    
+  <xsd:complexType name="tMatcher">
+  	<xsd:all>
+  		<xsd:element name="condition-matching">
+  			<xsd:complexType>
+  				<xsd:attribute name="enable" />
+  			</xsd:complexType>
+  		</xsd:element>
+  	</xsd:all>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="max-couples" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tIteration-detection">
+  	<xsd:attribute name="disable" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tExtension-points">
+  	<xsd:attribute name="throw-exception-on-failure" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tName">
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tClass">
+    <xsd:attribute name="name" />
+    <xsd:attribute name="classname" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <!-- Hibernate bindings -->
+
+  <xsd:complexType name="tHibernate-configuration">
+    <xsd:sequence>
+      <xsd:group ref="group-tHibernate-session-factory"
+        minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="file" />
+    <xsd:attribute name="class" />
+    <xsd:attribute name="url" />
+    <xsd:attribute name="table-prefix" />
+    <xsd:attribute name="naming-strategy" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tHibernate-session">
+    <xsd:attribute name="factory" />
+    <xsd:attribute name="standard-transaction" />
+    <xsd:attribute name="connection" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tHibernate-session-factory">
+    <xsd:sequence>
+      <xsd:group ref="group-tHibernate-session-factory"
+        minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="table-prefix" />
+    <xsd:attribute name="configuration" />
+    <xsd:attribute name="file" />
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="url" />
+    <xsd:attribute name="class" />
+    <xsd:attribute name="naming-strategy" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tPvm-db-session">
+    <xsd:attribute name="session" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:group name="group-tHibernate-session-factory">
+    <xsd:choice>
+      <xsd:element name="mappings" type="tMappings" />
+      <xsd:element name="properties" type="tProperties" />
+      <xsd:element name="mapping" type="tMapping" />
+      <xsd:element name="cache-configuration" type="tCache-configuration" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="tMapping">
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="file" />
+    <xsd:attribute name="class" />
+    <xsd:attribute name="url" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tCache-configuration">
+    <xsd:sequence>
+      <xsd:group ref="group-tCache-configuration" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="usage" />
+    <xsd:attribute name="file" />
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="url" />
+  </xsd:complexType>
+
+  <xsd:group name="group-tCache-configuration">
+    <xsd:choice>
+      <xsd:element name="class-cache" type="tClass-cache" />
+      <xsd:element name="collection-cache" type="tCollection-cache" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="tClass-cache">
+    <xsd:attribute name="class" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tCollection-cache">
+    <xsd:attribute name="collection" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tMappings">
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="resources" />
+  </xsd:complexType>
+
+  <!-- Dynamic type mapping configuration -->
+
+  <xsd:complexType name="tVariable-types">
+    <xsd:sequence>
+      <xsd:group ref="group-tVariable-types" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="file" />
+    <xsd:attribute name="resource" />
+    <xsd:attribute name="url" />
+    <xsd:attribute name="class" />
+    <xsd:attribute name="converter" />
+    <xsd:attribute name="variable-class" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tVariables">
+    <xsd:attribute name="store-history" />
+  </xsd:complexType>
+  
+  <xsd:group name="group-tVariable-types">
+    <xsd:choice>
+      <xsd:element name="type" type="tType" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:choice>
+  </xsd:group>
+
+  <xsd:complexType name="tType">
+    <xsd:choice>
+      <xsd:element name="matcher" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="converter" type="tType" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:choice>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="id-type" />
+    <xsd:attribute name="converter" />
+    <xsd:attribute name="variable-class" />
+  </xsd:complexType>
+
+  <xsd:element name="environment-definition" type="environmentDefinitionData" />
+
+  <xsd:complexType name="tRepository.Bonita">
+    <xsd:sequence>
+      <xsd:element name="arg" type="tArg" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tHibernate-xpdl-persistence-service">
+    <xsd:attribute name="session" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+  <xsd:complexType name="tListSet.Bonita">
+    <xsd:sequence>
+      <xsd:group ref="descriptor" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="class" />
+    <xsd:attribute name="synchronized" />
+    <xsd:attribute name="name" />
+    <xsd:attribute name="init" />
+  </xsd:complexType>
+
+</xsd:schema>

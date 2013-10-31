@@ -1,0 +1,70 @@
+#######
+# ASM #
+#######
+http://asm.objectweb.org
+Copyright (c) 2000-2005 INRIA, France Telecom
+-> see BSD.txt
+
+#########
+# ANTLR #
+#########
+http://www.antlr.org
+Copyright (c) 2003-2008, Terence Parr
+-> see BSD.txt
+
+#######
+# BSH #
+#######
+http://www.beanshell.org
+-> see LGPLv2.1.txt
+
+#########
+# CGLIB #
+#########
+http://sourceforge.net/projects/cglib
+-> see Apachev2.txt
+
+#######################
+# COMMONS-COLLECTIONS #
+#######################
+http://commons.apache.org/collections
+-> see Apachev2.txt
+
+###################
+# COMMONS-LOGGING #
+###################
+http://commons.apache.org/logging
+-> see Apachev2.txt
+
+#########
+# DOM4J #
+#########
+http://www.dom4j.org/dom4j-1.6.1
+Copyright 2001-2005 (C) MetaStuff, Ltd.
+-> see BSD.txt
+
+######
+# H2 #
+######
+http://www.h2database.com
+-> see MPL-1.1.txt
+
+#############
+# Hibernate #
+#############
+http://www.hibernate.org/
+-> see LGPLv2.1.txt
+ 
+#######
+# XPP #
+#######
+http://www.extreme.indiana.edu/xgws/xsoap/xpp/
+-> see BSD.txt
+
+###########
+# Xstream #
+###########
+http://xstream.codehaus.org/license.html
+Copyright (c) 2003-2006, Joe Walnes
+Copyright (c) 2006-2007, XStream Committers
+-> see BSD.txt

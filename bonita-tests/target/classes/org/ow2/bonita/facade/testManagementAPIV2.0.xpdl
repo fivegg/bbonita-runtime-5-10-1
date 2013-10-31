@@ -1,0 +1,53 @@
+<Package
+  xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="testManagementAPI" Name="testManagementAPI">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>18 October 2007 14:44:59</Created>
+    <Description>XPDL project for the UserTest Junit class</Description>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>2.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="process1" Id="process1">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>2.0</Version>
+      </RedefinableHeader>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="Accept" Name="Accept">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.facade.Accept">
+              <HookEventName>task:onReady</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

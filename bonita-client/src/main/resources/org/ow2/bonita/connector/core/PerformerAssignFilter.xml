@@ -1,0 +1,34 @@
+<connector>
+  <version>5.0</version>
+  <connectorId>PerformerAssignFilter</connectorId>
+  <icon>bonita4.png</icon>
+  <categories>
+    <category>
+      <name>Bonita</name>
+      <icon>org/ow2/bonita/connector/core/bonita.png</icon>
+    </category>
+  </categories>
+  <inputs>
+    <setter>
+      <setterName>setClassName</setterName>
+      <required />
+      <parameters>
+        <string />
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs/>
+  <pages>
+    <page>
+      <pageId>PerformerAssign</pageId>
+      <widgets>
+        <text>
+          <size>20</size>
+          <maxChar>40</maxChar>
+          <setter reference="/connector/inputs/setter"/>
+          <labelId>className</labelId>
+        </text>
+      </widgets>
+    </page>
+  </pages>
+</connector>

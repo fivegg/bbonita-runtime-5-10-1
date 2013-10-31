@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jonas-ejb-jar xmlns="http://www.objectweb.org/jonas/ns"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.objectweb.org/jonas/ns
+               http://www.objectweb.org/jonas/ns/jonas-ejb-jar_4_0.xsd" >
+  
+  
+  <jonas-session>
+    <ejb-name>commandAPIBean</ejb-name>
+    <jndi-name>commandAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>webAPIBean</ejb-name>
+    <jndi-name>webAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>identityAPIBean</ejb-name>
+    <jndi-name>identityAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>runtimeAPIBean</ejb-name>
+    <jndi-name>runtimeAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>managementAPIBean</ejb-name>
+    <jndi-name>managementAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>queryRuntimeAPIBean</ejb-name>
+    <jndi-name>queryRuntimeAPI</jndi-name>
+  </jonas-session>
+
+  <jonas-session>
+    <ejb-name>queryDefinitionAPIBean</ejb-name>
+    <jndi-name>queryDefinitionAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>bamAPIBean</ejb-name>
+    <jndi-name>bamAPI</jndi-name>
+  </jonas-session>
+  
+  <jonas-session>
+    <ejb-name>repairAPIBean</ejb-name>
+    <jndi-name>repairAPI</jndi-name>
+  </jonas-session>
+</jonas-ejb-jar>
+

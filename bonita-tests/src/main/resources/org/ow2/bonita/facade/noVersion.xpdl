@@ -1,0 +1,38 @@
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+	Id="noVersion">
+	<PackageHeader>
+		<XPDLVersion>1.0</XPDLVersion>
+		<Vendor>Nova Bonita Project Team</Vendor>
+		<Created>10 March 2008 14:44:59</Created>
+	</PackageHeader>
+	<ConformanceClass GraphConformance="NON_BLOCKED" />
+	<WorkflowProcesses>
+		<WorkflowProcess AccessLevel="PUBLIC" Id="noVersion">
+			<ProcessHeader />
+			<RedefinableHeader>
+			  <Version>1.0</Version>
+			</RedefinableHeader>
+			<Activities>
+				<Activity Id="unique">
+					<Implementation>
+						<No />
+					</Implementation>
+				</Activity>
+			</Activities>
+		</WorkflowProcess>
+		<!-- 
+		<WorkflowProcess AccessLevel="PUBLIC" Id="processVersion">
+      <ProcessHeader />
+      <Activities>
+        <Activity Id="unique">
+          <Implementation>
+            <No />
+          </Implementation>
+        </Activity>
+      </Activities>
+    </WorkflowProcess>
+     -->
+	</WorkflowProcesses>
+</Package>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="varEnumNullInit_Package" Name="varEnumNullInit_Package">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>24 January 2008 15:23:21</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <!-- package dataFields -->
+        <!-- process datafields -->
+      <DataFields>               
+        <DataField Id="package_enum_null_init" Name="package_enum_null_init">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="iiii" />
+              <EnumerationValue Name="hhhh" />
+            </EnumerationType>
+          </DataType>
+			<InitialValue/>  
+        </DataField>
+      </DataFields>
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="varEnumNullInit" Id="varEnumNullInit">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <!-- process datafields -->
+      <DataFields>               
+        <DataField Id="enum_null_init" Name="enum_null_init">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="iiii" />
+              <EnumerationValue Name="hhhh" />
+            </EnumerationType>
+          </DataType>
+			<InitialValue/>       
+        </DataField>           
+      </DataFields>
+      <Participants />
+       <Activities>
+       </Activities>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

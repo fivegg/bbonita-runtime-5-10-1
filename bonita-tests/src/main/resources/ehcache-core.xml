@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache name="core" updateCheck="false">
+
+  <!-- nothing is stored to disk but ehcache generate a NPE if not specified -->
+  <diskStore path="target/bonita-cache/core"/>
+
+  <defaultCache
+  	maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="120"
+    timeToLiveSeconds="120"
+    overflowToDisk="false"
+    memoryStoreEvictionPolicy="LRU"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition"
+  	maxElementsInMemory="100"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.attachments"
+  	maxElementsInMemory="500"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.metadata"
+  	maxElementsInMemory="500"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.dataFields"
+  	maxElementsInMemory="5000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.participants"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.activities"
+  	maxElementsInMemory="20000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalProcessDefinition.connectors"
+  	maxElementsInMemory="20000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+    name="org.ow2.bonita.facade.def.InternalDataFieldDefinition"
+    maxElementsInMemory="1000"
+    eternal="false"
+    overflowToDisk="true"
+  />
+
+  <cache
+    name="org.ow2.bonita.facade.def.element.impl.AttachmentDefinitionImpl"
+    maxElementsInMemory="500"
+    eternal="false"
+    overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition"
+  	maxElementsInMemory="5000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.incomingTransitions"
+  	maxElementsInMemory="10000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.outgoingTransitions"
+  	maxElementsInMemory="10000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.performers"
+  	maxElementsInMemory="10000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.deadlines"
+  	maxElementsInMemory="5000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.connectors"
+  	maxElementsInMemory="50000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalActivityDefinition.dataFields"
+  	maxElementsInMemory="50000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalConnectorDefinition"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalConnectorDefinition.variableParameters"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.ConnectorParameters"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+ <cache
+  	name="org.ow2.bonita.facade.def.ConnectorParameters.variables"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.majorElement.impl.ParticipantDefinitionImpl"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.element.impl.IncomingEventDefinitionImpl"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+  <cache
+  	name="org.ow2.bonita.facade.def.InternalOutgoingEventDefinition"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+ <cache
+  	name="org.ow2.bonita.facade.def.element.impl.MetaDataImpl"
+  	maxElementsInMemory="2000"
+  	eternal="false"
+  	overflowToDisk="true"
+  />
+
+</ehcache>

@@ -1,0 +1,44 @@
+<connector>
+  <connectorId>Arrays</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setMap</setterName>
+      <parameters>
+        <map/>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setIntegers</setterName>
+      <parameters>
+        <java.lang.Integer-array-array/>
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs>
+    <getter>
+      <name>output</name>
+    </getter>
+    <getter>
+      <name>intout</name>
+    </getter>
+  </outputs>
+  <pages>
+    <page>
+      <pageId>Arrays</pageId>
+      <widgets>
+        <array>
+          <labelId>map</labelId>
+          <cols>2</cols>
+          <rows>0</rows>
+          <fixedCols>true</fixedCols>
+          <fixedRows>false</fixedRows>
+          <colsCaptions>
+            <string>name</string>
+            <string>value</string>
+          </colsCaptions>
+          <setter reference="/connector/inputs/setter"/>
+        </array>
+      </widgets>
+    </page>
+  </pages>
+</connector>

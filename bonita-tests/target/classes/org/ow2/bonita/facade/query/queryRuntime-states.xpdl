@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0
+  http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="test"
+  Name="test">
+
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>01 February 2008 12:22:21</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+
+  <WorkflowProcesses>
+
+    <WorkflowProcess AccessLevel="PUBLIC" Id="test">
+      <ProcessHeader />
+      <Participants>
+        <Participant Id="user">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="A">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>user</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+        <Activity Id="B">
+          <Implementation>
+            <No />
+          </Implementation>
+        </Activity>
+        <Activity Id="C">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>user</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="A_B" From="A" To="B" />
+        <Transition Id="B_C" From="B" To="C" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>

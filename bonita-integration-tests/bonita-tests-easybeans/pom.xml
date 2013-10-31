@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures,
+		B.P.68, 78340, Les Clayes-sous-Bois - - This library is free software;
+		you can redistribute it and/or - modify it under the terms of the GNU
+		Lesser General Public - License as published by the Free Software
+		Foundation; either - version 2.1 of the License, or (at your option)
+		any later version. - - This library is distributed in the hope that it
+		will be useful, - but WITHOUT ANY WARRANTY; without even the implied
+		warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+		the GNU - Lesser General Public License for more details. - - You
+		should have received a copy of the GNU Lesser General Public - License
+		along with this library; if not, write to the Free Software -
+		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+		02110-1301, USA - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - - - - - - - - -
+	-->
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-tests-easybeans</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Integration Tests - Easybeans</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-integration-tests</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>catalina-ant</artifactId>
+			<version>5.5.23</version>
+			<exclusions>
+				<exclusion>
+					<groupId>tomcat</groupId>
+					<artifactId>catalina</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>catalina-ant-jmx</artifactId>
+			<version>5.3</version>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<jaas>${conf.dir}/jaas-easybeans.cfg</jaas>
+		<provider.port>7099</provider.port>
+		<ebPort>7503</ebPort>
+		<provider.urlEb>rmi://localhost:${provider.port}</provider.urlEb>
+		<eb.dir>${project.build.directory}/easybeans</eb.dir>
+		<eb.lib>${eb.dir}</eb.lib>
+		<carol.icf>org.objectweb.carol.jndi.spi.MultiOrbInitialContextFactory</carol.icf>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>integrationTests</id>
+			<activation>
+				<property>
+					<name>!skipIntegrationTests</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.ow2.easybeans</groupId>
+											<artifactId>easybeans-uberjar-toplink-essentials</artifactId>
+											<version>1.1.0</version>
+											<type>jar</type>
+											<destFileName>easybeans.jar</destFileName>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${eb.dir}
+										</outputDirectory>
+									<overWriteReleases>false</overWriteReleases>
+									<overWriteSnapshots>true</overWriteSnapshots>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>execute tests</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<property name="test_classpath" refid="maven.test.classpath" />
+										<typedef name="invoke"
+											classname="org.apache.catalina.ant.jmx.JMXAccessorInvokeTask"
+											classpathref="maven.runtime.classpath" />
+										<property environment="env" />
+										<property name="added.java.options" value="${tmpdir.opts}" />
+										<property name="${initdb.key}" value="${core.hbm.cfg} ${history.hbm.cfg}" />
+										<condition property="java.options"
+											value="${env.JAVA_OPTS} ${added.java.options}" else="${added.java.options}">
+											<isset property="env.JAVA_OPTS" />
+										</condition>
+
+										<path id="client.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${client.lib.dir}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<path id="server.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${server.lib.dir}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<path id="test.path">
+											<pathelement path="${java.class.path}" />
+											<path refid="client.path" />
+											<pathelement path="${test_classpath}" />
+										</path>
+										<path id="easybeans.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${eb.lib}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<echo>Delete package db: ${java.io.tmpdir}/bonita-db</echo>
+										<delete dir="${java.io.tmpdir}/bonita-db" />
+
+										<delete dir="tmp" failonerror="false" />
+
+										<copy file="${hudson.hbm.core}" tofile="${hbm.core}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.hbm.history}" tofile="${hbm.history}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.logging}" tofile="${logging}"
+											overwrite="true" failonerror="false" />
+										<copy todir="${server.lib.dir}" overwrite="true"
+											failonerror="false">
+											<fileset dir="${config.dir}" includes="*.jar" />
+										</copy>
+
+										<!-- reinit database -->
+										<ant dir="${distrib.dir}" antfile="build.xml" target="init-db" />
+
+										<!--
+											<move file="${logging}" tofile="${logging.bak}"
+											overwrite="true" /> <propertyfile file="${logging}"> <entry
+											key="org.ow2.bonita.level" value="ALL" /> <entry key=".level"
+											value="WARNING" /> </propertyfile>
+										-->
+
+										<!-- EASYBEANS SPECIFIC STUFF -->
+										<delete dir="${eb.dir}/bonita-db" failonerror="false" />
+										<delete dir="${eb.dir}/easybeans-deploy" failonerror="false" />
+										<mkdir dir="${eb.dir}/easybeans-deploy" />
+										<!-- TODO: change this by a maven dependency  -->
+										<ant dir="${distrib.dir}" antfile="build.xml" target="ear.ejb3" />
+										<copy file="${distrib.dir}/ear/ejb3/bonita.ear" todir="${eb.dir}/easybeans-deploy" />
+										<echo file="${eb.dir}/java.policy">
+											grant {
+											permission java.security.AllPermission;
+											};
+										</echo>
+										<echo file="${eb.dir}/easybeans.xml">
+											&lt;easybeans
+											xmlns="http://org.ow2.easybeans.server"&gt;
+											&lt;components&gt;
+											&lt;rmi&gt;
+											&lt;protocol name="jrmp"
+											port="${provider.port}" hostname="localhost"
+											/&gt;
+											&lt;/rmi&gt;
+											&lt;tm/&gt;
+											&lt;smart-server port="${ebPort}"
+											rmi="#rmi" /&gt;
+											&lt;/components&gt;
+											&lt;/easybeans&gt; </echo>
+										<parallel failonany="true">
+											<java dir="${eb.dir}" fork="true"
+												classname="org.ow2.easybeans.server.EasyBeans">
+												<classpath>
+													<pathelement path="${eb.dir}/easybeans.jar" />
+													<pathelement path="${client.path}" />
+
+													<pathelement path="${eb.dir}/" />
+												</classpath>
+												<jvmarg
+													line="${java.options} -Dorg.ow2.bonita.environment=bonita-environment.xml -Djava.security.manager -Djava.security.policy=java.policy" />
+											</java>
+											<sequential>
+												<waitfor maxwait="1" maxwaitunit="minute">
+													<and>
+														<socket server="localhost" port="${ebPort}" />
+														<socket server="localhost" port="${provider.port}" />
+													</and>
+												</waitfor>
+												<!-- <sleep seconds="30" />-->
+												<mkdir dir="${report.xml}" />
+												<junit printsummary="yes" fork="yes" forkmode="once"
+													showoutput="true">
+													<jvmarg line="${java.options}" />
+													<classpath refid="test.path" />
+													<classpath refid="easybeans.path" />
+													<sysproperty key="${jaasKey}" value="${jaas}" />
+													<sysproperty key="${icfKey}" value="${carol.icf}" />
+													<sysproperty key="${providerUrlKey}" value="${provider.urlEb}" />
+													<sysproperty key="${loggingKey}" value="${logging}" />
+													<sysproperty key="${apitypeKey}" value="${apitype.ejb3}" />
+													<sysproperty key="${jeeServer}" value="easybeans" />
+													<formatter type="xml" />
+													<test todir="${report.xml}" name="${test.class}" />
+												</junit>
+												<junitreport todir="${report.xml}">
+													<fileset dir="${report.xml}" includes="TEST-*.xml" />
+													<report todir="${report.results}" />
+												</junitreport>
+												<!-- stop eb -->
+												<invoke name="EasyBeans:j2eeType=J2EEServer,name=EasyBeans_0"
+													operation="stop"
+													url="service:jmx:rmi:///jndi/rmi://localhost:${provider.port}/EasyBeansConnector" />
+											</sequential>
+										</parallel>
+										<!--
+											<move file="${logging.bak}" tofile="${logging}"
+											overwrite="true" />
+										-->
+										<copy todir="${surefire.reports}">
+											<fileset dir="${report.xml}" />
+										</copy>
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>surefire-ant</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/*</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -1,0 +1,82 @@
+<Package
+  xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="testGetTask">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Nova Bonita Project Team</Vendor>
+    <Created>10 March 2008 14:44:59</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Id="testGetTask">
+      <ProcessHeader />
+      <Participants>
+        <Participant Id="admin">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+                <Participant Id="manager" Name="manager">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="org.ow2.bonita.facade.AdminsRoleMapper" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="a">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+        <Activity Id="b">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>manager</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+        <Activity Id="c">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="a_b" Name="a_b" From="a" To="b" />
+        <Transition Id="b_c" Name="b_c" From="b" To="c" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

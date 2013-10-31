@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-runtime</artifactId>
+		<version>5.10.1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-distrib</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Distribution</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-server</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-distrib-client</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<classifier>distrib</classifier>
+			<type>zip</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate environment</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>process-resources</phase>
+						<inherited>false</inherited>
+						<configuration>
+							<tasks>
+								<java classpathref="maven.compile.classpath"
+									classname="org.ow2.bonita.env.generator.EnvGenerator">
+									<arg value="org.ow2.bonita.env.generator.DbHistoryEnvGenerator" />
+									<arg value="${project.build.directory}/bonita-server.xml" />
+								</java>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<finalName>BOS-Engine-${project.version}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>assembly.xml</descriptor>
+							</descriptors>
+							<ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
+							<tarLongFileMode>gnu</tarLongFileMode>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

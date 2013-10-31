@@ -1,0 +1,38 @@
+<cache-configuration usage="read-write">
+
+  <class-cache class="org.ow2.bonita.facade.def.InternalProcessDefinition" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.InternalActivityDefinition" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.InternalDataFieldDefinition" usage="nonstrict-read-write"/>  
+  <class-cache class="org.ow2.bonita.facade.def.majorElement.impl.ParticipantDefinitionImpl" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.AttachmentDefinitionImpl" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.InternalConnectorDefinition" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.MetaDataImpl" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.ConnectorParameters" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.IterationDescriptor" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.IncomingEventDefinitionImpl" usage="nonstrict-read-write"/>
+  <class-cache class="org.ow2.bonita.facade.def.InternalOutgoingEventDefinition" usage="nonstrict-read-write"/>
+
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.dataFields" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.participants" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.activities" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.attachments" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.metadata" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.connectors" usage="nonstrict-read-write"/>
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.deadlines" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.performers" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.connectors" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.dataFields" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.outgoingTransitions" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.incomingTransitions" usage="nonstrict-read-write"/>
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalConnectorDefinition.variableParameters" usage="nonstrict-read-write"/>
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.otherNodes" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.entryNodes" usage="nonstrict-read-write"/>
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.exitNodes" usage="nonstrict-read-write"/>
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.ConnectorParameters.variables" />
+
+</cache-configuration>

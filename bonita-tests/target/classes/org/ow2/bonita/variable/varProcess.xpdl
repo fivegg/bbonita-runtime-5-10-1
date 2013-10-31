@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+	Id="varProcess_Package" Name="varProcess_Package">
+	<PackageHeader>
+		<XPDLVersion>1.0</XPDLVersion>
+		<Vendor>Bonita Project Team</Vendor>
+		<Created>24 January 2008 15:23:21</Created>
+	</PackageHeader>
+	<RedefinableHeader>
+		<Version>1.0</Version>
+	</RedefinableHeader>
+	<ConformanceClass GraphConformance="NON_BLOCKED" />
+	<WorkflowProcesses>
+		<WorkflowProcess AccessLevel="PUBLIC" Name="varProcess"
+			Id="varProcess">
+			<ProcessHeader />
+			<RedefinableHeader>
+				<Version>1.0</Version>
+			</RedefinableHeader>
+      <!-- process datafields -->
+			<DataFields>
+				<DataField Id="str_no_init" Name="str_no_init">
+					<DataType>
+						<BasicType Type="STRING" />
+					</DataType>
+				</DataField>
+				<DataField Id="str_null_init" Name="str_null_init">
+					<DataType>
+						<BasicType Type="STRING" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="str_empty_init" Name="str_empty_init">
+					<DataType>
+						<BasicType Type="STRING" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="str_init" Name="str_init">
+					<DataType>
+						<BasicType Type="STRING" />
+					</DataType>
+					<InitialValue>initial value</InitialValue>
+				</DataField>
+
+				<DataField Id="flt_no_init" Name="flt_no_init">
+					<DataType>
+						<BasicType Type="FLOAT" />
+					</DataType>
+				</DataField>
+				<DataField Id="flt_null_init" Name="flt_null_init">
+					<DataType>
+						<BasicType Type="FLOAT" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="flt_empty_init" Name="flt_empty_init">
+					<DataType>
+						<BasicType Type="FLOAT" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="flt_init" Name="flt_init">
+					<DataType>
+						<BasicType Type="FLOAT" />
+					</DataType>
+					<InitialValue>42.42</InitialValue>
+				</DataField>
+
+				<DataField Id="int_no_init" Name="int_no_init">
+					<DataType>
+						<BasicType Type="INTEGER" />
+					</DataType>
+				</DataField>
+				<DataField Id="int_null_init" Name="int_null_init">
+					<DataType>
+						<BasicType Type="INTEGER" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="int_empty_init" Name="int_empty_init">
+					<DataType>
+						<BasicType Type="INTEGER" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="int_init" Name="int_init">
+					<DataType>
+						<BasicType Type="INTEGER" />
+					</DataType>
+					<InitialValue>42</InitialValue>
+				</DataField>
+
+				<DataField Id="bool_no_init" Name="bool_no_init">
+					<DataType>
+						<BasicType Type="BOOLEAN" />
+					</DataType>
+				</DataField>
+				<DataField Id="bool_null_init" Name="bool_null_init">
+					<DataType>
+						<BasicType Type="BOOLEAN" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="bool_empty_init" Name="bool_empty_init">
+					<DataType>
+						<BasicType Type="BOOLEAN" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="bool_init" Name="bool_init">
+					<DataType>
+						<BasicType Type="BOOLEAN" />
+					</DataType>
+					<InitialValue>TRUE</InitialValue>
+				</DataField>
+
+				<DataField Id="date_no_init" Name="date_no_init">
+					<DataType>
+						<BasicType Type="DATETIME" />
+					</DataType>
+				</DataField>
+				<DataField Id="date_null_init" Name="date_null_init">
+					<DataType>
+						<BasicType Type="DATETIME" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="date_empty_init" Name="date_empty_init">
+					<DataType>
+						<BasicType Type="DATETIME" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="date_init" Name="date_init">
+					<DataType>
+						<BasicType Type="DATETIME" />
+					</DataType>
+					<InitialValue>2008/07/31/14/00/00</InitialValue>
+				</DataField>
+
+				<DataField Id="perf_no_init" Name="perf_no_init">
+					<DataType>
+						<BasicType Type="PERFORMER" />
+					</DataType>
+				</DataField>
+				<DataField Id="perf_null_init" Name="perf_null_init">
+					<DataType>
+						<BasicType Type="PERFORMER" />
+					</DataType>
+					<InitialValue />
+				</DataField>
+				<DataField Id="perf_empty_init" Name="perf_empty_init">
+					<DataType>
+						<BasicType Type="PERFORMER" />
+					</DataType>
+					<InitialValue></InitialValue>
+				</DataField>
+				<DataField Id="perf_init" Name="perf_init">
+					<DataType>
+						<BasicType Type="PERFORMER" />
+					</DataType>
+					<InitialValue>user</InitialValue>
+				</DataField>
+
+				<DataField Id="enum_init" Name="enum_init">
+					<DataType>
+						<EnumerationType>
+							<EnumerationValue Name="iiii" />
+							<EnumerationValue Name="hhhh" />
+						</EnumerationType>
+					</DataType>
+					<InitialValue>iiii</InitialValue>
+				</DataField>
+			</DataFields>
+			<Participants>
+				<Participant Id="user" Name="user">
+					<ParticipantType Type="HUMAN" />
+				</Participant>
+			</Participants>
+			<Activities>
+				<Activity Id="r1" Name="r1">
+					<Route />
+					<StartMode>
+						<Automatic />
+					</StartMode>
+				</Activity>
+			</Activities>
+		</WorkflowProcess>
+	</WorkflowProcesses>
+	<ExtendedAttributes>
+		<ExtendedAttribute Name="MadeBy" Value="ProEd" />
+		<ExtendedAttribute Name="View" Value="Activity" />
+	</ExtendedAttributes>
+</Package>
+

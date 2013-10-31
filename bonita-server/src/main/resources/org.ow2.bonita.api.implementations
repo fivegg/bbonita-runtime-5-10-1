@@ -1,0 +1,4 @@
+org.ow2.bonita.facade.internal.InternalAPIAccessor=org.ow2.bonita.facade.impl.StandardInternalAPIAccessorImpl
+org.ow2.bonita.facade.internal.InternalQueryAPIAccessor=org.ow2.bonita.facade.impl.StandardInternalQueryAPIAccessorImpl
+org.ow2.bonita.facade.internal.InternalAPIAccessorREST=org.ow2.bonita.facade.rest.InternalRESTAPIAccessorImpl
+org.ow2.bonita.facade.internal.InternalQueryAPIAccessorREST=org.ow2.bonita.facade.rest.InternalRESTQueryAPIAccessorImpl

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0
+  http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="onSuspendHook">
+
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>01 February 2008 12:22:21</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Id="onSuspendHook">
+      <ProcessHeader />
+      <DataFields>
+        <DataField Id="processVar">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="1" />
+              <EnumerationValue Name="2" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>1</InitialValue>
+        </DataField>
+        <DataField Id="firstActivityVar">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial1</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="secondActivityVar">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial2</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="firstActivity">
+          <Implementation>
+            <No />
+          </Implementation>
+           <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.integration.hook.OnSuspendHook">
+              <HookEventName>task:onSuspend</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="firstActivityVar"/>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="secondActivity">
+          <Route/>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="first_second" From="firstActivity" To="secondActivity" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>
+

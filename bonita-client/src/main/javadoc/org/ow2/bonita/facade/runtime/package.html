@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>package.html</title>
+</head>
+<body>
+<p>
+It contains interfaces for recorded data for runtime informations on different types
+of workflow elements : process, activity, variable, connectors.<br>
+</p>
+Three main types of recorded informations exist:
+<ul>
+<li>{@link org.ow2.bonita.facade.runtime.ProcessInstance ProcessInstance}</li>
+<li>{@link org.ow2.bonita.facade.runtime.ActivityInstance ActivityInstance}</li>
+<li>{@link org.ow2.bonita.facade.runtime.HookInstance HookInstance}</li>
+</ul>
+For this version, recorded informations on activity contains two types of body:
+<ul>
+<li>{@link org.ow2.bonita.facade.runtime.ActivityInstance ActivityInstance}.<br>
+This covers automatic activity, gateway and sub-process.</li>
+<li>{@link org.ow2.bonita.facade.runtime.TaskInstance TaskInstance}.<br>
+This covers manual activity.</li>
+</ul>
+</body>
+</html>

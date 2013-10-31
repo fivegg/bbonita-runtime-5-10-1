@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="testTransitionConditionMultiTypes" Name="testTransitionConditionMultiTypes">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008-10-06 17:02:33</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="testTransitionConditionMultiTypes" Id="testTransitionConditionMultiTypes">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="str1" Name="str1">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>initial value</InitialValue>
+        </DataField>
+        <DataField Id="enum1" Name="enum1">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="yes" />
+              <EnumerationValue Name="no" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>yes</InitialValue>
+        </DataField>
+        <DataField Id="float1" Name="float1">
+          <DataType>
+            <BasicType Type="FLOAT" />
+          </DataType>
+          <InitialValue>1.0</InitialValue>
+        </DataField>
+        <DataField Id="int1" Name="int1">
+          <DataType>
+            <BasicType Type="INTEGER" />
+          </DataType>
+          <InitialValue>123</InitialValue>
+        </DataField>
+        <DataField Id="boolean1" Name="boolean1">
+          <DataType>
+            <BasicType Type="BOOLEAN" />
+          </DataType>
+          <InitialValue>true</InitialValue>
+        </DataField>
+        <DataField Id="date1" Name="date1">
+          <DataType>
+            <BasicType Type="DATETIME" />
+          </DataType>
+          <InitialValue>2008-10-06T17:02:23.000+0000</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="admin" Name="admin">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="initial" Name="initial">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="355" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="8" />
+            <ExtendedAttribute Name="YOffset" Value="163" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="71" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a" Name="a">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="273" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="98" />
+            <ExtendedAttribute Name="XOffset" Value="130" />
+            <ExtendedAttribute Name="YOffset" Value="162" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="b" Name="b">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="191" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="224" />
+            <ExtendedAttribute Name="YOffset" Value="109" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="c" Name="c">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="109" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="227" />
+            <ExtendedAttribute Name="YOffset" Value="213" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="80" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="d" Name="d">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="393" />
+            <ExtendedAttribute Name="YOffset" Value="167" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.hook.DefaultTestHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="a_b" Name="a_b" From="a" To="b">
+          <Condition Type="CONDITION">(str1.compareTo("initial value") == 0) &amp;&amp; (enum1.compareTo("yes") == 0) &amp;&amp; (float1.compareTo(Double.valueOf("1.0")) == 0) &amp;&amp; (int1.compareTo(Long.valueOf("123")) == 0) &amp;&amp; (boolean1.compareTo(Boolean.valueOf("true")) == 0) &amp;&amp; (date1.compareTo(org.ow2.bonita.util.DateUtil.ISO_8601_FORMAT.get().parse("2008-10-06T17:02:23.000+0000")) == 0)</Condition>
+        </Transition>
+        <Transition Id="initial_a" Name="initial_a" From="initial" To="a" />
+        <Transition Id="c_d" Name="c_d" From="c" To="d" />
+        <Transition Id="b_d" Name="b_d" From="b" To="d" />
+        <Transition Id="a_c" Name="a_c" From="a" To="c">
+          <Condition Type="CONDITION">enum1.compareTo("no") == 0</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

@@ -1,0 +1,49 @@
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+  Id="deleteInstance">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Nova Bonita Project Team</Vendor>
+    <Created>10 March 2008 14:44:59</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Id="deleteInstance">
+      <ProcessHeader />
+      <Participants>
+        <Participant Id="admin">
+          <ParticipantType Type="HUMAN" />
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="initial">
+          <Implementation>
+            <No />
+          </Implementation>
+        </Activity>
+        <Activity Id="task">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>admin</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+        </Activity>
+        <Activity Id="end">
+          <Implementation>
+            <No />
+          </Implementation>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="initial_task" From="initial" To="task" />
+        <Transition Id="task_end"     From="task"    To="end" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>

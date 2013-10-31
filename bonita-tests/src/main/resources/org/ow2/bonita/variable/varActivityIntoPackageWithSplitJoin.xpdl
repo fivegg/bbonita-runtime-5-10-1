@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd"
+	Id="varActivityIntoWFPWithSplitJoin_Package" Name="varActivityIntoWFPWithSplitJoin_Package">
+	<PackageHeader>
+		<XPDLVersion>1.0</XPDLVersion>
+		<Vendor>Bonita Project Team</Vendor>
+		<Created>28 January 2008 16:26:46</Created>
+	</PackageHeader>
+	<RedefinableHeader>
+		<Version>1.0</Version>
+	</RedefinableHeader>
+	<ConformanceClass GraphConformance="NON_BLOCKED" />
+	<DataFields>
+		<!--
+			datafields aimed to be created within execution pointing on node:
+			act2
+		-->
+		<DataField Id="str_act2_propagation" Name="str_act2_propagation">
+			<DataType>
+				<BasicType Type="STRING" />
+			</DataType>
+			<InitialValue>initial value</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="str_act2_no_propagation" Name="str_act2_no_propagation">
+			<DataType>
+				<BasicType Type="STRING" />
+			</DataType>
+			<InitialValue>initial value</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="flt_act2_propagation" Name="flt_act2_propagation">
+			<DataType>
+				<BasicType Type="FLOAT" />
+			</DataType>
+			<InitialValue>42.42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="flt_act2_no_propagation" Name="flt_act2_no_propagation">
+			<DataType>
+				<BasicType Type="FLOAT" />
+			</DataType>
+			<InitialValue>42.42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="int_act2_propagation" Name="int_act2_propagation">
+			<DataType>
+				<BasicType Type="INTEGER" />
+			</DataType>
+			<InitialValue>42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="int_act2_no_propagation" Name="int_act2_no_propagation">
+			<DataType>
+				<BasicType Type="INTEGER" />
+			</DataType>
+			<InitialValue>42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="bool_act2_propagation" Name="bool_act2_propagation">
+			<DataType>
+				<BasicType Type="BOOLEAN" />
+			</DataType>
+			<InitialValue>TRUE</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="bool_act2_no_propagation" Name="bool_act2_no_propagation">
+			<DataType>
+				<BasicType Type="BOOLEAN" />
+			</DataType>
+			<InitialValue>TRUE</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="date_act2_propagation" Name="date_act2_propagation">
+			<DataType>
+				<BasicType Type="BOOLEAN" />
+			</DataType>
+			<InitialValue>2008/07/31/14/00/00</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="date_act2_no_propagation" Name="date_act2_no_propagation">
+			<DataType>
+				<BasicType Type="DATETIME" />
+			</DataType>
+			<InitialValue>2008/07/31/14/00/00</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="perf_act2_propagation" Name="perf_act2_propagation">
+			<DataType>
+				<BasicType Type="PERFORMER" />
+			</DataType>
+			<InitialValue>user</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="perf_act2_no_propagation" Name="perf_act2_no_propagation">
+			<DataType>
+				<BasicType Type="PERFORMER" />
+			</DataType>
+			<InitialValue>user</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="enum_act2_propagation" Name="enum_act2_propagation">
+			<DataType>
+				<EnumerationType>
+					<EnumerationValue Name="iiii" />
+					<EnumerationValue Name="hhhh" />
+				</EnumerationType>
+			</DataType>
+			<InitialValue>iiii</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="enum_act2_no_propagation" Name="enum_act2_no_propagation">
+			<DataType>
+				<EnumerationType>
+					<EnumerationValue Name="iiii" />
+					<EnumerationValue Name="hhhh" />
+				</EnumerationType>
+			</DataType>
+			<InitialValue>iiii</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<!--
+			datafields aimed to be created within execution pointing on node:
+			act3
+		-->
+		<DataField Id="str_act3_propagation" Name="str_act3_propagation">
+			<DataType>
+				<BasicType Type="STRING" />
+			</DataType>
+			<InitialValue>initial value</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="str_act3_no_propagation" Name="str_act3_no_propagation">
+			<DataType>
+				<BasicType Type="STRING" />
+			</DataType>
+			<InitialValue>initial value</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="flt_act3_propagation" Name="flt_act3_propagation">
+			<DataType>
+				<BasicType Type="FLOAT" />
+			</DataType>
+			<InitialValue>42.42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="flt_act3_no_propagation" Name="flt_act3_no_propagation">
+			<DataType>
+				<BasicType Type="FLOAT" />
+			</DataType>
+			<InitialValue>42.42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="int_act3_propagation" Name="int_act3_propagation">
+			<DataType>
+				<BasicType Type="INTEGER" />
+			</DataType>
+			<InitialValue>42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="int_act3_no_propagation" Name="int_act3_no_propagation">
+			<DataType>
+				<BasicType Type="INTEGER" />
+			</DataType>
+			<InitialValue>42</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="bool_act3_propagation" Name="bool_act3_propagation">
+			<DataType>
+				<BasicType Type="BOOLEAN" />
+			</DataType>
+			<InitialValue>TRUE</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="bool_act3_no_propagation" Name="bool_act3_no_propagation">
+			<DataType>
+				<BasicType Type="BOOLEAN" />
+			</DataType>
+			<InitialValue>TRUE</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="date_act3_propagation" Name="date_act3_propagation">
+			<DataType>
+				<BasicType Type="DATETIME" />
+			</DataType>
+			<InitialValue>2008/07/31/14/00/00</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="date_act3_no_propagation" Name="date_act3_no_propagation">
+			<DataType>
+				<BasicType Type="DATETIME" />
+			</DataType>
+			<InitialValue>2008/07/31/14/00/00</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="perf_act3_propagation" Name="perf_act3_propagation">
+			<DataType>
+				<BasicType Type="PERFORMER" />
+			</DataType>
+			<InitialValue>user</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="perf_act3_no_propagation" Name="perf_act3_no_propagation">
+			<DataType>
+				<BasicType Type="PERFORMER" />
+			</DataType>
+			<InitialValue>user</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="enum_act3_propagation" Name="enum_act3_propagation">
+			<DataType>
+				<EnumerationType>
+					<EnumerationValue Name="iiii" />
+					<EnumerationValue Name="hhhh" />
+				</EnumerationType>
+			</DataType>
+			<InitialValue>iiii</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+		<DataField Id="enum_act3_no_propagation" Name="enum_act3_no_propagation">
+			<DataType>
+				<EnumerationType>
+					<EnumerationValue Name="iiii" />
+					<EnumerationValue Name="hhhh" />
+				</EnumerationType>
+			</DataType>
+			<InitialValue>iiii</InitialValue>
+			<ExtendedAttributes>
+				<ExtendedAttribute Name="PropertyActivity" />
+			</ExtendedAttributes>
+		</DataField>
+	</DataFields>
+	<WorkflowProcesses>
+		<WorkflowProcess AccessLevel="PUBLIC"
+			Name="varActivityIntoWFPWithSplitJoin" Id="varActivityIntoWFPWithSplitJoin">
+			<ProcessHeader />
+			<RedefinableHeader>
+				<Version>1.0</Version>
+			</RedefinableHeader>
+			<Participants>
+				<Participant Id="admin" Name="admin">
+					<ParticipantType Type="HUMAN" />
+				</Participant>
+			</Participants>
+			<Activities>
+				<Activity Id="act1" Name="act1">
+					<Implementation>
+						<No />
+					</Implementation>
+					<Performer>admin</Performer>
+					<StartMode>
+						<Manual />
+					</StartMode>
+					<TransitionRestrictions>
+						<TransitionRestriction>
+							<Split Type="AND" />
+						</TransitionRestriction>
+					</TransitionRestrictions>
+				</Activity>
+				<Activity Id="act2" Name="act2">
+					<Implementation>
+						<No />
+					</Implementation>
+					<Performer>admin</Performer>
+					<StartMode>
+						<Manual />
+					</StartMode>
+					<ExtendedAttributes>
+						<ExtendedAttribute Name="property" Value="str_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="str_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="flt_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="flt_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="int_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="int_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="bool_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="bool_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="date_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="date_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="perf_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="perf_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="enum_act2_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="enum_act2_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+					</ExtendedAttributes>
+				</Activity>
+				<Activity Id="act3" Name="act3">
+					<Implementation>
+						<No />
+					</Implementation>
+					<Performer>admin</Performer>
+					<StartMode>
+						<Manual />
+					</StartMode>
+					<ExtendedAttributes>
+						<ExtendedAttribute Name="property" Value="str_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="str_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="flt_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="flt_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="int_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="int_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="bool_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="bool_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="date_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="date_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="perf_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="perf_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property" Value="enum_act3_propagation">
+							<Propagated>Yes</Propagated>
+						</ExtendedAttribute>
+						<ExtendedAttribute Name="property"
+							Value="enum_act3_no_propagation">
+							<Propagated>No</Propagated>
+						</ExtendedAttribute>
+					</ExtendedAttributes>
+				</Activity>
+				<Activity Id="act4" Name="act4">
+					<Implementation>
+						<No />
+					</Implementation>
+					<Performer>admin</Performer>
+					<StartMode>
+						<Manual />
+					</StartMode>
+					<TransitionRestrictions>
+						<TransitionRestriction>
+							<Join Type="AND" />
+						</TransitionRestriction>
+					</TransitionRestrictions>
+				</Activity>
+			</Activities>
+			<Transitions>
+				<Transition Id="act1_act2" Name="act1_act2" From="act1"
+					To="act2" />
+				<Transition Id="act1_act3" Name="act1_act3" From="act1"
+					To="act3" />
+				<Transition Id="act2_act4" Name="act2_act4" From="act2"
+					To="act4" />
+				<Transition Id="act3_act4" Name="act3_act4" From="act3"
+					To="act4" />
+			</Transitions>
+		</WorkflowProcess>
+	</WorkflowProcesses>
+</Package>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures,
+		B.P.68, 78340, Les Clayes-sous-Bois - - This library is free software;
+		you can redistribute it and/or - modify it under the terms of the GNU
+		Lesser General Public - License as published by the Free Software
+		Foundation; either - version 2.1 of the License, or (at your option)
+		any later version. - - This library is distributed in the hope that it
+		will be useful, - but WITHOUT ANY WARRANTY; without even the implied
+		warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+		the GNU - Lesser General Public License for more details. - - You
+		should have received a copy of the GNU Lesser General Public - License
+		along with this library; if not, write to the Free Software -
+		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+		02110-1301, USA - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		- - - - - - - - - - - - -
+	-->
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-tests-tomcat-rest</artifactId>
+	<packaging>pom</packaging>
+	<name>Bonita - Integration Tests - Tomcat 6 / REST</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-integration-tests</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<properties>
+		<jaas>${external.conf.dir}/jaas-tomcat.cfg</jaas>
+		<server.port>8182</server.port>
+		<provider.port>8383</provider.port>
+		<provider.urlTomcat>http://localhost:${provider.port}</provider.urlTomcat>
+		<restserveraddress.localhost>${provider.urlTomcat}/bonita-server-rest/</restserveraddress.localhost>
+
+		<tomcat.version>apache-tomcat-6.0.33</tomcat.version>
+		<tomcat.dir>${build.dir}/tomcat</tomcat.dir>
+		<tomcat.home>${tomcat.dir}/${tomcat.version}</tomcat.home>
+		<tomcat.conf>${tomcat.home}/conf</tomcat.conf>
+		<tomcat.download.url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.33/bin/${tomcat.version}.zip</tomcat.download.url>
+		<tomcat.deploy.dir>${tomcat.home}/webapps</tomcat.deploy.dir>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>integrationTests</id>
+			<activation>
+				<property>
+					<name>!skipIntegrationTests</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install Tomcat</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<taskdef name="if" classname="${if.task}" classpathref="maven.runtime.classpath" />
+
+										<delete dir="tmp" failonerror="false" />
+										<delete dir="${tomcat.dir}" failonerror="false" />
+										<delete dir="${java.io.tmpdir}/bonita-db" failonerror="false" />
+										<mkdir dir="${tomcat.dir}" />
+
+										<available file="${env.HOME}/${tomcat.version}.zip" property="tomcat.present" />
+										<if>
+											<equals arg1="${tomcat.present}" arg2="true" />
+											<then>
+												<unzip dest="${tomcat.dir}" src="${env.HOME}/${tomcat.version}.zip" />
+											</then>
+											<else>
+												<get dest="${java.io.tmpdir}/${tomcat.version}.zip" src="${tomcat.download.url}"
+													usetimestamp="true" />
+												<unzip dest="${tomcat.dir}" src="${java.io.tmpdir}/${tomcat.version}.zip" />
+											</else>
+										</if>
+
+										<replace file="${tomcat.conf}/server.xml"
+											token="&lt;Connector port=&quot;8080&quot;"
+											value="&lt;Connector port=&quot;${provider.port}&quot;" />
+
+										<replace file="${tomcat.conf}/server.xml"
+											token="&lt;Server port=&quot;8005&quot;"
+											value="&lt;Server port=&quot;${server.port}&quot;" />
+
+										<ant dir="${distrib.dir}" antfile="build.xml" target="war" />
+										<copy todir="${tomcat.deploy.dir}" file="${distrib.dir}/war/bonita-server-rest.war" />
+										<copy todir="${bonita.home}" file="${basedir}/conf/jaas-with-wrong-rest-user.cfg" />
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>run Tomcat tests</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<inherited>false</inherited>
+								<configuration>
+									<tasks>
+										<property name="test_classpath" refid="maven.test.classpath" />
+										<property environment="env" />
+										<property name="added.java.options" value="${tmpdir.opts}" />
+										<condition property="java.options"
+											value="${env.JAVA_OPTS} ${added.java.options}" else="${added.java.options}">
+											<isset property="env.JAVA_OPTS" />
+										</condition>
+
+										<path id="client.path">
+											<pathelement path="${java.class.path}" />
+											<fileset dir="${client.lib.dir}">
+												<include name="*.jar" />
+											</fileset>
+										</path>
+										<path id="test.path">
+											<pathelement path="${java.class.path}" />
+											<path refid="client.path" />
+											<pathelement path="${test_classpath}" />
+										</path>
+
+										<copy file="${hudson.hbm.core}" tofile="${hbm.core}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.hbm.history}" tofile="${hbm.history}"
+											overwrite="true" failonerror="false" />
+										<copy file="${hudson.logging}" tofile="${logging}"
+											overwrite="true" failonerror="false" />
+										<copy todir="${server.lib.dir}" overwrite="true"
+											failonerror="false">
+											<fileset dir="${config.dir}" includes="*.jar" />
+										</copy>
+
+										<!-- Create default bonita.home folder -->
+										<copy todir="${bonita.home}" verbose="true">
+											<fileset dir="${build.dir}/${distrib.name}/bonita/" />
+										</copy>
+										
+										<!-- create tenant Throw Exception On Failure tenant -->
+										<copy todir="${external.conf.dir}" file="${basedir}/conf/jaas-tomcat.cfg" overwrite="true"/>
+										<copy todir="${bonita.home}/server/teoftenant">
+											<fileset dir="${bonita.home}/server/default" />
+										</copy>
+										<replace file="${bonita.home}/server/teoftenant/conf/bonita-server.xml" token="default"
+											value="teoftenant" />
+										<replace file="${bonita.home}/server/teoftenant/conf/bonita-server.xml" token="throw-exception-on-failure='false'"
+											value="throw-exception-on-failure='true'" />
+										<replace file="${bonita.home}/server/teoftenant/conf/bonita-journal.properties" token="/default/"
+											value="/teoftenant/" />
+										<replace file="${bonita.home}/server/teoftenant/conf/bonita-history.properties" token="/default/"
+											value="/teoftenant/" />
+
+										<echo>Init databases...</echo>
+										<ant dir="${distrib.dir}" antfile="build.xml" target="init-db">
+											<property name="initdb.domain" value="${default.domain}" />
+											<property name="bonita.home" value="${bonita.home}" />
+											<property name="initdb.hibernate.configuration" value="${core.hbm.cfg} ${history.hbm.cfg}" />
+										</ant>
+
+										<waitfor maxwait="1" maxwaitunit="minute">
+											<socket server="localhost" port="${provider.port}" />
+										</waitfor>
+
+										<mkdir dir="${report.xml}" />
+										<junit printsummary="yes" fork="yes" forkmode="once" showoutput="true" maxmemory="512m">
+											<jvmarg line="${java.options}" />
+											<classpath refid="test.path" />
+											<sysproperty key="${jaasKey}" value="${jaas}" />
+											<sysproperty key="${providerUrlKey}" value="${provider.urlTomcat}" />
+											<sysproperty key="${loggingKey}" value="${logging}" />
+											<sysproperty key="${apitypeKey}" value="${apitype.rest}" />
+											<sysproperty key="${restserveraddressKey}" value="${restserveraddress.localhost}" />
+											<sysproperty key="${jeeServer}" value="tomcat6" />
+											<sysproperty key="BONITA_HOME" value="${bonita.home}" />
+											<formatter type="xml" />
+											<test todir="${report.xml}" name="${test.class}" />
+											<test todir="${report.xml}" name="${rest.test.class}" />
+										</junit>
+										<junitreport todir="${report.xml}">
+											<fileset dir="${report.xml}" includes="TEST-*.xml" />
+											<report todir="${report.results}" />
+										</junitreport>
+
+										<copy todir="${surefire.reports}">
+											<fileset dir="${report.xml}" />
+										</copy>
+
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<container>
+								<containerId>tomcat6x</containerId>
+								<home>${project.build.directory}/tomcat/${tomcat.version}</home>
+								<systemProperties>
+									<BONITA_HOME>${bonita.home}</BONITA_HOME>
+									<java.security.auth.login.config>${jaas}</java.security.auth.login.config>
+									<javax.xml.parsers.DocumentBuilderFactory>com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl</javax.xml.parsers.DocumentBuilderFactory>
+									<file.encoding>${project.build.sourceEncoding}</file.encoding>
+								</systemProperties>
+							</container>
+							<configuration>
+								<type>existing</type>
+								<home>${project.build.directory}/tomcat/${tomcat.version}</home>
+								<properties>
+									<cargo.servlet.port>${provider.port}</cargo.servlet.port>
+<!-- 									<cargo.jvmargs> -->
+<!-- 							          -Xdebug -->
+<!-- 							          -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8500 -->
+<!-- 							          -Xnoagent -->
+<!-- 							          -Djava.compiler=NONE -->
+<!-- 							        </cargo.jvmargs> -->
+								</properties>
+							</configuration>
+							<wait>false</wait>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>tomcat-tests</id>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>**/*</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

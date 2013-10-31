@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar version="2.1" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd">
+  <enterprise-beans>
+
+    <session>
+      <ejb-name>commandAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2CommandAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2CommandAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.CommandAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+    
+    <session>
+      <ejb-name>webAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2WebAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2WebAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.WebAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <session>
+      <ejb-name>identityAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2IdentityAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2IdentityAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.IdentityAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+    
+    <session>
+      <ejb-name>runtimeAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2RuntimeAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2RuntimeAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.RuntimeAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <session>
+      <ejb-name>managementAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2ManagementAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2ManagementAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.ManagementAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <session>
+      <ejb-name>queryRuntimeAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2QueryRuntimeAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2QueryRuntimeAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.QueryRuntimeAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <session>
+      <ejb-name>queryDefinitionAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2QueryDefinitionAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2QueryDefinitionAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.QueryDefinitionAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+    
+    <session>
+      <ejb-name>bamAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2BAMAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2BAMAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.BAMAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+    
+    <session>
+      <ejb-name>repairAPIBean</ejb-name>
+      <home>org.ow2.bonita.facade.ejb.ejb2.home.EJB2RepairAPIHome</home>
+      <remote>org.ow2.bonita.facade.ejb.ejb2.api.EJB2RepairAPI</remote>
+      <ejb-class>
+        org.ow2.bonita.facade.ejb.RepairAPIBean
+      </ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+  </enterprise-beans>
+
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+          <ejb-name>commandAPIBean</ejb-name>
+          <method-name>*</method-name>
+       </method>
+       <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+
+     <container-transaction>
+      <method>
+          <ejb-name>webAPIBean</ejb-name>
+          <method-name>*</method-name>
+       </method>
+       <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+     
+     <container-transaction>
+      <method>
+          <ejb-name>identityAPIBean</ejb-name>
+          <method-name>*</method-name>
+       </method>
+       <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+     
+     <container-transaction>
+       <method>
+          <ejb-name>runtimeAPIBean</ejb-name>
+          <method-name>*</method-name>
+        </method>
+        <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+
+     <container-transaction>
+        <method>
+          <ejb-name>managementAPIBean</ejb-name>
+          <method-name>*</method-name>
+        </method>
+        <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+
+     <container-transaction>
+       <method>
+         <ejb-name>queryRuntimeAPIBean</ejb-name>
+         <method-name>*</method-name>
+       </method>
+       <trans-attribute>Supports</trans-attribute>
+     </container-transaction>
+
+     <container-transaction>
+      <method>
+       <ejb-name>queryDefinitionAPIBean</ejb-name>
+       <method-name>*</method-name>
+      </method>
+      <trans-attribute>Supports</trans-attribute>
+    </container-transaction>
+
+    <container-transaction>
+      <method>
+       <ejb-name>bamAPIBean</ejb-name>
+       <method-name>*</method-name>
+      </method>
+      <trans-attribute>Supports</trans-attribute>
+    </container-transaction>
+    
+    <container-transaction>
+      <method>
+       <ejb-name>repairAPIBean</ejb-name>
+       <method-name>*</method-name>
+      </method>
+      <trans-attribute>Supports</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+</ejb-jar>

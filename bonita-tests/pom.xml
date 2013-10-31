@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	- - - - - - Copyright (C) 2006 Bull S.A.S. - Bull, Rue Jean Jaures, B.P.68, 
+	78340, Les Clayes-sous-Bois - - This library is free software; you can redistribute 
+	it and/or - modify it under the terms of the GNU Lesser General Public - 
+	License as published by the Free Software Foundation; either - version 2.1 
+	of the License, or (at your option) any later version. - - This library is 
+	distributed in the hope that it will be useful, - but WITHOUT ANY WARRANTY; 
+	without even the implied warranty of - MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+	PURPOSE. See the GNU - Lesser General Public License for more details. - 
+	- You should have received a copy of the GNU Lesser General Public - License 
+	along with this library; if not, write to the Free Software - Foundation, 
+	Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA - - - - 
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.bonita</groupId>
+	<artifactId>bonita-tests</artifactId>
+	<packaging>jar</packaging>
+	<name>Bonita - Integration Test Suite</name>
+
+	<!-- Parent -->
+	<parent>
+		<groupId>org.ow2.bonita</groupId>
+		<artifactId>bonita-runtime</artifactId>
+		<version>5.10.1</version>
+	</parent>
+
+	<properties>
+		<bonita.home>${project.build.directory}/bonita home</bonita.home>
+		<default.server.conf>${bonita.home}/server/default/conf</default.server.conf>
+		<tenant1.server.conf>${bonita.home}/server/tenant1/conf</tenant1.server.conf>
+		<tenant2.server.conf>${bonita.home}/server/tenant2/conf</tenant2.server.conf>
+		<teoftenant.server.conf>${bonita.home}/server/teoftenant/conf</teoftenant.server.conf>
+	</properties>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.bonita</groupId>
+			<artifactId>bonita-server</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bonitasoft.connectors</groupId>
+			<artifactId>bonita</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bonitasoft.connectors</groupId>
+			<artifactId>scripting</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bonitasoft.connectors</groupId>
+			<artifactId>java</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bonitasoft.connectors</groupId>
+			<artifactId>email</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>
+						-Djava.security.auth.login.config=src/main/resources/jaas-standard.cfg -Xmx256m
+					</argLine>
+					<systemPropertyVariables>
+						<BONITA_HOME>${bonita.home}</BONITA_HOME>
+					</systemPropertyVariables>
+					<includes>
+						<include>org/ow2/bonita/NonRegressionTests.java</include>
+					</includes>
+					<testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
+					<testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>${project.build.outputDirectory}/bonita-server.xml
+								</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate environment</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>compile</phase>
+						<inherited>false</inherited>
+						<configuration>
+							<tasks>
+								<java classpathref="maven.test.classpath"
+									classname="org.ow2.bonita.env.generator.EnvGenerator">
+									<arg value="org.ow2.bonita.env.generator.DbHistoryEnvGenerator" />
+									<arg value="${project.build.directory}/bonita-server.xml" />
+								</java>
+								<tstamp>
+									<format property="currentTime" pattern="yyyy-MM-dd_HH-mm-ss" />
+								</tstamp>
+
+								<copy todir="${default.server.conf}" verbose="true">
+									<fileset dir="${basedir}/conf/default" />
+								</copy>
+								<copy file="${project.build.directory}/bonita-server.xml"
+									todir="${default.server.conf}" verbose="true" overwrite="true" />
+
+								<copy todir="${tenant1.server.conf}" verbose="true">
+									<fileset dir="${basedir}/conf/tenant1" />
+								</copy>
+								<copy file="${project.build.directory}/bonita-server.xml"
+										todir="${tenant1.server.conf}" verbose="true" overwrite="true" />
+								<replace file="${tenant1.server.conf}/bonita-server.xml" token="default" value="tenant1" />
+
+								<copy todir="${tenant2.server.conf}" verbose="true">
+									<fileset dir="${basedir}/conf/tenant2" />
+								</copy>
+								<copy file="${project.build.directory}/bonita-server.xml"
+									todir="${tenant2.server.conf}" verbose="true" overwrite="true" />
+								<replace file="${tenant2.server.conf}/bonita-server.xml" token="default" value="tenant2" />
+
+								<copy todir="${teoftenant.server.conf}" verbose="true">
+									<fileset dir="${basedir}/conf/tenant2" />
+								</copy>
+								<replace file="${teoftenant.server.conf}/bonita-journal.properties" token="tenant2" value="teoftenant" />
+								<replace file="${teoftenant.server.conf}/bonita-journal.properties" token="hibernate.cache.use_second_level_cache true" value="hibernate.cache.use_second_level_cache false" />
+								<replace file="${teoftenant.server.conf}/bonita-journal.properties" token="hibernate.cache.use_query_cache        true" value="hibernate.cache.use_query_cache        false" />
+								<replace file="${teoftenant.server.conf}/bonita-history.properties" token="tenant2" value="teoftenant" />
+								
+								<copy file="${project.build.directory}/bonita-server.xml"
+									todir="${teoftenant.server.conf}" verbose="true" overwrite="true" />
+								<replace file="${teoftenant.server.conf}/bonita-server.xml" token="default" value="teoftenant" />
+								<replace file="${teoftenant.server.conf}/bonita-server.xml" token="throw-exception-on-failure='false'" value="throw-exception-on-failure='true'" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

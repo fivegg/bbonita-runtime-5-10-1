@@ -1,0 +1,12 @@
+<connector>
+  <connectorId>NumberConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setNumber</setterName>
+      <required></required>
+      <parameters>
+        <int>0</int>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

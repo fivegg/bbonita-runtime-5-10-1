@@ -1,0 +1,11 @@
+<connector>
+  <connectorId>SingleInputFieldConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setInputField</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+</connector>

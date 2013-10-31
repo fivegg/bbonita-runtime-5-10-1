@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="Workflow_Project" Name="Workflow">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/07/15 16:56:20</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.1</Version>
+  </RedefinableHeader>  
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="Workflow" Id="Workflow">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.1</Version>
+      </RedefinableHeader>
+      <Participants>
+        <Participant Id="user" Name="user">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="0" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="Start" Name="Start">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>user</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <Deadline Execution="SYNCHR">
+            <DeadlineCondition>5000</DeadlineCondition>
+            <ExceptionName>org.ow2.bonita.versioning.WorkflowException</ExceptionName>
+          </Deadline>
+        </Activity>
+        <Activity Id="End" Name="End">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Transition" Name="Transition" From="Start" To="End">
+          <Condition Type="CONDITION">true</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+</Package>

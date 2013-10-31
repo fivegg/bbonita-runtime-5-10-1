@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="Input_Project" Name="Input_Project">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2009-04-03T15:09:41.931+0200</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="Input" Id="Input">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="myDate" Name="myDate">
+          <DataType>
+            <BasicType Type="DATETIME" />
+          </DataType>
+          <InitialValue>2009-04-14T13:12:54.000+0200</InitialValue>
+        </DataField>
+        <DataField Id="phoneNumber" Name="phoneNumber">
+          <DataType>
+            <BasicType Type="INTEGER" />
+          </DataType>
+          <InitialValue>0848754512</InitialValue>
+        </DataField>
+        <DataField Id="Where" Name="Where">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>SunnyTown</InitialValue>
+        </DataField>
+		<DataField Id="message" Name="message">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>Nothing</InitialValue>
+        </DataField>
+		<DataField Id="price" Name="price">
+          <DataType>
+            <BasicType Type="FLOAT" />
+          </DataType>
+          <InitialValue>20.1</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="Customer" Name="Customer">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="Employee" Name="Employee">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="300" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="621" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="437" />
+            <ExtendedAttribute Name="YOffset" Value="202" />
+            <ExtendedAttribute Name="Async" Value="false" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaInit" Name="BonitaInit">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="63" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="56" />
+            <ExtendedAttribute Name="XOffset" Value="191" />
+            <ExtendedAttribute Name="YOffset" Value="202" />
+            <ExtendedAttribute Name="Async" Value="false" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Request" Name="Request">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>Customer</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="297" />
+            <ExtendedAttribute Name="YOffset" Value="203" />
+            <ExtendedAttribute Name="CellHeight" Value="38" />
+            <ExtendedAttribute Name="CellWidth" Value="76" />
+            <ExtendedAttribute Name="Async" Value="false" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.integration.connector.test.InputOutputConnector">
+              <HookEventName>task:onFinish</HookEventName>
+              <Rollback>true</Rollback>
+			  <Parameters>
+			    <InParameter Var="price" Setter="setThirdInput" />
+			    <InParameter Var="phoneNumber" Setter="setFirStInput" />
+				<InParameter Var="Where" Setter="setSecondInput" />
+			    <InParameter Var="myDate" Setter="setFourthInput" />
+		      </Parameters>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Start_Request" Name="Start_Request" From="BonitaInit" To="Request" />
+        <Transition Id="Request_End" Name="Request_End" From="Request" To="BonitaEnd" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

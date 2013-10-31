@@ -1,0 +1,24 @@
+<connector>
+  <connectorId>WrongAnnotationPositionConnector</connectorId>
+  <inputs>
+    <setter>
+      <setterName>getAddress</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>isMale</setterName>
+      <required></required>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+  </inputs>
+  <outputs>
+    <getter>
+      <name>setAge</name>
+    </getter>
+  </outputs>
+</connector>

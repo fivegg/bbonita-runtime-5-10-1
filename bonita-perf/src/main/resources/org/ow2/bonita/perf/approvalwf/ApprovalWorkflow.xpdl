@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="ApprovalWorkflow" Name="ApprovalWorkflow">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008/02/21 13:14:08</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="ApprovalWorkflow" Id="ApprovalWorkflow">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="isGranted" Name="isGranted">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>true</InitialValue>
+        </DataField>
+        <DataField Id="Applications" Name="Applications">
+          <DataType>
+            <EnumerationType>
+              <EnumerationValue Name="Word" />
+              <EnumerationValue Name="Excel" />
+              <EnumerationValue Name="MailReader" />
+              <EnumerationValue Name="webBrowser" />
+            </EnumerationType>
+          </DataType>
+          <InitialValue>webBrowser</InitialValue>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="Administrator" Name="Administrator">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Custom" />
+            <ExtendedAttribute Name="MapperClassName" Value="org.ow2.bonita.perf.approvalwf.mapper.ApprovalMapper" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="End" Name="End">
+          <Route/>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="2" />
+            <ExtendedAttribute Name="XOffset" Value="491" />
+            <ExtendedAttribute Name="YOffset" Value="134" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Reject" Name="Reject">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="109" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="34" />
+            <ExtendedAttribute Name="XOffset" Value="296" />
+            <ExtendedAttribute Name="YOffset" Value="191" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.perf.approvalwf.hook.Reject">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Approval" Name="Approval">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>Administrator</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="27" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="152" />
+            <ExtendedAttribute Name="XOffset" Value="93" />
+            <ExtendedAttribute Name="YOffset" Value="123" />
+            <ExtendedAttribute Name="CellHeight" Value="30" />
+            <ExtendedAttribute Name="CellWidth" Value="56" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Accept" Name="Accept">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="191" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="66" />
+            <ExtendedAttribute Name="XOffset" Value="261" />
+            <ExtendedAttribute Name="YOffset" Value="67" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.perf.approvalwf.hook.Accept">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Accept_End" Name="Accept_End" From="Accept" To="End" />
+        <Transition Id="Approval_Accept" Name="Approval_Accept" From="Approval" To="Accept">
+          <Condition Type="CONDITION">isGranted.equals("true")</Condition>
+        </Transition>
+        <Transition Id="Reject_End" Name="Reject_End" From="Reject" To="End" />
+        <Transition Id="Approval_Reject" Name="Approval_Reject" From="Approval" To="Reject">
+          <Condition Type="CONDITION">isGranted.equals("false")</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

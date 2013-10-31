@@ -1,0 +1,38 @@
+<cache-configuration usage="nonstrict-read-write">
+
+  <class-cache class="org.ow2.bonita.facade.def.InternalProcessDefinition" />
+  <class-cache class="org.ow2.bonita.facade.def.InternalActivityDefinition" />
+  <class-cache class="org.ow2.bonita.facade.def.InternalDataFieldDefinition" />  
+  <class-cache class="org.ow2.bonita.facade.def.majorElement.impl.ParticipantDefinitionImpl" />
+  <class-cache class="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl" />
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.AttachmentDefinitionImpl" />
+  <class-cache class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.MetaDataImpl" />
+  <class-cache class="org.ow2.bonita.facade.def.ConnectorParameters" />
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.IterationDescriptor" />
+  <class-cache class="org.ow2.bonita.facade.def.element.impl.IncomingEventDefinitionImpl" />
+  <class-cache class="org.ow2.bonita.facade.def.InternalOutgoingEventDefinition" />
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.dataFields" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.participants" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.activities" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.attachments" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.metadata" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalProcessDefinition.connectors" />
+
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.deadlines" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.performers" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.connectors" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.dataFields" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.outgoingTransitions" />
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalActivityDefinition.incomingTransitions" />
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.InternalConnectorDefinition.variableParameters" />
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.otherNodes" />
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.entryNodes" />
+  <collection-cache collection="org.ow2.bonita.facade.def.element.impl.IterationDescriptor.exitNodes" />
+  
+  <collection-cache collection="org.ow2.bonita.facade.def.ConnectorParameters.variables" />
+
+</cache-configuration>

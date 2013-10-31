@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="subflow_Project" Name="subflow">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>25 février 2008 09:10:48</Created>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="mainCondFail" Id="mainCondFail">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+       <DataField Id="conditionVar" Name="conditionVar">
+         <DataType>
+           <BasicType Type="STRING" />
+         </DataType>
+         <InitialValue>empty</InitialValue>
+         <ExtendedAttributes>
+           <ExtendedAttribute Name="PropertyActivity" />
+         </ExtendedAttributes>
+       </DataField>
+       <DataField Id="conditionVar2" Name="conditionVar2">
+         <DataType>
+           <BasicType Type="STRING" />
+         </DataType>
+         <InitialValue>empty</InitialValue>
+         <ExtendedAttributes>
+           <ExtendedAttribute Name="PropertyActivity" />
+         </ExtendedAttributes>
+       </DataField>
+      </DataFields>
+      <Participants />
+      <Activities>
+        <Activity Id="a2" Name="a2">
+          <Implementation>
+            <SubFlow Execution="SYNCHR" Id="subflow" />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="MultiInstantiation">
+              <Variable>conditionVar</Variable>
+              <MultiInstantiator>org.ow2.bonita.activity.instantiation.instantiator.JoinNumberConditionFail</MultiInstantiator>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="conditionVar">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a3" Name="a3">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.activity.instantiation.CheckExecutionHook">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="property" Value="conditionVar2">
+              <Propagated>No</Propagated>
+            </ExtendedAttribute>     
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="a4" Name="a4">
+          <Route />
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="a2_a3" Name="a2_a3" From="a2" To="a3" />
+        <Transition Id="a3_a4" Name="a3_a4" From="a3" To="a4">
+          <Condition Type="CONDITION">conditionVar2.equals("true")</Condition>
+        </Transition>
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+

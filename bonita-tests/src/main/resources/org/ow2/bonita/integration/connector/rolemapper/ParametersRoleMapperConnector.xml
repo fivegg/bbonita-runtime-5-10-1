@@ -1,0 +1,23 @@
+<connector>
+  <connectorId>ParametersRoleResolver</connectorId>
+  <inputs>
+    <setter>
+      <setterName>setAUser</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+      <setter>
+      <setterName>setBUser</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setCUser</setterName>
+      <parameters>
+        <string></string>
+      </parameters>
+    </setter>
+    </setter>
+  </inputs>
+</connector>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="0" Name="Example6" xmlns="http://www.wfmc.org/2002/XPDL1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+ <PackageHeader>
+  <XPDLVersion>1.0</XPDLVersion>
+  <Vendor>CACI</Vendor>
+  <Created>Tue Apr 25 13:14:43 EDT 2006</Created>
+ </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+ <TypeDeclarations>
+  <TypeDeclaration Id="Entity29" Name="Entity29">
+   <DeclaredType Id="Entity29"/>
+  </TypeDeclaration>
+ </TypeDeclarations>
+ <Participants>
+  <Participant Id="27" Name="Manager">
+   <ParticipantType Type="RESOURCE"/>
+  </Participant>
+  <Participant Id="28" Name="Director">
+   <ParticipantType Type="RESOURCE"/>
+  </Participant>
+ </Participants>
+ <DataFields>
+  <DataField Id="Cost" IsArray="FALSE">
+   <DataType>
+    <BasicType Type="FLOAT"/>
+   </DataType>
+   <InitialValue>0.0</InitialValue>
+  </DataField>
+ </DataFields>
+ <WorkflowProcesses>
+  <WorkflowProcess AccessLevel="PUBLIC" Id="0" Name="Example6">
+   <ProcessHeader/>
+   <Activities>
+    <Activity Id="1" Name="Start">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="67"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="223" ypos="332"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="15" Name="End">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="603" ypos="332"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="30" Name="Example 5">
+     <Implementation>
+      <SubFlow Execution="SYNCHR" Id="30"/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="68"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="398" ypos="338"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+   </Activities>
+   <Transitions>
+    <Transition From="1" Id="67" To="30"/>
+    <Transition From="30" Id="68" To="15"/>
+   </Transitions>
+  </WorkflowProcess>
+  <WorkflowProcess AccessLevel="PRIVATE" Id="30" Name="Example 5">
+   <ProcessHeader/>
+   <Activities>
+    <Activity Id="53" Name="Merge19">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="66"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="647" ypos="520"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="71">
+     <Route/>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="66"/>
+        </TransitionRefs>
+       </Join>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+    </Activity>
+    <Activity Id="56" Name="Approve1">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <Performer>27</Performer>
+     <SimulationInformation>
+      <Cost/>
+      <TimeEstimation>
+       <Duration>1</Duration>
+      </TimeEstimation>
+     </SimulationInformation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="49"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="429" ypos="321"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="59" Name="Approve">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <Performer>28</Performer>
+     <SimulationInformation>
+      <Cost/>
+      <TimeEstimation>
+       <Duration>0</Duration>
+      </TimeEstimation>
+     </SimulationInformation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="50"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="429" ypos="113"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="62" Name="Branch3">
+     <Implementation>
+      <No/>
+     </Implementation>
+     <SimulationInformation>
+      <Cost/>
+      <TimeEstimation>
+       <Duration>0</Duration>
+      </TimeEstimation>
+     </SimulationInformation>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Join Type="XOR"/>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="51"/>
+         <TransitionRef Id="52"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+     <ExtendedAttributes>
+      <ExtendedAttribute Name="Coordinates">
+       <Coordinates xpos="268" ypos="520"/>
+      </ExtendedAttribute>
+     </ExtendedAttributes>
+    </Activity>
+    <Activity Id="70">
+     <Route/>
+     <TransitionRestrictions>
+      <TransitionRestriction>
+       <Split Type="XOR">
+        <TransitionRefs>
+         <TransitionRef Id="65"/>
+        </TransitionRefs>
+       </Split>
+      </TransitionRestriction>
+     </TransitionRestrictions>
+    </Activity>
+   </Activities>
+   <Transitions>
+    <Transition From="53" Id="66" To="71"/>
+    <Transition From="56" Id="49" To="53"/>
+    <Transition From="59" Id="50" To="53"/>
+    <Transition From="62" Id="51" To="56">
+     <Condition Type="OTHERWISE"/>
+    </Transition>
+    <Transition From="62" Id="52" To="59">
+     <Condition Type="CONDITION">0 &lt;= Entity.Cost &lt;= 5000</Condition>
+    </Transition>
+    <Transition From="70" Id="65" To="62"/>
+   </Transitions>
+  </WorkflowProcess>
+ </WorkflowProcesses>
+ <ExtendedAttributes>
+  <ExtendedAttribute Name="CreatedBy" Value="SIMPROCESS"/>
+  <ExtendedAttribute Name="Version" Value="4.3b7(dev)"/>
+  <ExtendedAttribute Name="Build" Value="6421"/>
+ </ExtendedAttributes>
+</Package>

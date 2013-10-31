@@ -1,0 +1,451 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false" default-access="field"
+	package="org.ow2.bonita.facade.def.majorElement.impl">
+
+  <class name="org.ow2.bonita.facade.def.InternalActivityDefinition" table="BN_ACT_DEF" >
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.ActivityDefinitionUUID" unique="true">
+      <property name="value" column="ACT_UUID_" />
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DESCRIPTION_" type="text" />
+    <property name="dynamicLabel" column="DYN_LABEL_" type="text"/>
+    <property name="dynamicDescription" column="DYN_DESCRIPTION_" type="text"/>
+    <property name="executionSummary" column="DYN_EXECUTION_SUMMARY_" type="text"/>
+    <set name="outgoingTransitions" cascade="all"  table="INCOMING_TR" fetch="subselect">
+      <key column="ACTIVITY_ID_" />
+      <many-to-many class="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl" />
+    </set>
+    <set name="incomingTransitions" cascade="all" table="OUTGOING_TR" fetch="subselect">
+      <key column="ACTIVITY_DBID_" />
+      <many-to-many class="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl" />
+    </set>
+    <map name="boundaryEvents" table="BN_EVENTS_" cascade="all" fetch="subselect">
+      <key column="EVT_DBID_" />
+      <map-key type="string" column="EVT_NAME_" />
+      <one-to-many class="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl"/>
+    </map>
+    <set name="performers" table="BN_ACT_PERFORMERS" fetch="subselect">
+      <key column="performer_Id" />
+        <element column="performer" type="string" />
+    </set>
+    <property name="type" column="TYPE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.majorElement.ActivityDefinition$Type
+        </param>
+      </type>
+    </property>
+    <property name="executingTime" column="BAM_EXECUTING_TIME_" />
+    <property name="priority" column="BAM_PRIORITY_"/>
+    <property name="asynchronous" column="ASYNC_" />
+    <property name="timerCondition" column="TIMER_COND" type="text" />
+    <property name="joinType" column="JOIN_TYPE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.majorElement.ActivityDefinition$JoinType
+        </param>
+      </type>
+    </property>
+    <property name="splitType" column="SPLIT_TYPE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.majorElement.ActivityDefinition$SplitType
+        </param>
+      </type>
+    </property>
+    <property name="subflowProcessName" column="SUBFLOW_ID_" />
+    <property name="subflowProcessVersion" column="SUBFLOW_VERSION_" />
+    <set name="subflowInParameters" cascade="all">
+      <key column="ACTIVITY_SUB_IN" />
+      <one-to-many class="org.ow2.bonita.facade.def.element.impl.SubflowParameterDefinitionImpl" />
+    </set>
+    <set name="subflowOutParameters" cascade="all">
+      <key column="ACTIVITY_SUB_OUT" />
+      <one-to-many class="org.ow2.bonita.facade.def.element.impl.SubflowParameterDefinitionImpl" />
+    </set>
+    <set name="deadlines" cascade="all">
+      <key column="ACTIVITY_DEADL" />
+      <one-to-many class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    </set>
+    <list name="connectors" cascade="all" fetch="subselect">
+      <key foreign-key="FK_CONNEC">
+        <column name="CONNECTORS_ID" index="ACTIVITY_DBID_" />
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    </list>
+    <set name="dataFields" cascade="all" fetch="subselect">
+      <key column="ACTIVITY_DATAFIELD" />
+      <one-to-many class="org.ow2.bonita.facade.def.InternalDataFieldDefinition" />
+    </set>
+    <many-to-one name="activityInstantiator" cascade="all" class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    <many-to-one name="filter" cascade="all" class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    <property name="inCycle" column="IN_CYCLE"/>
+    <many-to-one name="incomingEvent" cascade="all" class="org.ow2.bonita.facade.def.element.impl.IncomingEventDefinitionImpl" />
+    <set name="outgoingEvents" cascade="all" fetch="subselect">
+      <key column="ACT_EVT_ID_"/>
+      <one-to-many class="org.ow2.bonita.facade.def.InternalOutgoingEventDefinition"/> 
+    </set>
+    <component name="behaviourReference" class="org.ow2.bonita.runtime.model.ObjectReference">
+      <any name="object" id-type="long" cascade="all">
+        <column name="BEHAV_CLASS_" />
+        <column name="BEHAV_ID_" />
+      </any>
+    </component>
+    <many-to-one name="instantiator" column="INSTANTIATOR_" cascade="all" class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    <many-to-one name="joinChecker" column="JOIN_CHECKER_" cascade="all" class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    <property name="loop" column="LOOP_" />
+    <property name="beforeExecution" column="BEFORE_EXECUTION_" />
+    <property name="loopCondition" column="LOOP_CONDITION_" type="text" />
+    <property name="loopMaximum" column="LOOP_MAXIMUM_" type="text" />
+    <property name="catchEvent" column="CATCH_ERROR_" />
+    <property name="terminateProcess" column="TERMINATE_PROCESS_" />
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.element.impl.SubflowParameterDefinitionImpl" table="BN_SUBFLOW_PARAM_DEF">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="source" column="SOURCE_" />
+    <property name="destination" column="DEST_" />
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.InternalDataFieldDefinition" table="BN_DATAF_DEF">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.DataFieldDefinitionUUID" unique="true">
+      <property name="value" column="DATAFIELD_UUID_" />
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DATAFIELD_DESCR_" />
+    <property name="dataTypeClassName" column="CLASS_NAME_" />
+    <property name="enumerationValues" column="ENUM_VALUES_" type="text"/>
+    <property name="scriptingValue" column="SCRIPT_VALUE_" type="text"/>
+    <property name="isTransient" column="TRANSIENT_"/>
+    <many-to-one name="initialValueVariable" class="org.ow2.bonita.type.Variable" 
+                 cascade="all" index="IDX_DF_INIT_VAL" foreign-key="FK_DF_INIT_VAL" />
+  </class>
+
+  <class name="ParticipantDefinitionImpl" table="BN_ACTOR_DEF">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.ParticipantDefinitionUUID" unique="true">
+      <property name="value" column="PART_UUID_" />
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DESCRIPTION_" />
+    <many-to-one name="roleMapper" cascade="all"
+                 class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+  </class>
+
+  <class name="TransitionDefinitionImpl" table="BN_TRANS_DEF">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.TransitionDefinitionUUID">
+      <property name="value" column="TRANS_UUID_" />
+    </component>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DESCRIPTION_" />
+    <property name="from" column="FROM_ACT_" />
+    <property name="fromBoundaryEvent" column="FROM_BOUNDARY_EVT_" />
+    <property name="to" column="TO_ACT_" />
+    <property name="condition" column="CONDITION_" type="text"/>
+    <property name="isDefault" column="DEFAULT_"/>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.majorElement.impl.EventProcessDefinitionImpl" table="BN_EVENT_PROC_DEF_">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DESCRIPTION_" />
+    <property name="version" column="VERSION_" />
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.InternalProcessDefinition" table="BN_PROC_DEF">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="uuid" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID" unique="true">
+      <property name="value" column="PROC_UUID_" />
+    </component>
+    <property name="state" column="STATE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.majorElement.ProcessDefinition$ProcessState
+        </param>
+      </type>
+    </property>
+    <property name="name" column="NAME_" index="IDX_BN_PROC_DEF_NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="labelOrName" column="LABEL_OR_NAME_" index="IDX_BN_PROC_DEF_LABELORNAME" />
+    <property name="nbOfAttachments" column="NB_OF_ATTACHMENTS_" />
+    <property name="description" column="DESCRIPTION_" type="text" />
+    <property name="version" column="VERSION_" />
+    <list name="connectors" cascade="all" fetch="subselect">
+      <key foreign-key="FK_PROC_CONNEC">
+        <column name="PROC_CONNECTORS_ID" index="PROCESS_DBID_" />
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    </list>
+    <set name="dataFields" cascade="all" fetch="subselect">
+      <key column="PROCESS_DBID_" />
+      <one-to-many class="org.ow2.bonita.facade.def.InternalDataFieldDefinition" />
+    </set>
+    <set name="participants" cascade="all" fetch="subselect">
+      <key column="PROCESS_DBID_" />
+      <one-to-many class="org.ow2.bonita.facade.def.majorElement.impl.ParticipantDefinitionImpl" />
+    </set>
+    <set name="activities" cascade="all" fetch="subselect">
+	  <key column="PROCESS_DBID_" />
+      <one-to-many class="org.ow2.bonita.facade.def.InternalActivityDefinition" />
+    </set>
+    <map name="metadata" table="BN_PROC_METADATA" cascade="all" fetch="subselect">
+      <key column="PROCESS_DBID_" />
+      <map-key type="string" column="KEY_" />
+      <element type="string" column="VALUE_" />
+    </map>
+    <property name="deployedDate" type="long" column="DEPLOYED_DATE_" />
+    <property name="undeployedDate" type="long" column="UNDEPLOYED_DATE_" />
+    <property name="deployedBy" column="DEP_BY_" />
+    <property name="undeployedBy" column="UNDEP_BY_" />
+
+    <set name="attachments" cascade="all">
+      <key column="PROCESS_DBID_" />
+      <one-to-many class="org.ow2.bonita.facade.def.element.impl.AttachmentDefinitionImpl" />
+    </set>
+    <set name="iterationDescriptors" table="BN_ABSTR_ACT_ITDESC" cascade="all" fetch="subselect">
+      <key/>
+      <many-to-many class="org.ow2.bonita.facade.def.element.impl.IterationDescriptor" />
+    </set>
+    <set name="subProcesses" cascade="all" table="BN_PROC_SUBPROC" fetch="subselect">
+      <key foreign-key="FK_PROC_SUB_PROC">
+        <column name="PROC_ID" index="IDX_PROC_SUBPROC"/>
+      </key>
+      <element type="string" column="PROC_"/>
+    </set>
+    <set name="categories" cascade="all" fetch="subselect" table="BN_PROC_CAT">
+      <key foreign-key="FK_PROC_CAT">
+        <column name="PROC_ID" index="IDX_PROC_CAT"/>
+      </key>
+      <element type="string" column="CAT_"/>
+    </set>
+    <list name="eventSubProcesses" cascade="all" fetch="subselect">
+      <key foreign-key="FK_PROC_EVENT_SUB_PROC">
+        <column name="PROC_EVNT_SUB_PROC_ID" index="IDX_EVNT_SUB_PROC_DBID_" />
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.def.majorElement.impl.EventProcessDefinitionImpl" />
+    </list>
+    <property name="type" column="TYPE_">
+      <type name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.light.LightProcessDefinition$ProcessType
+        </param>
+      </type>
+    </property>
+    <property name="migrationDate" type="long" column="MIGRATION_DATE_" />
+  </class>
+  
+  <class name="org.ow2.bonita.facade.def.InternalConnectorDefinition" table="BN_CON_DEF">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="condition" column="DEADLINE_COND_" />
+    <property name="description" column="DESCRIPTION_" />
+    <property name="className" column="CLASSNAME_" />
+    <property name="throwingException" column="THROW_EX_" />
+    <property name="errorCode" column="ERROR_CODE_" />
+    <property name="variableName" column="VAR_ID_" />
+    <property name="event" column="EVENT_">
+      <type
+        name="org.ow2.bonita.util.hibernate.GenericEnumUserType">
+        <param name="enumClass">
+          org.ow2.bonita.facade.def.element.HookDefinition$Event
+        </param>
+      </type>
+    </property>
+    <map name="variableParameters" table="BN_CON_PARAMS" cascade="all" fetch="subselect">
+      <key column="DL_ID_" />
+      <map-key type="string" column="PARAM_NAME_" />
+      <one-to-many class="org.ow2.bonita.facade.def.ConnectorParameters"/>
+    </map>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.ConnectorParameters" table="BN_CON_PARAM_">
+    <id column="DBID_" type="long">
+      <generator class="native" />
+    </id>
+    <property name="parameterName" column="PARAM_NAME_"/>
+    <list name="variables" cascade="all" fetch="subselect">
+      <key foreign-key="FK_VAR_CONNEC">
+        <column name="CONNECTOR_ID" index="CONNECTOR_ID_" />
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.type.Variable" />
+    </list>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.element.impl.MetaDataImpl" table="BN_METADATA">
+    <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="key" column="KEY_" unique="true"/>
+    <property name="value" column="VALUE_" type="text"/>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.element.impl.AttachmentDefinitionImpl" table="BN_ATTACH_DEF">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <property name="description" column="DESCR_" />
+    <property name="fileName" column="FILE_NAME_" type="string"/>
+    <property name="filePath" column="FILE_PATH_" type="text"/>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.element.impl.IterationDescriptor" table="BN_ITER_DESCR">
+    <id column="DBID_" type="long">
+      <generator class="native" />
+    </id>
+    <set name="entryNodes" table="ENTRY_NODES" fetch="join">
+      <key column="ENTRY_NODE_NAME" />
+      <element column="NODE_NAME" type="string" />
+    </set>
+    <set name="exitNodes" table="EXIT_NODES" fetch="join">
+      <key column="EXIT_NODE_NAME" />
+      <element column="NODE_NAME" type="string" />
+    </set>
+    <set name="otherNodes" table="OTHER_NODES" fetch="join">
+      <key column="OTHER_NODE_NAME" />
+      <element column="NODE_NAME" type="string"/>
+    </set>
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.InternalOutgoingEventDefinition" table="BN_OE_DEF">
+    <id column="DBID_" type="long">
+      <generator class="native" />
+    </id>
+    <property name="name" column="NAME_" />
+    <property name="correlationKeyName1" column="COR_KEY_NAME1_" length="50" />
+    <property name="correlationKeyExpression1" column="COR_KEY_EXPR1_" type="text" />
+    <property name="correlationKeyName2" column="COR_KEY_NAME2_" length="50" />
+    <property name="correlationKeyExpression2" column="COR_KEY_EXPR2_" type="text" />
+    <property name="correlationKeyName3" column="COR_KEY_NAME3_" length="50" />
+    <property name="correlationKeyExpression3" column="COR_KEY_EXPR3_" type="text" />
+    <property name="correlationKeyName4" column="COR_KEY_NAME4_" length="50" />
+    <property name="correlationKeyExpression4" column="COR_KEY_EXPR4_" type="text" />
+    <property name="correlationKeyName5" column="COR_KEY_NAME5_" length="50" />
+    <property name="correlationKeyExpression5" column="COR_KEY_EXPR5_" type="text" />
+    <map name="variableParameters" table="BN_OE_PARAMS" cascade="all" fetch="subselect">
+      <key column="VP_ID_" />
+      <map-key type="string" column="PARAM_NAME_" />
+      <one-to-many class="org.ow2.bonita.type.Variable" />
+    </map>
+    <property name="toProcessName" column="PROCNAME_" />
+    <property name="toActivityName" column="ACTNAME_" />
+    <property name="timeToLive" column="TTL" />
+  </class>
+
+  <class name="org.ow2.bonita.facade.def.element.impl.IncomingEventDefinitionImpl" table="BN_IE_DEF">
+    <id name="dbid" column="DBID_">
+      <generator class="native" />
+    </id>
+    <property name="name" column="NAME_" />
+    <property name="correlationKeyName1" column="COR_KEY_NAME1_" length="50" />
+    <property name="correlationKeyExpression1" column="COR_KEY_EXPR1_" type="text" />
+    <property name="correlationKeyName2" column="COR_KEY_NAME2_" length="50" />
+    <property name="correlationKeyExpression2" column="COR_KEY_EXPR2_" type="text" />
+    <property name="correlationKeyName3" column="COR_KEY_NAME3_" length="50" />
+    <property name="correlationKeyExpression3" column="COR_KEY_EXPR3_" type="text" />
+    <property name="correlationKeyName4" column="COR_KEY_NAME4_" length="50" />
+    <property name="correlationKeyExpression4" column="COR_KEY_EXPR4_" type="text" />
+    <property name="correlationKeyName5" column="COR_KEY_NAME5_" length="50" />
+    <property name="correlationKeyExpression5" column="COR_KEY_EXPR5_" type="text" />
+    <property name="expression" column="EXPR_" />
+    <list name="connectors" cascade="all" fetch="subselect">
+      <key foreign-key="FK_EVT_CN">
+        <column name="ENV_CN_ID" index="EVT_DBID_" />
+      </key>
+      <list-index column="INDEX_"/>
+      <one-to-many class="org.ow2.bonita.facade.def.InternalConnectorDefinition" />
+    </list>
+  </class>
+
+  <class abstract="true" name="org.ow2.bonita.facade.def.element.impl.EventImpl" table="BN_EVENTS">
+    <id type="long" column="DBID_">
+      <generator class="native" />
+    </id>
+    <discriminator column="CLASS_" force="false" insert="true" not-null="true" />
+    <property name="description" column="DESCRIPTION_" type="text" />
+    <property name="name" column="NAME_" />
+    <property name="label" column="LABEL_" />
+    <component name="processDefinitionUUID" class="org.ow2.bonita.facade.uuid.ProcessDefinitionUUID">
+      <property name="value" column="PROCESS_UUID_" />
+    </component>
+    <component name="activityDefinitionUUID" class="org.ow2.bonita.facade.uuid.ActivityDefinitionUUID">
+      <property name="value" column="ACT_UUID_" />
+    </component>
+  </class>
+
+  <subclass abstract="true" name="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl" discriminator-value="BoundaryEvent" extends="org.ow2.bonita.facade.def.element.impl.EventImpl">
+    <many-to-one name="exceptionTransition" column="TRANSITION_" cascade="all" class="org.ow2.bonita.facade.def.majorElement.impl.TransitionDefinitionImpl" lazy="false" />
+  </subclass>
+
+  <subclass name="org.ow2.bonita.facade.def.element.impl.TimerBoundaryEventImpl" discriminator-value="BoundaryTimer" extends="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl">
+  	<property name="condition" column="CONDITION_" type="text" />
+  </subclass>
+
+  <subclass name="org.ow2.bonita.facade.def.element.impl.MessageBoundaryEventImpl" discriminator-value="BoundaryMessage" extends="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl">
+  	<property name="expression" column="EXPRESSION_" />
+  	<property name="correlationKeyName1" column="COR_KEY_NAME1_" length="50" />
+    <property name="correlationKeyExpression1" column="COR_KEY_EXPR1_" type="text" />
+    <property name="correlationKeyName2" column="COR_KEY_NAME2_" length="50" />
+    <property name="correlationKeyExpression2" column="COR_KEY_EXPR2_" type="text" />
+    <property name="correlationKeyName3" column="COR_KEY_NAME3_" length="50" />
+    <property name="correlationKeyExpression3" column="COR_KEY_EXPR3_" type="text" />
+    <property name="correlationKeyName4" column="COR_KEY_NAME4_" length="50" />
+    <property name="correlationKeyExpression4" column="COR_KEY_EXPR4_" type="text" />
+    <property name="correlationKeyName5" column="COR_KEY_NAME5_" length="50" />
+    <property name="correlationKeyExpression5" column="COR_KEY_EXPR5_" type="text" />
+  </subclass>
+
+  <subclass name="org.ow2.bonita.facade.def.element.impl.ErrorBoundaryEventImpl" discriminator-value="BoundaryError" extends="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl">
+  	<property name="errorCode" column="ERROR_CODE_" />
+  </subclass>
+
+  <subclass name="org.ow2.bonita.facade.def.element.impl.SignalBoundaryEventImpl" discriminator-value="BoundarySignal" extends="org.ow2.bonita.facade.def.element.impl.BoundaryEventImpl">
+  	<property name="signalCode" column="SIGNAL_CODE_" />
+  </subclass>
+
+</hibernate-mapping>

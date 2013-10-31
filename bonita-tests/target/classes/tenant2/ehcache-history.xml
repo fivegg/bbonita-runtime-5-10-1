@@ -1,0 +1,23 @@
+<ehcache updateCheck="false">
+
+  <!-- nothing is stored to disk but ehcache generate a NPE if not specified -->
+  <diskStore path="target/bonita-cache/history2"/>
+
+  <defaultCache
+  	maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="120"
+    timeToLiveSeconds="120"
+    overflowToDisk="false"
+    diskExpiryThreadIntervalSeconds="120"
+    memoryStoreEvictionPolicy="LRU"
+  />
+
+  <cache
+    name="org.hibernate.cache.UpdateTimestampsCache"
+    maxElementsInMemory="5000"
+    eternal="true"
+    overflowToDisk="true"
+  />
+
+</ehcache>

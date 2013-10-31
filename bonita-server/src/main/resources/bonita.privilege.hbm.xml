@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="false" default-access="field"
+  package="org.ow2.bonita.facade.privilege.impl">
+   
+  <class name="RuleTypePolicyImpl" table="BN_RULETYPE_POLICY">
+     <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <property name="ruleType" column="RULE_TYPE_VALUE_" type="string" />
+    <property name="policy" column="POLICY_VALUE_" type="string" />
+  </class>
+
+  <class name="RuleImpl" table="BN_RULE">
+     <id column="DBID_" name="dbid">
+      <generator class="native" />
+    </id>
+    <discriminator column="RULE_TYPE_" type="string"/>
+    <property name="uuid" column="RULE_UUID_" unique="true" index="IDX_RULE_UUID" />
+    <property name="name" column="RULE_NAME_" unique="true" index="IDX_RULE_NAME" />
+    <property name="label" column="RULE_LABEL_" />
+    <property name="description" column="RULE_DESCRIPTION_" type="text" />
+    <property name="type" column="RULE_TYPE_VALUE_" type="string" />
+    
+    <set name="exceptions" cascade="save-update" table="BN_EXCEPTION_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="EXCEPTION_DBID_" type="string"/>
+    </set>
+    <set name="entities" cascade="save-update" table="BN_ENTITY_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="ENTITY_ID_" type="string"/>
+    </set>
+    <set name="users" cascade="save-update" table="BN_USER_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="USER_UUID_" type="string"/>
+    </set>
+    <set name="roles" cascade="save-update" table="BN_ROLE_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="ROLE_UUID_" type="string"/>
+    </set>
+    <set name="groups" cascade="save-update" table="BN_GROUP_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="GROUP_UUID_" type="string"/>
+    </set>
+    <set name="memberships" cascade="save-update" table="BN_MEMBERSHIP_RULE">
+      <key column="RULE_DBID_" not-null="true" />
+      <element column="MEMBERSHIP_UUID_" type="string"/>
+    </set>
+    <subclass name="ProcessRuleImpl" discriminator-value="PROCESS_RULE">
+    </subclass>
+    <subclass name="CategoryRuleImpl" discriminator-value="CAT_RULE">
+    </subclass>
+    <subclass name="CustomRuleImpl" discriminator-value="CUSTOM_RULE">
+    </subclass>
+    <subclass name="ActivityRuleImpl" discriminator-value="ACTIVITY_RULE">
+    </subclass>
+    <subclass name="SimpleRuleImpl" discriminator-value="SIMPLE_RULE">
+    </subclass>
+  </class>
+</hibernate-mapping>

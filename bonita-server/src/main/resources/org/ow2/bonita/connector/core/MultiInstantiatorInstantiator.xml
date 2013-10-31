@@ -1,0 +1,65 @@
+<connector>
+  <version>5.0</version>
+  <connectorId>MultiInstantiatorWrapperInstantiator</connectorId>
+  <icon>bonita.png</icon>
+  <categories>
+    <category>
+      <name>Bonita</name>
+      <icon>org/ow2/bonita/connector/core/bonita.png</icon>
+    </category>
+  </categories>
+  <inputs>
+    <setter>
+      <setterName>setClassName</setterName>
+      <required />
+      <parameters>
+        <string />
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setVariableName</setterName>
+      <required />
+      <parameters>
+        <string />
+      </parameters>
+    </setter>
+    <setter>
+      <setterName>setInstantiatorParameters</setterName>
+      <required />
+      <parameters>
+        <map />
+      </parameters>
+    </setter>   
+  </inputs>
+  <pages>
+    <page>
+      <pageId>info</pageId>
+      <widgets>
+        <text>
+          <size>20</size>
+          <maxChar>40</maxChar>
+          <setter reference="/connector/inputs/setter"/>
+          <labelId>className</labelId>
+        </text>
+        <text>
+          <size>20</size>
+          <maxChar>40</maxChar>
+          <setter reference="/connector/inputs/setter[2]"/>
+          <labelId>variableName</labelId>
+        </text>
+        <array>
+          <labelId>parameters</labelId>
+          <cols>2</cols>
+          <rows>0</rows>
+          <fixedCols>true</fixedCols>
+          <fixedRows>false</fixedRows>
+          <colsCaptions>
+            <string>name</string>
+            <string>value</string>
+          </colsCaptions>
+          <setter reference="/connector/inputs/setter[3]"/>
+        </array>
+      </widgets>
+    </page>
+  </pages>
+</connector>

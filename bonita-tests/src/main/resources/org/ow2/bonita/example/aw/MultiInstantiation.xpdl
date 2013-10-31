@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.wfmc.org/2002/XPDL1.0" xmlns:xpdl="http://www.wfmc.org/2002/XPDL1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd" Id="AWMultiInst_Project" Name="AWMultiInst">
+  <PackageHeader>
+    <XPDLVersion>1.0</XPDLVersion>
+    <Vendor>Bonita Project Team</Vendor>
+    <Created>2008-09-25 10:46:54</Created>
+    <Description>Advanced version of an Approval workflow in which it requires approval from
+multiple users to validate or reject a particular request</Description>
+  </PackageHeader>
+  <RedefinableHeader>
+    <Version>1.0</Version>
+  </RedefinableHeader>
+  <ConformanceClass GraphConformance="NON_BLOCKED" />
+  <WorkflowProcesses>
+    <WorkflowProcess AccessLevel="PUBLIC" Name="multiInstantiation" Id="multiInstantiation">
+      <ProcessHeader />
+      <RedefinableHeader>
+        <Version>1.0</Version>
+      </RedefinableHeader>
+      <DataFields>
+        <DataField Id="decisionAccepted" Name="decisionAccepted">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="performer" Name="performer">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+          <InitialValue>nobody</InitialValue>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="PropertyActivity" />
+          </ExtendedAttributes>
+        </DataField>
+        <DataField Id="MyRequest" Name="MyRequest">
+          <DataType>
+            <BasicType Type="STRING" />
+          </DataType>
+        </DataField>
+      </DataFields>
+      <Participants>
+        <Participant Id="User" Name="User">
+          <ParticipantType Type="ROLE" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="Mapper" Value="Instance Initiator" />
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+          </ExtendedAttributes>
+        </Participant>
+        <Participant Id="human" Name="human">
+          <ParticipantType Type="HUMAN" />
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="NewParticipant" Value="true" />
+            <ExtendedAttribute Name="XOffset" Value="0" />
+            <ExtendedAttribute Name="YOffset" Value="150" />
+          </ExtendedAttributes>
+        </Participant>
+      </Participants>
+      <Activities>
+        <Activity Id="BonitaEnd" Name="BonitaEnd">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="XOR" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="633" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="44" />
+            <ExtendedAttribute Name="XOffset" Value="791" />
+            <ExtendedAttribute Name="YOffset" Value="226" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="BonitaStart" Name="BonitaStart">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <TransitionRestrictions>
+            <TransitionRestriction>
+              <Join Type="AND" />
+            </TransitionRestriction>
+          </TransitionRestrictions>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="57" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="62" />
+            <ExtendedAttribute Name="XOffset" Value="149" />
+            <ExtendedAttribute Name="YOffset" Value="232" />
+            <ExtendedAttribute Name="CellHeight" Value="40" />
+            <ExtendedAttribute Name="CellWidth" Value="40" />
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Approval" Name="Approval">
+          <Implementation>
+            <No />
+          </Implementation>
+          <Performer>human</Performer>
+          <StartMode>
+            <Manual />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="279" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="200" />
+            <ExtendedAttribute Name="XOffset" Value="284" />
+            <ExtendedAttribute Name="YOffset" Value="232" />
+            <ExtendedAttribute Name="CellHeight" Value="39" />
+            <ExtendedAttribute Name="CellWidth" Value="77" />
+            <ExtendedAttribute Name="property" Value="decisionAccepted" />
+            <ExtendedAttribute Name="property" Value="performer" />
+            <ExtendedAttribute Name="PerformerAssign" Value="Custom">
+              <Custom>org.ow2.bonita.example.aw.performer.UserPerformerAssign</Custom>
+            </ExtendedAttribute>
+            <ExtendedAttribute Name="MultiInstantiation">
+              <Variable>performer</Variable>
+              <MultiInstantiator>org.ow2.bonita.example.aw.instantiator.ApprovalInstantiator</MultiInstantiator>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="CheckDecision" Name="CheckDecision">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="253" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="64" />
+            <ExtendedAttribute Name="XOffset" Value="440" />
+            <ExtendedAttribute Name="YOffset" Value="230" />
+            <ExtendedAttribute Name="CellHeight" Value="41" />
+            <ExtendedAttribute Name="CellWidth" Value="119" />
+            <ExtendedAttribute Name="property" Value="decisionAccepted" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.example.aw.hook.CheckDecision">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Accept" Name="Accept">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="444" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="14" />
+            <ExtendedAttribute Name="XOffset" Value="614" />
+            <ExtendedAttribute Name="YOffset" Value="324" />
+            <ExtendedAttribute Name="CellHeight" Value="43" />
+            <ExtendedAttribute Name="CellWidth" Value="107" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.example.aw.hook.Accept">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+        <Activity Id="Reject" Name="Reject">
+          <Implementation>
+            <No />
+          </Implementation>
+          <StartMode>
+            <Automatic />
+          </StartMode>
+          <ExtendedAttributes>
+            <ExtendedAttribute Name="XOffsetParticipantView" Value="446" />
+            <ExtendedAttribute Name="YOffsetParticipantView" Value="98" />
+            <ExtendedAttribute Name="XOffset" Value="578" />
+            <ExtendedAttribute Name="YOffset" Value="148" />
+            <ExtendedAttribute Name="CellHeight" Value="45" />
+            <ExtendedAttribute Name="CellWidth" Value="107" />
+            <ExtendedAttribute Name="hook" Value="org.ow2.bonita.example.aw.hook.Reject">
+              <HookEventName>automatic:onEnter</HookEventName>
+              <Rollback>true</Rollback>
+            </ExtendedAttribute>
+          </ExtendedAttributes>
+        </Activity>
+      </Activities>
+      <Transitions>
+        <Transition Id="Start_Approval" Name="Start_Approval" From="BonitaStart" To="Approval" />
+        <Transition Id="Approval_CheckDecision" Name="Approval_CheckDecision" From="Approval" To="CheckDecision" />
+        <Transition Id="CheckDecision_Reject" Name="CheckDecision_Reject" From="CheckDecision" To="Reject">
+          <Condition Type="CONDITION">decisionAccepted.compareTo("no") == 0</Condition>
+        </Transition>
+        <Transition Id="CheckDecision_Accept" Name="CheckDecision_Accept" From="CheckDecision" To="Accept">
+          <Condition Type="CONDITION">decisionAccepted.compareTo("yes") == 0</Condition>
+        </Transition>
+        <Transition Id="Reject_End" Name="Reject_End" From="Reject" To="BonitaEnd" />
+        <Transition Id="Accept_End" Name="Accept_End" From="Accept" To="BonitaEnd" />
+      </Transitions>
+    </WorkflowProcess>
+  </WorkflowProcesses>
+  <ExtendedAttributes>
+    <ExtendedAttribute Name="MadeBy" Value="ProEd" />
+    <ExtendedAttribute Name="View" Value="Activity" />
+  </ExtendedAttributes>
+</Package>
+
