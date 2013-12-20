@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.ow2.bonita.facade.IdentityAPI;
 import org.ow2.bonita.facade.exception.BonitaWrapperException;
 import org.ow2.bonita.facade.exception.GroupAlreadyExistsException;
@@ -1772,6 +1775,8 @@ public class IdentityAPIImpl implements IdentityAPI {
   private boolean isAValidGroupPath(final GroupImpl group, final List<String> hierarchy) {
     final String groupPath = getGroupPath(group);
     final String expectedPath = getListPath(hierarchy);
+    //Logger LOGGER=Logger.getLogger(this.getClass().getName());
+    //LOGGER.log(Level.WARNING, "&&&&&&&&&& isAValidGroupPath  &&&&&&&&&&&&:'"+groupPath+"','"+expectedPath+"'");
     return groupPath.equals(expectedPath);
   }
 
